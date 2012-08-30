@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LampLightOnlineServer", "LampLightOnlineServer\LampLightOnlineServer.csproj", "{34905999-0847-4BFC-B87E-45B8A8EFDC05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LampLightOnlineClient", "LampLightOnlineClient\LampLightOnlineClient.csproj", "{16D5D827-10A0-45E2-BE4A-682E77102658}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B1C6E38F-3014-4B23-BEF8-A292A72E67E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LampLightOnlineBuild", "Tools\LampLightOnlineBuild\LampLightOnlineBuild.csproj", "{04C9E796-C4AE-44C0-888B-C72A68F147B0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{34905999-0847-4BFC-B87E-45B8A8EFDC05}.Release|x86.ActiveCfg = Release|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{16D5D827-10A0-45E2-BE4A-682E77102658}.Release|x86.ActiveCfg = Release|Any CPU
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Debug|x86.ActiveCfg = Debug|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Debug|x86.Build.0 = Debug|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Release|Any CPU.ActiveCfg = Release|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Release|x86.ActiveCfg = Release|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0} = {B1C6E38F-3014-4B23-BEF8-A292A72E67E2}
+	EndGlobalSection
+EndGlobal
