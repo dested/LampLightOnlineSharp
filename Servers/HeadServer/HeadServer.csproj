@@ -35,15 +35,36 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MongoDB">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\MongoDB.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.2.2\tools\Assemblies\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="NodeJS">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\NodeJS.dll</HintPath>
+    </Reference>
+    <Reference Include="Redis">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\Redis.dll</HintPath>
     </Reference>
     <Reference Include="Script.Linq">
       <HintPath>..\..\packages\Saltarelle.Linq.1.2.1\lib\Script.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="SocketIO">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\SocketIO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HeadServer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\CommonServerLibraries\CommonServerLibraries.csproj">
+      <Project>{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}</Project>
+      <Name>CommonServerLibraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.2.2\tools\Saltarelle.Compiler.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

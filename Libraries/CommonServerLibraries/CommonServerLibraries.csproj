@@ -35,15 +35,52 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Fibers">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\Fibers.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\MongoDB.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.2.2\tools\Assemblies\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="NodeJS">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\NodeJS.dll</HintPath>
+    </Reference>
+    <Reference Include="Redis">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\Redis.dll</HintPath>
     </Reference>
     <Reference Include="Script.Linq">
       <HintPath>..\..\packages\Saltarelle.Linq.1.2.1\lib\Script.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="Script.Web">
+      <HintPath>..\..\packages\Saltarelle.Web.1.2.2\lib\Script.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketIO">
+      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\SocketIO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Consumer.cs" />
+    <Compile Include="IPs.cs" />
+    <Compile Include="PubSub.cs" />
+    <Compile Include="QueueItem.cs" />
+    <Compile Include="QueueItemCollection.cs" />
+    <Compile Include="QueueManager.cs" />
+    <Compile Include="QueueManagerOptions.cs" />
+    <Compile Include="QueuePusher.cs" />
+    <Compile Include="QueueWatcher.cs" />
+    <Compile Include="SocketClientMessageModel.cs" />
+    <Compile Include="UserModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLibraries\CommonLibraries.csproj">
+      <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
+      <Name>CommonLibraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.2.2\tools\Saltarelle.Compiler.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

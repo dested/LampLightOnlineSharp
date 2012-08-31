@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</ProjectGuid>
+    <ProjectGuid>{A24B8529-20AE-4F4F-86F4-CE64DE577A10}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonClientLibaries</RootNamespace>
-    <AssemblyName>CommonClientLibaries</AssemblyName>
+    <RootNamespace>Models</RootNamespace>
+    <AssemblyName>Models</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>
@@ -32,31 +32,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GatewayLoginMessageModel.cs" />
+    <Compile Include="GatewayMessageModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.2.2\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Script.jQuery">
-      <HintPath>..\..\packages\Saltarelle.jQuery.1.2.2\lib\Script.jQuery.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.jQuery.UI">
-      <HintPath>..\..\packages\Saltarelle.jQuery.UI.1.2.1.1\lib\Script.jQuery.UI.dll</HintPath>
-    </Reference>
     <Reference Include="Script.Linq">
-      <HintPath>..\..\packages\Saltarelle.Linq.1.2.1\lib\Script.Linq.dll</HintPath>
+      <HintPath>..\packages\Saltarelle.Linq.1.2.1\lib\Script.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Script.Web">
-      <HintPath>..\..\packages\Saltarelle.Web.1.2.2\lib\Script.Web.dll</HintPath>
+      <HintPath>..\packages\Saltarelle.Web.1.2.1\lib\Script.Web.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="RawDeflate.cs" />
-    <Compile Include="XStats.cs" />
+    <Reference Include="SSLoader">
+      <HintPath>..\packages\Saltarelle.Loader.1.2.1\lib\SSLoader.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.2.2\tools\Saltarelle.Compiler.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
