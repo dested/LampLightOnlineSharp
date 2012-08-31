@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1A35F8BB-B5A5-429F-B693-4F2728488249}</ProjectGuid>
+    <ProjectGuid>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClientAPI</RootNamespace>
-    <AssemblyName>ClientAPI</AssemblyName>
+    <RootNamespace>CommonAPI</RootNamespace>
+    <AssemblyName>CommonAPI</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>
@@ -32,23 +32,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="LampPlayer.cs" />
+    <Compile Include="LampPlayerMessage.cs" />
+    <Compile Include="LampPlayerMessageReceived.cs" />
+    <Compile Include="LampEvent.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.2.2\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Script.jQuery">
-      <HintPath>..\..\packages\Saltarelle.jQuery.1.2.2\lib\Script.jQuery.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.jQuery.UI">
-      <HintPath>..\..\packages\Saltarelle.jQuery.UI.1.2.1.1\lib\Script.jQuery.UI.dll</HintPath>
-    </Reference>
     <Reference Include="Script.Linq">
       <HintPath>..\..\packages\Saltarelle.Linq.1.2.1\lib\Script.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.Web">
-      <HintPath>..\..\packages\Saltarelle.Web.1.2.2\lib\Script.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

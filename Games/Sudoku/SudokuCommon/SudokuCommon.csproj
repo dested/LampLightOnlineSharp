@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FED510A9-EA3E-4ADB-9BD7-0420F9020029}</ProjectGuid>
+    <ProjectGuid>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SudokuClient</RootNamespace>
-    <AssemblyName>SudokuClient</AssemblyName>
+    <RootNamespace>SudokuCommon</RootNamespace>
+    <AssemblyName>SudokuCommon</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>
@@ -52,25 +52,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\API\CommonAPI\CommonAPI.csproj">
-      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
-      <Name>CommonAPI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\API\ClientAPI\ClientAPI.csproj">
       <Project>{1A35F8BB-B5A5-429F-B693-4F2728488249}</Project>
       <Name>ClientAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SudokuCommon\SudokuCommon.csproj">
-      <Project>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</Project>
-      <Name>SudokuCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sudoku.cs" />
-    <Compile Include="SudokuClientPlayer.cs" />
+    <Compile Include="SudokuPlayer.cs" />
+    <Compile Include="SudokuPlayerMessage.cs" />
+    <Compile Include="SudokuPlayerNewNumberMessage.cs" />
+    <Compile Include="SudokuServerMessage.cs" />
+    <Compile Include="SudokuServerMessageType.cs" />
+    <Compile Include="SudokuServerUpdateNumber.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.2.2\tools\Saltarelle.Compiler.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

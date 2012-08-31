@@ -43,13 +43,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\ServerAPI\ServerAPI.csproj">
+    <ProjectReference Include="..\..\..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\API\ServerAPI\ServerAPI.csproj">
       <Project>{529D26FE-DE85-4FC8-818A-ABF63952CAF0}</Project>
       <Name>ServerAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SudokuCommon\SudokuCommon.csproj">
+      <Project>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</Project>
+      <Name>SudokuCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sudoku.cs" />
+    <Compile Include="SudokuServerPlayer.cs" />
   </ItemGroup>
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.2.2\tools\Saltarelle.Compiler.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
