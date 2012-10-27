@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C867C57E-BACE-4BDA-869D-AB34B8C32315}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TowerD.Common</RootNamespace>
+    <AssemblyName>TowerD.Common</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NoStdLib>True</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.jQuery">
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.1.4.0\lib\Script.jQuery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Script.jQuery.UI">
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.UI.1.4.0\lib\Script.jQuery.UI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Script.Web">
+      <HintPath>..\..\..\packages\Saltarelle.Web.1.4.0.1\lib\Script.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\API\ClientAPI\ClientAPI.csproj">
+      <Project>{1A35F8BB-B5A5-429F-B693-4F2728488249}</Project>
+      <Name>ClientAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SudokuPlayer.cs" />
+    <Compile Include="SudokuPlayerMessage.cs" />
+    <Compile Include="SudokuPlayerNewNumberMessage.cs" />
+    <Compile Include="SudokuServerMessage.cs" />
+    <Compile Include="SudokuServerMessageType.cs" />
+    <Compile Include="SudokuServerUpdateNumber.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy $(TargetDir)*.js $(SolutionDir)Output\Games\TowerD</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

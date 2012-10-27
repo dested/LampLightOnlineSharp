@@ -6,13 +6,17 @@ using CommonShuffleLibrary;
 using Models;
 using NodeJSLibrary;
 using SocketIONodeLibrary;
-
-namespace GatewayServer
-{
+ 
     namespace GatewayServer
     {
+
         public class GatewayServer
         {
+            static void Main()
+            {
+                new GatewayServer();
+            }
+
             private PubSub ps;
             public JsDictionary<string, UserModel> users = new JsDictionary<string, UserModel>();
 
@@ -99,5 +103,4 @@ namespace GatewayServer
                 }
             }
         }
-    }
-}
+    } 

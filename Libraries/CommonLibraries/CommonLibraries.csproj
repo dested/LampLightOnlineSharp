@@ -32,14 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.2.2\tools\Assemblies\mscorlib.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.Linq">
-      <HintPath>..\..\packages\Saltarelle.Linq.1.2.1\lib\Script.Linq.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -50,7 +44,11 @@
     <Compile Include="Guid.cs" />
     <Compile Include="Help.cs" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.2.2\tools\Saltarelle.Compiler.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy $(TargetDir)*.js $(SolutionDir)Output</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

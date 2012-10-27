@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F7E5989C-F6FB-4DD8-8823-6BD88ACE5142}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HeadServer</RootNamespace>
     <AssemblyName>HeadServer</AssemblyName>
@@ -31,24 +31,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MongoDB">
       <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\MongoDB.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.2.2\tools\Assemblies\mscorlib.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="NodeJS">
       <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\NodeJS.dll</HintPath>
     </Reference>
     <Reference Include="Redis">
       <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\Redis.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.Linq">
-      <HintPath>..\..\packages\Saltarelle.Linq.1.2.1\lib\Script.Linq.dll</HintPath>
     </Reference>
     <Reference Include="SocketIO">
       <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\SocketIO.dll</HintPath>
@@ -66,7 +63,11 @@
       <Name>CommonServerLibraries</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.2.2\tools\Saltarelle.Compiler.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy $(TargetDir)*.js $(ProjectDir)..\..\Output</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

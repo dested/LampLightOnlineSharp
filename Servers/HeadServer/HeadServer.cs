@@ -9,6 +9,11 @@ namespace HeadServer
 {
     public class HeadServer
     {
+        static void Main()
+        {
+            new HeadServer();
+        }
+
         private string __dirname = "/usr/local/src/lamp";
         private FS fs = Global.Require<FS>("fs");
         private List<string> gateways = new List<string>();
