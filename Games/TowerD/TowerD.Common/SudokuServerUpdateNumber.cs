@@ -1,4 +1,4 @@
-namespace SudokuCommon
+namespace TowerD.Common
 {
     public class SudokuServerUpdateNumber
     {

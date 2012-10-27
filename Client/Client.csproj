@@ -50,6 +50,9 @@
       <HintPath>..\packages\Saltarelle.jQuery.UI.1.2.1.1\lib\Script.jQuery.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Script.Linq">
+      <HintPath>..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web">
       <HintPath>..\packages\Saltarelle.Web.1.4.0.1\lib\Script.Web.dll</HintPath>
       <Private>True</Private>
@@ -59,7 +62,56 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
+    <Compile Include="ClientManager.cs" />
+    <Compile Include="GameManager.cs" />
+    <Compile Include="UIManagerAreas.cs" />
+    <Compile Include="UIManager\Button.cs" />
+    <Compile Include="UIManager\EditorEngine.cs" />
+    <Compile Include="UIManager\Element.cs" />
+    <Compile Include="UIManager\HScrollBox.cs" />
+    <Compile Include="UIManager\HtmlBox.cs" />
+    <Compile Include="UIManager\Image.cs" />
+    <Compile Include="UIManager\ImageButton.cs" />
+    <Compile Include="UIManager\LayoutPanel.cs" />
+    <Compile Include="UIManager\Panel.cs" />
+    <Compile Include="UIManager\Pointer.cs" />
+    <Compile Include="UIManager\PropertyButton.cs" />
+    <Compile Include="UIManager\ScrollBox.cs" />
+    <Compile Include="UIManager\Table.cs" />
+    <Compile Include="UIManager\TextArea.cs" />
+    <Compile Include="UIManager\TextBox.cs" />
+    <Compile Include="UIManager\UIArea.cs" />
+    <Compile Include="UIManager\UIManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\API\ClientAPI\ClientAPI.csproj">
+      <Project>{1A35F8BB-B5A5-429F-B693-4F2728488249}</Project>
+      <Name>ClientAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Games\TowerD\TowerD.Client\TowerD.Client.csproj">
+      <Project>{D04F57BB-D3E7-4617-8A27-1E5FA707780B}</Project>
+      <Name>TowerD.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Games\TowerD\TowerD.Common\TowerD.Common.csproj">
+      <Project>{C867C57E-BACE-4BDA-869D-AB34B8C32315}</Project>
+      <Name>TowerD.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\CommonClientLibaries\CommonClientLibaries.csproj">
+      <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
+      <Name>CommonClientLibaries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\CommonLibraries\CommonLibraries.csproj">
+      <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
+      <Name>CommonLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\WebLibraries\CommonWebLibraries\CommonWebLibraries.csproj">
+      <Project>{6DA30112-FDBD-4E48-9F52-7268FCE19D25}</Project>
+      <Name>CommonWebLibraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />

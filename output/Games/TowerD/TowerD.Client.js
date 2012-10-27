@@ -1,16 +1,16 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
-// SudokuClient.SudokuClientPlayer
-var $SudokuClient_SudokuClientPlayer = function() {
-	SudokuCommon.SudokuPlayer.call(this);
-};
-////////////////////////////////////////////////////////////////////////////////
-// SudokuServer.Sudoku
-var $SudokuServer_Sudoku = function() {
+// TowerD.Client.Game
+var $TowerD_Client_Game = function() {
 	ClientAPI.LampClient.call(this);
 };
-$SudokuServer_Sudoku.prototype = {
+$TowerD_Client_Game.prototype = {
 	init: function(players) {
 	}
 };
-Type.registerClass(global, 'SudokuClient.SudokuClientPlayer', $SudokuClient_SudokuClientPlayer, SudokuCommon.SudokuPlayer);
-Type.registerClass(global, 'SudokuServer.Sudoku', $SudokuServer_Sudoku, ClientAPI.LampClient);
+////////////////////////////////////////////////////////////////////////////////
+// TowerD.Client.SudokuClientPlayer
+var $TowerD_Client_SudokuClientPlayer = function() {
+	TowerD.Common.SudokuPlayer.call(this);
+};
+Type.registerClass(global, 'TowerD.Client.Game', $TowerD_Client_Game, ClientAPI.LampClient);
+Type.registerClass(global, 'TowerD.Client.SudokuClientPlayer', $TowerD_Client_SudokuClientPlayer, TowerD.Common.SudokuPlayer);

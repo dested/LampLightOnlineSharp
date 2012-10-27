@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
-
-namespace SudokuCommon
+namespace TowerD.Common
 {
     [Serializable]
     public class SudokuPlayerNewNumberMessage

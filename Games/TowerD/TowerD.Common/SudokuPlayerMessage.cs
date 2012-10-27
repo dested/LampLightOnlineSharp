@@ -1,7 +1,5 @@
-using System;
 using System.Runtime.CompilerServices;
-
-namespace SudokuCommon
+namespace TowerD.Common
 {
     public class SudokuPlayerMessage
     {
@@ -9,15 +7,14 @@ namespace SudokuCommon
         public SudokuPlayerMessageType MessageType { get; set; }
         [IntrinsicProperty]
         public object MessageInfo { get; set; }
-        
+
         public T GetMessageInfo<T>()
         {
             return (T) MessageInfo;
         }
-    } 
+    }
     public enum SudokuPlayerMessageType
     {
         NewNumber
     }
-
 }

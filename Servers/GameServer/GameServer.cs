@@ -1,37 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Serialization;
-using System.Text;
-using CommonLibraries;
-using CommonShuffleLibrary;
-using CommonWebLibraries;
+﻿using CommonLibraries;
 using NodeJSLibrary;
-
+using Console = NodeJS.Console;
 namespace GameServer
 {
     public class GameServer
     {
-        static void Main()
+        private DataManager dataManager;
+        private string gameServerIndex;
+
+        public GameServer()
+        {
+            dataManager = new DataManager();
+
+            gameServerIndex = "GameServer" + Guid.NewGuid();
+            Global.Process.On("exit", () => Console.Log("exi"));
+        }
+
+        private static void Main()
         {
             new GameServer();
         }
-
-
-        private string gameServerIndex;
-        private QueueManager qManager;
-        private DataManager dataManager;
-
-        public GameServer()
-        {   
-
-            dataManager = new DataManager();
-
-            gameServerIndex = "GameServer" + Guid.NewGuid(); 
-            Global.Process.On("exit", () => Console.Log("exi"));
-   
-             
-        }
-          
-
-     }
+    }
 }

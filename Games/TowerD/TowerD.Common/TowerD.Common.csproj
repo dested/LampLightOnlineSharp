@@ -46,6 +46,9 @@
       <HintPath>..\..\..\packages\Saltarelle.jQuery.UI.1.4.0\lib\Script.jQuery.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Script.Linq">
+      <HintPath>..\..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web">
       <HintPath>..\..\..\packages\Saltarelle.Web.1.4.0.1\lib\Script.Web.dll</HintPath>
       <Private>True</Private>

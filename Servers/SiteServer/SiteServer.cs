@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SiteServer
+﻿namespace SiteServer
 {
-    class SiteServer
+    internal class SiteServer
     {
-        static void Main()
+        private static void Main()
         {
             new SiteServer();
         }
-
     }
 }

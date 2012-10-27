@@ -41,9 +41,8 @@ var $GameServer_GameInfoObject = function() {
 ////////////////////////////////////////////////////////////////////////////////
 // GameServer.GameServer
 var $GameServer_GameServer = function() {
-	this.$gameServerIndex = null;
-	this.$qManager = null;
 	this.$dataManager = null;
+	this.$gameServerIndex = null;
 	this.$dataManager = new $GameServer_DataManager();
 	this.$gameServerIndex = 'GameServer' + CommonLibraries.Guid.newGuid();
 	process.on('exit', function() {

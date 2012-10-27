@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChatServer
+﻿namespace ChatServer
 {
-    class ChatServer
+    internal class ChatServer
     {
-        static void Main()
-        {
-            
-        }
+        private static void Main() {}
     }
 }

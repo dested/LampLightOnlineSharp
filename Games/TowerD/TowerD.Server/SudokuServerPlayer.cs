@@ -1,9 +1,5 @@
-    using System.Runtime.CompilerServices;
-    using SudokuCommon;
-
-namespace SudokuServer
+using TowerD.Common;
+namespace TowerD.Server
 {
-    public class SudokuServerPlayer:SudokuPlayer
-    { 
-    }
+    public class SudokuServerPlayer : SudokuPlayer {}
 }

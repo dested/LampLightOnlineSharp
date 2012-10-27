@@ -1,14 +1,8 @@
 using CommonAPI;
-
 namespace ClientAPI
 {
     public class LampClient
     {
-        public virtual void Init(LampPlayer[] players)
-        {
-
-        }
-
+        public virtual void Init(LampPlayer[] players) {}
     }
-
 }

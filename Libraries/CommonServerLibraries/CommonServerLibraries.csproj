@@ -32,23 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fibers">
-      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\Fibers.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB">
-      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\MongoDB.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.5.1\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="NodeJS">
-      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\NodeJS.dll</HintPath>
+    <Reference Include="Script.Linq">
+      <HintPath>..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="Redis">
-      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\Redis.dll</HintPath>
-    </Reference>
-    <Reference Include="SocketIO">
-      <HintPath>..\..\..\compiler fork\SaltarelleCompiler\Runtime\bin\Debug\SocketIO.dll</HintPath>
+    <Reference Include="Script.NodeJS">
+      <HintPath>..\..\packages\Saltarelle.NodeJS.1.5.1\lib\Script.NodeJS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -57,13 +48,6 @@
   <ItemGroup>
     <Compile Include="Consumer.cs" />
     <Compile Include="IPs.cs" />
-    <Compile Include="PubSub.cs" />
-    <Compile Include="QueueItem.cs" />
-    <Compile Include="QueueItemCollection.cs" />
-    <Compile Include="QueueManager.cs" />
-    <Compile Include="QueueManagerOptions.cs" />
-    <Compile Include="QueuePusher.cs" />
-    <Compile Include="QueueWatcher.cs" />
     <Compile Include="SocketClientMessageModel.cs" />
     <Compile Include="UserModel.cs" />
   </ItemGroup>
@@ -72,9 +56,24 @@
       <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
       <Name>CommonLibraries</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NodeLibraries\NodeJS\NodeJS.csproj">
+      <Project>{79800429-B885-4F5E-9A3B-48E50390214A}</Project>
+      <Name>NodeJS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NodeLibraries\Redis\Redis.csproj">
+      <Project>{5214FA01-BBBF-425F-B77D-1F6DA7AEB4ED}</Project>
+      <Name>Redis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NodeLibraries\SocketIO\SocketIOLibrary.csproj">
+      <Project>{BD7C6F4F-3798-4C32-9EE1-306CF197F81E}</Project>
+      <Name>SocketIOLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
     <PostBuildEvent>Copy $(TargetDir)*.js $(SolutionDir)Output</PostBuildEvent>
   </PropertyGroup>

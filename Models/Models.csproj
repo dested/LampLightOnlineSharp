@@ -45,6 +45,9 @@
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
+    <Reference Include="Script.Linq">
+      <HintPath>..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web">
       <HintPath>..\packages\Saltarelle.Web.1.4.0.1\lib\Script.Web.dll</HintPath>
       <Private>True</Private>

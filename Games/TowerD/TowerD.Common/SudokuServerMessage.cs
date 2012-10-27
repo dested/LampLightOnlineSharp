@@ -1,5 +1,5 @@
 using System.Runtime.CompilerServices;
-
+using TowerD.Common;
 namespace SudokuCommon
 {
     public class SudokuServerMessage
@@ -9,15 +9,15 @@ namespace SudokuCommon
         [IntrinsicProperty]
         public object MessageInfo { get; set; }
 
-        public T GetMessageInfo<T>()
-        {
-            return (T)MessageInfo;
-        }
-
         public SudokuServerMessage(SudokuServerUpdateNumber messageInfo)
         {
             MessageInfo = messageInfo;
             MessageType = SudokuServerMessageType.UpdateNumber;
+        }
+
+        public T GetMessageInfo<T>()
+        {
+            return (T) MessageInfo;
         }
     }
 }
