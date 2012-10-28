@@ -35,6 +35,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoublePoint.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ExtraData.cs" />
     <Compile Include="Guid.cs" />

@@ -2,7 +2,7 @@ using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using jQueryApi;
-namespace CommonWebLibraries
+namespace CommonClientLibraries
 {
     public class CanvasInformation
     {

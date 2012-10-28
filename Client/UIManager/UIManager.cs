@@ -43,6 +43,8 @@ namespace Client.UIManager
             this.ClientManagerManager = ClientManagerManager;
 
             UIManagerAreas = new UIManagerAreas();
+            UpdateDepth();
+
         }
 
         public bool OnClick(Pointer cell)

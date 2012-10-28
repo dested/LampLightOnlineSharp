@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientManager.cs" />
+    <Compile Include="DoublePoint.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="UIManagerAreas.cs" />
     <Compile Include="UIManager\Button.cs" />
@@ -100,9 +101,9 @@
       <Project>{C867C57E-BACE-4BDA-869D-AB34B8C32315}</Project>
       <Name>TowerD.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\CommonClientLibaries\CommonClientLibaries.csproj">
+    <ProjectReference Include="..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
       <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
-      <Name>CommonClientLibaries</Name>
+      <Name>CommonClientLibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\CommonLibraries\CommonLibraries.csproj">
       <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>

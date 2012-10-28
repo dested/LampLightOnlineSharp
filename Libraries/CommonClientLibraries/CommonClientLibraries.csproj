@@ -8,8 +8,8 @@
     <ProjectGuid>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonClientLibaries</RootNamespace>
-    <AssemblyName>CommonClientLibaries</AssemblyName>
+    <RootNamespace>CommonClientLibraries</RootNamespace>
+    <AssemblyName>CommonClientLibraries</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>

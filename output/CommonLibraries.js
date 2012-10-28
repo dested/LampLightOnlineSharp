@@ -1,4 +1,54 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
+// CommonLibraries.DoublePoint
+var $CommonLibraries_DoublePoint = function() {
+};
+$CommonLibraries_DoublePoint.offset = function($this, windowLocation) {
+	return $CommonLibraries_DoublePoint.$ctor1($this.x + windowLocation.x, $this.y + windowLocation.y);
+};
+$CommonLibraries_DoublePoint.negate = function($this, windowLocation) {
+	return $CommonLibraries_DoublePoint.$ctor1($this.x - windowLocation.x, $this.y - windowLocation.y);
+};
+$CommonLibraries_DoublePoint.negate$1 = function($this, x, y) {
+	return $CommonLibraries_DoublePoint.$ctor1($this.x - x, $this.y - y);
+};
+$CommonLibraries_DoublePoint.op_Implicit = function(p) {
+	return $CommonLibraries_DoublePoint.$ctor1(p.x, p.y);
+};
+$CommonLibraries_DoublePoint.string = function($this) {
+	return String.format('{{X:{0}, Y:{1}}}', $this.x, $this.y);
+};
+$CommonLibraries_DoublePoint.multiply = function($this, scaleFactor) {
+	$this.x *= scaleFactor;
+	$this.y *= scaleFactor;
+	return $this;
+};
+$CommonLibraries_DoublePoint.add = function($this, scaleFactor) {
+	$this.x += scaleFactor.x;
+	$this.y += scaleFactor.y;
+	return $this;
+};
+$CommonLibraries_DoublePoint.add$1 = function($this, scaleFactor) {
+	$this.x += scaleFactor;
+	$this.y += scaleFactor;
+	return $this;
+};
+$CommonLibraries_DoublePoint.$ctor1 = function(x, y) {
+	var $this = {};
+	$this.x = 0;
+	$this.y = 0;
+	$this.x = x;
+	$this.y = y;
+	return $this;
+};
+$CommonLibraries_DoublePoint.$ctor = function(pos) {
+	var $this = {};
+	$this.x = 0;
+	$this.y = 0;
+	$this.x = pos.x;
+	$this.y = pos.y;
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
 // CommonLibraries.Extensions
 var $CommonLibraries_Extensions = function() {
 };
@@ -160,6 +210,7 @@ $CommonLibraries_SizeNumber.op_Implicit$1 = function(d) {
 $CommonLibraries_SizeNumber.op_Implicit = function(d) {
 	return parseFloat(d.$value.replaceAll('%', ''));
 };
+Type.registerClass(global, 'CommonLibraries.DoublePoint', $CommonLibraries_DoublePoint, Object);
 Type.registerClass(global, 'CommonLibraries.Extensions', $CommonLibraries_Extensions, Object);
 Type.registerClass(global, 'CommonLibraries.Guid', $CommonLibraries_Guid, Object);
 Type.registerClass(global, 'CommonLibraries.Help', $CommonLibraries_Help, Object);

@@ -1,6 +1,7 @@
 ﻿using System.Html;
 using System.Runtime.CompilerServices;
 using Client.UIManager;
+using CommonClientLibraries;
 using CommonLibraries;
 using CommonWebLibraries;
 using OurSonic.UIManager;
@@ -33,15 +34,20 @@ namespace Client
 
             gameCanvas = CanvasInformation.Create((CanvasElement) Document.GetElementById(gameCanvasName), 0, 0);
             uiCanvas = CanvasInformation.Create((CanvasElement) Document.GetElementById(uiCanvasName), 0, 0);
+            UIManager = new UIManager.UIManager(this);
+
             gameManager = new GameManager();
 
             bindInput();
             Window.AddEventListener("resize", e => resizeCanvas());
             jQuery.Document.Resize(e => resizeCanvas());
-
+            resizeCanvas();
             Window.SetInterval(Tick, 1000 / 60);
             Window.SetInterval(GameDraw, 1000 / 60);
             Window.SetInterval(UIDraw, 1000 / 10);
+
+            gameManager.Start(gameCanvas.Context);
+
         }
 
         private static void Main()
@@ -138,6 +144,7 @@ namespace Client
 
         public void GameDraw()
         {
+            Clear(gameCanvas);
             gameManager.Draw(gameCanvas.Context);
         }
 

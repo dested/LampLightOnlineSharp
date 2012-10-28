@@ -1,5 +1,4 @@
-
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // Client.GameManager
 var $Client_$GameManager = function() {
 	this.$game = null;
@@ -14,17 +13,22 @@ $Client_$GameManager.prototype = {
 		this.$1$WindowLocationField = value;
 	},
 	$mouseMove: function(queryEvent) {
-		return false;
+		return this.$game.mouseMove(queryEvent);
 	},
 	$onClick: function(queryEvent) {
-		return false;
+		return this.$game.onClick(queryEvent);
 	},
 	$mouseUp: function(queryEvent) {
-		return false;
+		return this.$game.mouseUp(queryEvent);
 	},
 	$draw: function(context) {
+		this.$game.draw(context);
 	},
 	$tick: function() {
+		this.$game.tick();
+	},
+	$start: function(context) {
+		this.$game.init([], context);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,8 +49,9 @@ var $Client_ClientManager = function() {
 	elem.parentNode.removeChild(elem);
 	var stats = new xStats();
 	document.body.appendChild(stats.element);
-	this.$gameCanvas = CommonWebLibraries.CanvasInformation.create$1(document.getElementById(this.$gameCanvasName), 0, 0);
-	this.$uiCanvas = CommonWebLibraries.CanvasInformation.create$1(document.getElementById(this.$uiCanvasName), 0, 0);
+	this.$gameCanvas = CommonClientLibraries.CanvasInformation.create$1(document.getElementById(this.$gameCanvasName), 0, 0);
+	this.$uiCanvas = CommonClientLibraries.CanvasInformation.create$1(document.getElementById(this.$uiCanvasName), 0, 0);
+	this.uiManager = new $Client_UIManager_UIManager(this);
 	this.$gameManager = new $Client_$GameManager();
 	this.$bindInput();
 	window.addEventListener('resize', Function.mkdel(this, function(e) {
@@ -55,9 +60,11 @@ var $Client_ClientManager = function() {
 	$(document).resize(Function.mkdel(this, function(e1) {
 		this.resizeCanvas();
 	}));
+	this.resizeCanvas();
 	window.setInterval(Function.mkdel(this, this.$tick), 16);
 	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);
+	this.$gameManager.$start(this.$gameCanvas.context);
 };
 $Client_ClientManager.prototype = {
 	$tick: function() {
@@ -140,6 +147,7 @@ $Client_ClientManager.prototype = {
 		canv.domCanvas[0].width = w;
 	},
 	gameDraw: function() {
+		this.clear(this.$gameCanvas);
 		this.$gameManager.$draw(this.$gameCanvas.context);
 	},
 	uiDraw: function() {
@@ -180,6 +188,7 @@ var $Client_UIManager_UIManager = function(ClientManagerManager) {
 	this.uiAreas = [];
 	this.clientManagerManager = ClientManagerManager;
 	this.set_uiManagerAreas(new $Client_UIManagerAreas());
+	this.updateDepth();
 };
 $Client_UIManager_UIManager.prototype = {
 	get_uiManagerAreas: function() {
@@ -329,7 +338,7 @@ var $OurSonic_UIManager_Button = function(x, y, width, height, text) {
 $OurSonic_UIManager_Button.prototype = {
 	construct: function() {
 		$OurSonic_UIManager_Element.prototype.construct.call(this);
-		var canv = CommonWebLibraries.CanvasInformation.create(1, 1).context;
+		var canv = CommonClientLibraries.CanvasInformation.create(1, 1).context;
 		this.button1Grad = canv.createLinearGradient(0, 0, 0, 1);
 		this.button1Grad.addColorStop(0, '#FFFFFF');
 		this.button1Grad.addColorStop(1, '#A5A5A5');
@@ -1079,7 +1088,7 @@ var $OurSonic_UIManager_ImageButton = function(x, y, width, height) {
 $OurSonic_UIManager_ImageButton.prototype = {
 	construct: function() {
 		$OurSonic_UIManager_Element.prototype.construct.call(this);
-		var canv = CommonWebLibraries.CanvasInformation.create(1, 1).context;
+		var canv = CommonClientLibraries.CanvasInformation.create(1, 1).context;
 		this.button1Grad = canv.createLinearGradient(0, 0, 0, 1);
 		this.button1Grad.addColorStop(0, '#FFFFFF');
 		this.button1Grad.addColorStop(1, '#A5A5A5');
@@ -1903,7 +1912,7 @@ var $OurSonic_UIManager_TextBox = function(x, y, width, height, text) {
 $OurSonic_UIManager_TextBox.prototype = {
 	construct: function() {
 		$OurSonic_UIManager_Element.prototype.construct.call(this);
-		var canv = CommonWebLibraries.CanvasInformation.create(1, 1).context;
+		var canv = CommonClientLibraries.CanvasInformation.create(1, 1).context;
 		this.button1Grad = canv.createLinearGradient(0, 0, 0, 1);
 		this.button1Grad.addColorStop(0, '#FFFFFF');
 		this.button1Grad.addColorStop(1, '#A5A5A5');
@@ -2200,7 +2209,7 @@ $OurSonic_UIManager_UIArea.prototype = {
 		}
 		canv.save();
 		if (!this.cachedDrawing) {
-			var cg = CommonWebLibraries.CanvasInformation.create(this.width + 20, this.height + 20);
+			var cg = CommonClientLibraries.CanvasInformation.create(this.width + 20, this.height + 20);
 			var cv = cg.context;
 			cv.translate(10, 10);
 			var lingrad = cv.createLinearGradient(0, 0, 0, this.height);

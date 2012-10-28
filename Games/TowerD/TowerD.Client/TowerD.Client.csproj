@@ -63,6 +63,10 @@
       <Project>{1A35F8BB-B5A5-429F-B693-4F2728488249}</Project>
       <Name>ClientAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\CommonLibraries\CommonLibraries.csproj">
+      <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
+      <Name>CommonLibraries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TowerD.Common\TowerD.Common.csproj">
       <Project>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</Project>
       <Name>TowerD.Common</Name>
@@ -73,7 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
-    <Compile Include="SudokuClientPlayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
