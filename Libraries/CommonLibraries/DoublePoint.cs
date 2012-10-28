@@ -63,5 +63,10 @@ namespace CommonLibraries
             this.Y += scaleFactor;
             return this;
         }
+
+        public Point ToPoint()
+        {
+        return new Point((int) X,(int) Y);
+        }
     }
 }

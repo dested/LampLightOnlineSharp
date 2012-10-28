@@ -15,12 +15,12 @@ namespace Client
         private int canvasWidth;
         private CanvasInformation gameCanvas;
         private string gameCanvasName = "gameLayer";
-        private int gameGoodWidth;
+        private Point gameGoodSize;
         private GameManager gameManager;
         private Pointer lastMouseMove;
         private CanvasInformation uiCanvas;
         private string uiCanvasName = "uiLayer";
-        private int uiGoodWidth;
+        private Point uiGoodSize;
         [IntrinsicProperty]
         public UIManager.UIManager UIManager { get; set; }
 
@@ -128,18 +128,22 @@ namespace Client
             gameManager.WindowLocation = new Rectangle(0, 0, Window.InnerWidth, Window.InnerHeight);
             gameCanvas.DomCanvas.Attribute("width", gameManager.WindowLocation.Width.ToString());
             gameCanvas.DomCanvas.Attribute("height", gameManager.WindowLocation.Height.ToString());
-            uiGoodWidth = canvasWidth;
-            gameGoodWidth = gameManager.WindowLocation.Width;
+            uiGoodSize = new Point(canvasWidth,canvasHeight);
+            gameGoodSize = new Point(gameManager.WindowLocation.Width, gameManager.WindowLocation.Height);
         }
 
         public void Clear(CanvasInformation canv)
         {
-            int w;
+            Point w;
             if (canv == gameCanvas)
-                w = gameGoodWidth;
+                w = gameGoodSize;
             else
-                w = uiGoodWidth;
-            canv.DomCanvas[0].Me().width = w;
+                w = uiGoodSize;
+            //canv.DomCanvas[0].Me().width = w.width;
+
+
+            canv.Context.ClearRect(0, 0, w.X, w.Y);
+
         }
 
         public void GameDraw()

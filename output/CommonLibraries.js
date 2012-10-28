@@ -32,6 +32,9 @@ $CommonLibraries_DoublePoint.add$1 = function($this, scaleFactor) {
 	$this.y += scaleFactor;
 	return $this;
 };
+$CommonLibraries_DoublePoint.toPoint = function($this) {
+	return $CommonLibraries_Point.$ctor1(ss.Int32.trunc($this.x), ss.Int32.trunc($this.y));
+};
 $CommonLibraries_DoublePoint.$ctor1 = function(x, y) {
 	var $this = {};
 	$this.x = 0;

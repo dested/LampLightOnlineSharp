@@ -38,12 +38,12 @@ var $Client_ClientManager = function() {
 	this.$canvasWidth = 0;
 	this.$gameCanvas = null;
 	this.$gameCanvasName = 'gameLayer';
-	this.$gameGoodWidth = 0;
+	this.$gameGoodSize = null;
 	this.$gameManager = null;
 	this.$lastMouseMove = null;
 	this.$uiCanvas = null;
 	this.$uiCanvasName = 'uiLayer';
-	this.$uiGoodWidth = 0;
+	this.$uiGoodSize = null;
 	this.uiManager = null;
 	var elem = document.getElementById('loading');
 	elem.parentNode.removeChild(elem);
@@ -133,18 +133,19 @@ $Client_ClientManager.prototype = {
 		this.$gameManager.set_$windowLocation(CommonLibraries.Rectangle.$ctor1(0, 0, window.innerWidth, window.innerHeight));
 		this.$gameCanvas.domCanvas.attr('width', this.$gameManager.get_$windowLocation().width.toString());
 		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.get_$windowLocation().height.toString());
-		this.$uiGoodWidth = this.$canvasWidth;
-		this.$gameGoodWidth = this.$gameManager.get_$windowLocation().width;
+		this.$uiGoodSize = CommonLibraries.Point.$ctor1(this.$canvasWidth, this.$canvasHeight);
+		this.$gameGoodSize = CommonLibraries.Point.$ctor1(this.$gameManager.get_$windowLocation().width, this.$gameManager.get_$windowLocation().height);
 	},
 	clear: function(canv) {
 		var w;
 		if (ss.referenceEquals(canv, this.$gameCanvas)) {
-			w = this.$gameGoodWidth;
+			w = this.$gameGoodSize;
 		}
 		else {
-			w = this.$uiGoodWidth;
+			w = this.$uiGoodSize;
 		}
-		canv.domCanvas[0].width = w;
+		//canv.DomCanvas[0].Me().width = w.width;
+		canv.context.clearRect(0, 0, w.x, w.y);
 	},
 	gameDraw: function() {
 		this.clear(this.$gameCanvas);
