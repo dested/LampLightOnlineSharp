@@ -6,18 +6,20 @@ namespace TowerD.Client
 {
     public class WaypointMap
     {
+        private Point myScale;
         [IntrinsicProperty]
         private List<Waypoint> Waypoints { get; set; }
         [IntrinsicProperty]
         public WaypointDrawer Drawer { get; set; }
 
-        public WaypointMap(Color startColor, Color endColor, Waypoint[] points,Point scale)
+        public WaypointMap(Color startColor, Color endColor, Waypoint[] points, Point scale)
         {
+            myScale = scale;
             Waypoints = new List<Waypoint>();
             for (int index = 0; index < points.Length; index++) {
                 Add(points[index]);
             }
-            Drawer = new ColorWaypointDrawer(startColor, endColor, this,scale);
+            Drawer = new ColorWaypointDrawer(startColor, endColor, this, scale);
         }
 
         public void Add(Waypoint point)
@@ -36,10 +38,12 @@ namespace TowerD.Client
             return Waypoints[Waypoints.Count - 1];
         }
 
-        public IEnumerable<DoublePoint> Travel(int stepsPer,Point scale)
+        public IEnumerable<Point> Travel(int stepsTotal, Point scale)
         {
             DoublePoint cur = new DoublePoint(0, 0);
             DoublePoint dist = new DoublePoint(0, 0);
+
+            double stp = ((double)stepsTotal / ((double)Waypoints.Count-1));
 
             for (int index = 0; index < Waypoints.Count - 1; index++) {
                 var waypoint = Waypoints[index];
@@ -48,15 +52,24 @@ namespace TowerD.Client
                 cur.X = waypoint.X * scale.X;
                 cur.Y = waypoint.Y * scale.Y;
 
-                dist.X = ((double)nextWaypoint.X  - waypoint.X ) / stepsPer;
-                dist.Y = ((double)nextWaypoint.Y  - waypoint.Y ) / stepsPer;
+                dist.X = ((double)nextWaypoint.X - waypoint.X) / stp;
+                dist.Y = ((double)nextWaypoint.Y - waypoint.Y) / stp;
 
-                for (int i = 0; i < stepsPer; i++) {
+                for (int i = 0; i < stp; i++)
+                {
                     cur.X += dist.X * scale.X;
                     cur.Y += dist.Y * scale.Y;
-                    yield return new DoublePoint(cur.X,cur.Y);
+                    yield return new Point((int) cur.X, (int) cur.Y);
                 }
             }
+        }
+
+        public WaypointMap Reverse()
+        {
+
+            Waypoint[] waypoints = new List<Waypoint>(Waypoints).Array();
+            waypoints.Reverse();
+            return new WaypointMap(this.Drawer.EndColor, this.Drawer.StartColor, waypoints, myScale);
         }
     }
     public class Waypoint
@@ -69,6 +82,15 @@ namespace TowerD.Client
         {
             X = x;
             Y = y;
+        }
+
+        public WaypointMap GetPath()
+        {
+            if (Map == null) {
+                return null; 
+            }
+
+            return Map.Last() == this ? Map.Reverse() : Map;
         }
     }
 }

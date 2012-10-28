@@ -8,12 +8,10 @@ namespace TowerD.Client.Drawers
     {
         private readonly Point myScale;
         private List<ParticleSystem> systems;
-        [IntrinsicProperty]
         public Color StartColor { get; set; }
-        [IntrinsicProperty]
         public Color EndColor { get; set; }
 
-        public ColorWaypointDrawer(Color startColor, Color endColor, WaypointMap map,Point scale)
+        public ColorWaypointDrawer(Color startColor, Color endColor, WaypointMap map, Point scale)
         {
             myScale = scale;
             StartColor = startColor;
@@ -29,7 +27,7 @@ namespace TowerD.Client.Drawers
         {
             systems = new List<ParticleSystem>();
 
-            var items = new List<DoublePoint>(Map.Travel(30, myScale));
+            var items = new List<Point>(Map.Travel(30, myScale));
 
             for (int index = 0; index < items.Count; index++) {
                 var point = items[index];
@@ -78,16 +76,15 @@ namespace TowerD.Client.Drawers
                         break;
                 }
 
-                StartColors[0] = (int)(StartColors[0] + (StartColors2[0] - StartColors[0]) * ((double)index / items.Count));
-                StartColors[1] = (int)(StartColors[1] + (StartColors2[1] - StartColors[1]) * ((double)index / items.Count));
-                StartColors[2] = (int)(StartColors[2] + (StartColors2[2] - StartColors[2]) * ((double)index / items.Count));
-                StartColors[3] = (int)(StartColors[3] + (StartColors2[3] - StartColors[3]) * ((double)index / items.Count));
+                StartColors[0] = (int) ( StartColors[0] + ( StartColors2[0] - StartColors[0] ) * ( (double) index / items.Count ) );
+                StartColors[1] = (int) ( StartColors[1] + ( StartColors2[1] - StartColors[1] ) * ( (double) index / items.Count ) );
+                StartColors[2] = (int) ( StartColors[2] + ( StartColors2[2] - StartColors[2] ) * ( (double) index / items.Count ) );
+                StartColors[3] = (int) ( StartColors[3] + ( StartColors2[3] - StartColors[3] ) * ( (double) index / items.Count ) );
 
-
-                EndColors[0] = (int)(EndColors[0] + (EndColors2[0] - EndColors[0]) * ((double)index / items.Count));
-                EndColors[1] = (int)(EndColors[1] + (EndColors2[1] - EndColors[1]) * ((double)index / items.Count));
-                EndColors[2] = (int)(EndColors[2] + (EndColors2[2] - EndColors[2]) * ((double)index / items.Count));
-                EndColors[3] = (int)(EndColors[3] + (EndColors2[3] - EndColors[3]) * ((double)index / items.Count));
+                EndColors[0] = (int) ( EndColors[0] + ( EndColors2[0] - EndColors[0] ) * ( (double) index / items.Count ) );
+                EndColors[1] = (int) ( EndColors[1] + ( EndColors2[1] - EndColors[1] ) * ( (double) index / items.Count ) );
+                EndColors[2] = (int) ( EndColors[2] + ( EndColors2[2] - EndColors[2] ) * ( (double) index / items.Count ) );
+                EndColors[3] = (int) ( EndColors[3] + ( EndColors2[3] - EndColors[3] ) * ( (double) index / items.Count ) );
 
                 system.StartColor = StartColors;
                 system.EndColor = EndColors;
@@ -97,7 +94,7 @@ namespace TowerD.Client.Drawers
                 system.LifeSpan = 10;
                 system.Speed = 1;
                 system.Gravity = new DoublePoint(0, 0);
-                system.Position = point.ToPoint();
+                system.Position = point;
                 system.Init();
                 systems.Add(system);
             }

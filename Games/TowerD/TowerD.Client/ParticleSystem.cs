@@ -7,6 +7,8 @@ namespace TowerD.Client
 {
     public class ParticleSystem
     {
+        public JsDictionary<string, Gradient> cachedGrads = new JsDictionary<string, Gradient>();
+
         [IntrinsicProperty]
         public int EmitCounter { get; set; }
         [IntrinsicProperty]
@@ -105,6 +107,7 @@ namespace TowerD.Client
 
         private void initParticle(Particle particle)
         {
+            particle.System = this;
             Func<double> RANDM1TO1 = () => { return Math.Random() * 2 - 1; };
 
             particle.Position.X = (int) ( Position.X + PositionRandom.X * RANDM1TO1() );
@@ -143,10 +146,21 @@ namespace TowerD.Client
             particle.DeltaColor[1] = ( end[1] - start[1] ) / particle.TimeToLive;
             particle.DeltaColor[2] = ( end[2] - start[2] ) / particle.TimeToLive;
             particle.DeltaColor[3] = ( end[3] - start[3] ) / particle.TimeToLive;
+
+            particle.BuildCache(1);
+
+            if (Game.DebugText[1].Falsey())
+            {
+                Game.DebugText[1] = 0;
+            }
+            Game.DebugText[1] = (int)Game.DebugText[1] + 1;
+
+
+
         }
 
         public void Update(int delta)
-        {
+        { 
             if (Active && EmissionRate > 0) {
                 var rate = 1 / EmissionRate;
                 EmitCounter += delta;
@@ -160,30 +174,11 @@ namespace TowerD.Client
 
             for (int index = Particles.Count - 1; index >= 0; index--) {
                 var currentParticle = Particles[index];
-// If the current particle is alive then update it
-                if (currentParticle.TimeToLive > 0) {
-                    // Calculate the new direction based on gravity
-                    currentParticle.Direction = currentParticle.Direction.Add(Gravity);
-                    currentParticle.Position = currentParticle.Position.Add(currentParticle.Direction);
-                    currentParticle.TimeToLive -= delta;
+                if (!currentParticle.Update(delta)) {
+                    Particles.Remove(currentParticle);
+                    Game.DebugText[1] = (int)Game.DebugText[1] -1;
 
-                    // Update Colors based on delta
-                    var r = currentParticle.Color[0] += ( currentParticle.DeltaColor[0] * delta );
-                    var g = currentParticle.Color[1] += ( currentParticle.DeltaColor[1] * delta );
-                    var b = currentParticle.Color[2] += ( currentParticle.DeltaColor[2] * delta );
-                    var a = currentParticle.Color[3] += ( currentParticle.DeltaColor[3] * delta );
-
-                    // Calculate the rgba string to draw.
-                    var draw = new List<string>();
-                    draw.Add(( "rgba(" + ( r > 255 ? 255 : r < 0 ? 0 : ~~(int) r ) ));
-                    draw.Add(( g > 255 ? 255 : g < 0 ? 0 : ~~(int) g ).ToString());
-                    draw.Add(( b > 255 ? 255 : b < 0 ? 0 : ~~(int) b ).ToString());
-                    draw.Add(( a > 1 ? "1" : a < 0 ? "0" : a.ToFixed(2) ) + ")");
-                    currentParticle.DrawColor = draw.Join(",");
-                    draw.RemoveAt(3);
-                    draw.Add("0)");
-                    currentParticle.DrawColorTransparent = draw.Join(",");
-                } else Particles.Remove(currentParticle);
+                }
             }
         }
 
@@ -197,16 +192,9 @@ namespace TowerD.Client
         public void Render(CanvasContext2D context)
         {
             foreach (var particle in Particles) {
-                var size = particle.Size;
-                var halfSize = (int) size >> 1;
-                var x = ~~(int) particle.Position.X;
-                var y = ~~(int) particle.Position.Y;
 
-                var radgrad = context.CreateRadialGradient(x + halfSize, y + halfSize, particle.SizeSmall, x + halfSize, y + halfSize, halfSize);
-                radgrad.AddColorStop(0, particle.DrawColor);
-                radgrad.AddColorStop(1, particle.DrawColorTransparent); //Super cool if you change these values (and add more Color stops)
-                context.FillStyle = radgrad;
-                context.FillRect(x, y, size, size);
+                particle.Render(context);
+
             }
         }
     }

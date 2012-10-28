@@ -10,7 +10,7 @@ using jQueryApi;
 namespace Client
 {
     internal class GameManager
-    { 
+    {
         private LampClient game;
         public Rectangle WindowLocation { get; set; }
 
@@ -44,13 +44,15 @@ namespace Client
 
         public void Tick()
         {
+            game.WindowLocation = WindowLocation;
             game.Tick();
         }
 
         public void Start(CanvasContext2D context)
-        { game.Init(new LampPlayer[0],context );
-         }
+        {
+            game.Init(new LampPlayer[0], context);
+        }
     }
 
- 
- }
+
+}

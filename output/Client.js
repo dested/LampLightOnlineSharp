@@ -25,6 +25,7 @@ $Client_$GameManager.prototype = {
 		this.$game.draw(context);
 	},
 	$tick: function() {
+		this.$game.windowLocation = this.get_$windowLocation();
 		this.$game.tick();
 	},
 	$start: function(context) {
@@ -61,6 +62,10 @@ var $Client_ClientManager = function() {
 		this.resizeCanvas();
 	}));
 	this.resizeCanvas();
+	var a = 0;
+	window.setInterval(function() {
+		a++;
+	}, 16);
 	window.setInterval(Function.mkdel(this, this.$tick), 16);
 	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);

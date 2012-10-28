@@ -31,6 +31,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debug all|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\debug all\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
@@ -63,9 +72,17 @@
       <Project>{1A35F8BB-B5A5-429F-B693-4F2728488249}</Project>
       <Name>ClientAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
+      <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
+      <Name>CommonClientLibraries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\CommonLibraries\CommonLibraries.csproj">
       <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
       <Name>CommonLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\WebLibraries\CommonWebLibraries\CommonWebLibraries.csproj">
+      <Project>{6DA30112-FDBD-4E48-9F52-7268FCE19D25}</Project>
+      <Name>CommonWebLibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\TowerD.Common\TowerD.Common.csproj">
       <Project>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</Project>
@@ -80,6 +97,7 @@
     <Compile Include="Drawers\ColorWaypointDrawer.cs" />
     <Compile Include="Drawers\GunWeaponDrawer.cs" />
     <Compile Include="Drawers\KingdomDrawer.cs" />
+    <Compile Include="Drawers\QuickShooterDrawer.cs" />
     <Compile Include="Drawers\SingeShotDrawer.cs" />
     <Compile Include="Drawers\Drawer.cs" />
     <Compile Include="Game.cs" />
@@ -89,6 +107,7 @@
     <Compile Include="Pieces\Towers\KingdomTower.cs" />
     <Compile Include="Pieces\Towers\SingeShotTower.cs" />
     <Compile Include="Pieces\Towers\Tower.cs" />
+    <Compile Include="Pieces\Unit\QuickShooterUnit.cs" />
     <Compile Include="Pieces\Unit\Unit.cs" />
     <Compile Include="Pieces\Weapons\Weapon.cs" />
     <Compile Include="WaypointMap.cs" />

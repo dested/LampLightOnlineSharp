@@ -42,6 +42,10 @@ namespace Client
             Window.AddEventListener("resize", e => resizeCanvas());
             jQuery.Document.Resize(e => resizeCanvas());
             resizeCanvas();
+            int a = 0;
+            Window.SetInterval(()=> {
+                                   a++;
+                               }, 1000 / 60);
             Window.SetInterval(Tick, 1000 / 60);
             Window.SetInterval(GameDraw, 1000 / 60);
             Window.SetInterval(UIDraw, 1000 / 10);

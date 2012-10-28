@@ -39,5 +39,18 @@ namespace CommonLibraries
             X = x;
             Y = y;
         }
+        public Point Add(DoublePoint scaleFactor)
+        {
+            this.X += (int)scaleFactor.X;
+            this.Y += (int)scaleFactor.Y;
+            return this;
+        }
+        public DoublePoint Add(double scaleFactor)
+        {
+            this.X += (int)scaleFactor;
+            this.Y += (int)scaleFactor;
+            return this;
+        }
+
     }
 }

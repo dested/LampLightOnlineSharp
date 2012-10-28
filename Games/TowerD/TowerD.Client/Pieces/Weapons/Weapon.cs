@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TowerD.Client.Drawers;
+﻿using TowerD.Client.Drawers;
 namespace TowerD.Client.Pieces.Weapons
 {
     public interface Weapon

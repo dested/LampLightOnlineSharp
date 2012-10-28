@@ -5,7 +5,7 @@ namespace TowerD.Client.Drawers
     public class GunWeaponDrawer : WeaponDrawer
     {
         private ParticleSystem system;
-        public GunWeaponDrawer() { }
+        public GunWeaponDrawer() {}
 
         #region WeaponDrawer Members
 
@@ -14,8 +14,8 @@ namespace TowerD.Client.Drawers
             system = new ParticleSystem();
 
             system.Position = new Point(300, 190);
-            system.StartColor = new int[] { 255, 0, 0, 1 };
-            system.EndColor = new int[] { 127, 55, 0, 1 };
+            system.StartColor = new int[] {255, 0, 0, 1};
+            system.EndColor = new int[] {127, 55, 0, 1};
             system.Size = 20;
             system.MaxParticles = 200;
             system.LifeSpan = 40;

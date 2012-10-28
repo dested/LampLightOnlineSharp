@@ -153,6 +153,16 @@ $CommonLibraries_Point.set = function($this, x, y) {
 	$this.x = x;
 	$this.y = y;
 };
+$CommonLibraries_Point.add = function($this, scaleFactor) {
+	$this.x += ss.Int32.trunc(scaleFactor.x);
+	$this.y += ss.Int32.trunc(scaleFactor.y);
+	return $this;
+};
+$CommonLibraries_Point.add$1 = function($this, scaleFactor) {
+	$this.x += ss.Int32.trunc(scaleFactor);
+	$this.y += ss.Int32.trunc(scaleFactor);
+	return $CommonLibraries_DoublePoint.op_Implicit($this);
+};
 $CommonLibraries_Point.$ctor1 = function(x, y) {
 	var $this = {};
 	$this.x = 0;
