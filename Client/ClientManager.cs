@@ -1,10 +1,9 @@
 ﻿using System.Html;
 using System.Runtime.CompilerServices;
-using Client.UIManager;
 using CommonClientLibraries;
+using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using CommonWebLibraries;
-using OurSonic.UIManager;
 using WebLibraries;
 using jQueryApi;
 namespace Client
@@ -22,7 +21,7 @@ namespace Client
         private string uiCanvasName = "uiLayer";
         private Point uiGoodSize;
         [IntrinsicProperty]
-        public UIManager.UIManager UIManager { get; set; }
+        public UIManager UIManager { get; set; }
 
         public ClientManager()
         {
@@ -34,7 +33,7 @@ namespace Client
 
             gameCanvas = CanvasInformation.Create((CanvasElement) Document.GetElementById(gameCanvasName), 0, 0);
             uiCanvas = CanvasInformation.Create((CanvasElement) Document.GetElementById(uiCanvasName), 0, 0);
-            UIManager = new UIManager.UIManager(this);
+            UIManager = new UIManager();
 
             gameManager = new GameManager();
 
@@ -43,15 +42,17 @@ namespace Client
             jQuery.Document.Resize(e => resizeCanvas());
             resizeCanvas();
             int a = 0;
-            Window.SetInterval(()=> {
+            Window.SetInterval(() => {
                                    a++;
-                               }, 1000 / 60);
+                                   a++;
+                               },
+                               1000 / 60);
             Window.SetInterval(Tick, 1000 / 60);
             Window.SetInterval(GameDraw, 1000 / 60);
             Window.SetInterval(UIDraw, 1000 / 10);
 
             gameManager.Start(gameCanvas.Context);
-
+            gameManager.BuildUI(UIManager);
         }
 
         private static void Main()
@@ -132,7 +133,7 @@ namespace Client
             gameManager.WindowLocation = new Rectangle(0, 0, Window.InnerWidth, Window.InnerHeight);
             gameCanvas.DomCanvas.Attribute("width", gameManager.WindowLocation.Width.ToString());
             gameCanvas.DomCanvas.Attribute("height", gameManager.WindowLocation.Height.ToString());
-            uiGoodSize = new Point(canvasWidth,canvasHeight);
+            uiGoodSize = new Point(canvasWidth, canvasHeight);
             gameGoodSize = new Point(gameManager.WindowLocation.Width, gameManager.WindowLocation.Height);
         }
 
@@ -145,9 +146,7 @@ namespace Client
                 w = uiGoodSize;
             //canv.DomCanvas[0].Me().width = w.width;
 
-
             canv.Context.ClearRect(0, 0, w.X, w.Y);
-
         }
 
         public void GameDraw()

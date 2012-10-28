@@ -1,4 +1,4 @@
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class PropertyButton : Element
     {

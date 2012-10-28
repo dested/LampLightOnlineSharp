@@ -2,12 +2,8 @@ using System;
 using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using Client.UIManager;
-using CommonAPI;
-using CommonClientLibraries;
 using CommonLibraries;
-using CommonWebLibraries;
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class TextBox : Element
     {
@@ -52,7 +48,7 @@ namespace OurSonic.UIManager
             Text = text;
             Width = width;
             Height = height;
-            Font = Client.UIManager.UIManager.TextFont;
+            Font = UIManager.TextFont;
 
             DragPosition = -1;
         }

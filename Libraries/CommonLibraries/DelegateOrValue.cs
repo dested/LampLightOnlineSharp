@@ -1,5 +1,5 @@
 using System;
-namespace CommonAPI
+namespace CommonLibraries
 {
     public class DelegateOrValue<T>
     {

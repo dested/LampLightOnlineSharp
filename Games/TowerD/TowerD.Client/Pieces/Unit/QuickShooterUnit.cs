@@ -9,20 +9,17 @@ namespace TowerD.Client.Pieces.Unit
     public class QuickShooterUnit : Unit
     {
         private int ind;
-        private List<Point> travelPoints;
-        public WaypointMap Map { get; set; }
-        public Color Color { get; set; }
-
-        private int spinUpTimer;
         private int spinDownTimer;
+        private int spinUpTimer;
+        private List<Point> travelPoints;
+        public Color Color { get; set; }
         public int SpinUpTime { get; set; }
         public int SpinDownTime { get; set; }
 
-        public QuickShooterUnit(WaypointMap map, Point scale, Color color)
+        public QuickShooterUnit(List<Point> map, Color color)
         {
-            Map = map;
             Color = color;
-            travelPoints = new List<Point>(map.Travel(150, scale));
+            travelPoints = map;
 
             Drawer = new QuickShooterDrawer(color);
             Drawer.Init();
@@ -30,9 +27,11 @@ namespace TowerD.Client.Pieces.Unit
             spinUpTimer = 0;
             spinDownTimer = 0;
 
-            SpinDownTime = 20*4;
-            SpinUpTime = 20*2;
-        } 
+            SpinDownTime = (int) ( 20 * 2.5 );
+            SpinUpTime = 20 * 2;
+        }
+
+        #region Unit Members
 
         public List<Weapon> Weapons { get; set; }
         public List<Shield> Shields { get; set; }
@@ -42,36 +41,30 @@ namespace TowerD.Client.Pieces.Unit
 
         public bool Tick()
         {
-            var okay = true;
+            bool okay;
             Point p;
-            if (ind == 0)
-            {
+            if (ind == 0) {
                 p = travelPoints[ind];
                 X = p.X;
                 Y = p.Y;
                 if (spinUpTimer++ < SpinUpTime) {
-                    Drawer.MagnifySpeed(2.95);
-                    
+                    Drawer.MagnifySpeed(5.95);
+
                     okay = true;
-                } else ind++;
-            }
-            else if (ind == travelPoints.Count - 1)
-            {
+                } else {
+                    ind++;
+                    okay = true;
+                }
+            } else if (ind == travelPoints.Count - 1) {
                 p = travelPoints[ind];
                 X = p.X;
                 Y = p.Y;
-                if (spinDownTimer++ < SpinDownTime)
-                {
-                    Drawer.MagnifySpeed(3.8);
+                if (spinDownTimer++ < SpinDownTime) {
+                    Drawer.MagnifySpeed(7.2);
 
                     okay = true;
-                }else {
-
-
-                    okay = !Drawer.Destroy();
-                }
-            }
-            else {
+                } else okay = !Drawer.Destroy();
+            } else {
                 Drawer.ResetSpeed();
 
                 p = travelPoints[ind++];
@@ -80,16 +73,15 @@ namespace TowerD.Client.Pieces.Unit
                 okay = true;
             }
 
-            Drawer.Tick();             
+            Drawer.Tick();
             return okay;
-
         }
 
         public void Draw(CanvasContext2D context, int x, int y)
         {
-           
             Drawer.Draw(context, X, Y);
         }
-         
+
+        #endregion
     }
 }

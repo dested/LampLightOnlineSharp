@@ -46,27 +46,28 @@ namespace CommonLibraries
 
         public DoublePoint Multiply(double scaleFactor)
         {
-            this.X *= scaleFactor;
-            this.Y *= scaleFactor;
+            X *= scaleFactor;
+            Y *= scaleFactor;
             return this;
         }
 
         public DoublePoint Add(DoublePoint scaleFactor)
         {
-            this.X += scaleFactor.X;
-            this.Y += scaleFactor.Y;
+            X += scaleFactor.X;
+            Y += scaleFactor.Y;
             return this;
         }
+
         public DoublePoint Add(double scaleFactor)
         {
-            this.X += scaleFactor;
-            this.Y += scaleFactor;
+            X += scaleFactor;
+            Y += scaleFactor;
             return this;
         }
 
         public Point ToPoint()
         {
-        return new Point((int) X,(int) Y);
+            return new Point((int) X, (int) Y);
         }
     }
 }

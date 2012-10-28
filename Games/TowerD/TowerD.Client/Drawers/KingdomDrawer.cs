@@ -41,7 +41,7 @@ namespace TowerD.Client.Drawers
                     break;
             }
             system.Size = 28;
-            system.MaxParticles = 50;
+            system.MaxParticles = 35;
             system.LifeSpan = 6;
             system.Speed = 3;
             system.Gravity = new DoublePoint(0, 0);

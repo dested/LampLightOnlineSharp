@@ -4,9 +4,8 @@ using System.Html.Media.Graphics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using CommonLibraries;
-using OurSonic.UIManager;
 using jQueryApi;
-namespace Client.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class UIManager
     {
@@ -15,7 +14,6 @@ namespace Client.UIManager
         public const string SmallButtonFont = "13pt Arial bold ";
         public const string TextFont = "11pt Arial bold ";
         private static string _curLevelName;
-        public readonly ClientManager ClientManagerManager;
         private List<string> messages = new List<string>();
         [IntrinsicProperty]
         public List<UIArea> UIAreas { get; set; }
@@ -35,16 +33,13 @@ namespace Client.UIManager
         }
         public UIManagerAreas UIManagerAreas { get; private set; }
 
-        public UIManager(ClientManager ClientManagerManager)
+        public UIManager()
         {
             Instance = this;
             UIAreas = new List<UIArea>();
 
-            this.ClientManagerManager = ClientManagerManager;
-
             UIManagerAreas = new UIManagerAreas();
             UpdateDepth();
-
         }
 
         public bool OnClick(Pointer cell)

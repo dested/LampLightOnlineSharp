@@ -8,7 +8,6 @@ namespace TowerD.Client
     public class ParticleSystem
     {
         public JsDictionary<string, Gradient> cachedGrads = new JsDictionary<string, Gradient>();
-
         [IntrinsicProperty]
         public int EmitCounter { get; set; }
         [IntrinsicProperty]
@@ -67,7 +66,7 @@ namespace TowerD.Client
             Position = new Point(100, 100);
             PositionRandom = new Point(10, 10);
             Size = 45;
-            SizeRandom = 15;
+            SizeRandom = 8;
             Speed = 5;
             SpeedRandom = 1.5;
             LifeSpan = 9;
@@ -150,17 +149,12 @@ namespace TowerD.Client
             particle.BuildCache(1);
 
             if (Game.DebugText[1].Falsey())
-            {
                 Game.DebugText[1] = 0;
-            }
-            Game.DebugText[1] = (int)Game.DebugText[1] + 1;
-
-
-
+            Game.DebugText[1] = (int) Game.DebugText[1] + 1;
         }
 
         public void Update(int delta)
-        { 
+        {
             if (Active && EmissionRate > 0) {
                 var rate = 1 / EmissionRate;
                 EmitCounter += delta;
@@ -176,8 +170,7 @@ namespace TowerD.Client
                 var currentParticle = Particles[index];
                 if (!currentParticle.Update(delta)) {
                     Particles.Remove(currentParticle);
-                    Game.DebugText[1] = (int)Game.DebugText[1] -1;
-
+                    Game.DebugText[1] = (int) Game.DebugText[1] - 1;
                 }
             }
         }
@@ -192,9 +185,7 @@ namespace TowerD.Client
         public void Render(CanvasContext2D context)
         {
             foreach (var particle in Particles) {
-
                 particle.Render(context);
-
             }
         }
     }

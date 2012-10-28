@@ -48,6 +48,15 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debugall|AnyCPU'">
+    <OutputPath>bin\debugall\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>..\..\..\..\bin\Debug\Script.Windows.xml</DocumentationFile>
+    <NoWarn>1591, 0661, 0660, 1684</NoWarn>
+    <NoStdLib>True</NoStdLib>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="RedisClient.cs" />
     <Compile Include="RedisModule.cs" />
@@ -60,13 +69,13 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.5.1\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Script.Linq, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    <Reference Include="Script.Linq">
+      <HintPath>..\..\..\packages\Saltarelle.Linq.1.5.1\lib\Script.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Script.NodeJS">
-      <HintPath>..\..\packages\Saltarelle.NodeJS.1.4.0.12\lib\Script.NodeJS.dll</HintPath>
+      <HintPath>..\..\..\packages\Saltarelle.NodeJS.1.5.1\lib\Script.NodeJS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +84,6 @@
       <Name>NodeJS</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets')" />
 </Project>

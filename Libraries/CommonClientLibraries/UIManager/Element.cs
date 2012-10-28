@@ -2,11 +2,8 @@ using System;
 using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using Client.UIManager;
-using CommonClientLibraries;
 using CommonLibraries;
-using CommonWebLibraries;
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class Element
     {
@@ -27,7 +24,7 @@ namespace OurSonic.UIManager
             {
                 myDepth = value;
                 if (( this is UIArea ))
-                    Client.UIManager.UIManager.Instance.UpdateDepth();
+                    UIManager.Instance.UpdateDepth();
             }
         }
         [IntrinsicProperty]

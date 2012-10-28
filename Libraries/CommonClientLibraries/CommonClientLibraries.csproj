@@ -41,6 +41,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debugall|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\debugall\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
@@ -69,6 +78,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CanvasInformation.cs" />
+    <Compile Include="UIManager\Button.cs" />
+    <Compile Include="UIManager\EditorEngine.cs" />
+    <Compile Include="UIManager\Element.cs" />
+    <Compile Include="UIManager\HScrollBox.cs" />
+    <Compile Include="UIManager\HtmlBox.cs" />
+    <Compile Include="UIManager\Image.cs" />
+    <Compile Include="UIManager\ImageButton.cs" />
+    <Compile Include="UIManager\LayoutPanel.cs" />
+    <Compile Include="UIManager\Panel.cs" />
+    <Compile Include="UIManager\Pointer.cs" />
+    <Compile Include="UIManager\PropertyButton.cs" />
+    <Compile Include="UIManager\ScrollBox.cs" />
+    <Compile Include="UIManager\Table.cs" />
+    <Compile Include="UIManager\TextArea.cs" />
+    <Compile Include="UIManager\TextBox.cs" />
+    <Compile Include="UIManager\UIArea.cs" />
+    <Compile Include="UIManager\UIManager.cs" />
+    <Compile Include="UIManager\UIManagerAreas.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonLibraries\CommonLibraries.csproj">
+      <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
+      <Name>CommonLibraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />

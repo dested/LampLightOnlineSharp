@@ -42,6 +42,15 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debugall|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\debugall\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
@@ -75,6 +84,10 @@
     <ProjectReference Include="..\..\API\CommonAPI\CommonAPI.csproj">
       <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
       <Name>CommonAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
+      <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
+      <Name>CommonClientLibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\CommonLibraries\CommonLibraries.csproj">
       <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>

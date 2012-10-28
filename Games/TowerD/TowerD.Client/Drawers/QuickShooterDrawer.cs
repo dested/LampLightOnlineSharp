@@ -5,8 +5,8 @@ namespace TowerD.Client.Drawers
 {
     public class QuickShooterDrawer : UnitDrawer
     {
-        private ParticleSystem system;
         private int curSpeed;
+        private ParticleSystem system;
         [IntrinsicProperty]
         public Color Color { get; set; }
 
@@ -50,7 +50,7 @@ namespace TowerD.Client.Drawers
 
             system.Init();
 
-            curSpeed=system.Speed;
+            curSpeed = system.Speed;
         }
 
         public void Tick()
@@ -78,10 +78,8 @@ namespace TowerD.Client.Drawers
 
         public void MagnifySpeed(double rate)
         {
-            system.Speed = (int)(curSpeed * rate);
-
+            system.Speed = (int) ( curSpeed * rate );
         }
-         
 
         #endregion
     }

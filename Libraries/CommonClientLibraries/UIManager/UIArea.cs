@@ -1,10 +1,7 @@
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using Client.UIManager;
-using CommonClientLibraries;
 using CommonLibraries;
-using CommonWebLibraries;
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class UIArea<T> : UIArea
     {
@@ -43,7 +40,7 @@ namespace OurSonic.UIManager
         {
             if (Closable) {
                 AddControl(new Button(Width - 30, 4, 26, 23, "X") {
-                                                                          Font = Client.UIManager.UIManager.ButtonFont,
+                                                                          Font = UIManager.ButtonFont,
                                                                           Color = "Green",
                                                                           Click = (p) => {
                                                                                       LoseFocus();

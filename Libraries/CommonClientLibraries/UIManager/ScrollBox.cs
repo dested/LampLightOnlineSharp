@@ -2,18 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using Client.UIManager;
 using CommonLibraries;
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
-    public class HScrollBox : Element
+    public class ScrollBox : Element
     {
         [IntrinsicProperty]
         public int ItemWidth { get; set; }
         [IntrinsicProperty]
         public int ScrollWidth { get; set; }
         [IntrinsicProperty]
-        public int JWidth { get; set; }
+        public int JHeight { get; set; }
         [IntrinsicProperty]
         public int VisibleItems { get; set; }
         [IntrinsicProperty]
@@ -21,7 +20,7 @@ namespace OurSonic.UIManager
         [IntrinsicProperty]
         public string BackColor { get; set; }
         [IntrinsicProperty]
-        public int ScrollOffset { get; set; }
+        public int ScrollIndex { get; set; }
         [IntrinsicProperty]
         public int ScrollPosition { get; set; }
         [IntrinsicProperty]
@@ -31,29 +30,29 @@ namespace OurSonic.UIManager
         [IntrinsicProperty]
         protected bool Scrolling { get; set; }
 
-        public HScrollBox(int x, int y, int itemHeight, int visibleItems, int itemWidth)
+        public ScrollBox(int x, int y, int itemHeight, int visibleItems, int itemWidth)
                 : base(x, y)
         {
             ItemWidth = itemWidth;
             ScrollWidth = 14;
-            JWidth = 5;
             VisibleItems = visibleItems;
             ItemHeight = itemHeight;
+            BackColor = "";
+            JHeight = 5;
             Controls = new List<Element>();
         }
 
         public override void Construct()
         {
-            Width = VisibleItems * ( ItemWidth + JWidth );
-            Height = ItemHeight + ScrollWidth;
+            Height = VisibleItems * ( ItemHeight + JHeight );
+            Width = ItemWidth + ScrollWidth;
             Scrolling = false;
         }
 
-        public Element AddControl(Element control)
+        public T AddControl<T>(T control) where T : Element
         {
             control.Parent = this;
             control.Construct();
-
             Controls.Add(control);
             return control;
         }
@@ -61,7 +60,7 @@ namespace OurSonic.UIManager
         public override bool OnClick(Pointer e)
         {
             if (!Visible) return false;
-            for (var ij = ScrollOffset; ij < Controls.Count; ij++) {
+            for (var ij = ScrollIndex; ij < Controls.Count; ij++) {
                 var control = Controls[ij];
                 if (control.Y <= e.Y && control.Y + control.Height > e.Y && control.X + 2 <= e.X && control.X + control.Width + 2 > e.X) {
                     e.X -= control.X;
@@ -71,14 +70,13 @@ namespace OurSonic.UIManager
                 }
             }
 
-            if (e.Y > ItemHeight && e.Y < ItemHeight + ScrollWidth) {
-                var width = VisibleItems * ( ItemWidth + JWidth ) - 2;
-                ScrollOffset = ( e.X / width ) * ( Controls.Count - VisibleItems );
+            if (e.X > ItemWidth && e.X < ItemWidth + ScrollWidth) {
+                var height = VisibleItems * ( ItemHeight + JHeight ) - 2;
+                ScrollIndex = ( e.Y / height ) * ( Controls.Count - VisibleItems );
 
-                ScrollOffset = Math.Min(Math.Max(ScrollOffset, 0), Controls.Count);
+                ScrollIndex = Math.Min(Math.Max(ScrollIndex, 0), Controls.Count);
             }
             Dragging = true;
-
             return base.OnClick(e);
         }
 
@@ -87,7 +85,7 @@ namespace OurSonic.UIManager
             if (!Visible) return false;
             Dragging = false;
 
-            for (var ij = ScrollOffset; ij < Controls.Count; ij++) {
+            for (var ij = ScrollIndex; ij < Controls.Count; ij++) {
                 var control = Controls[ij];
                 if (control.Y <= e.Y && control.Y + control.Height > e.Y && control.X <= e.X + 2 && control.X + control.Width + 2 > e.X) {
                     e.X -= control.X;
@@ -112,11 +110,11 @@ namespace OurSonic.UIManager
                     break;
                 }
             }
-            if (Dragging && e.Y > ItemHeight && e.Y < ItemHeight + ScrollWidth) {
-                var width = VisibleItems * ( ItemWidth + JWidth ) - 2;
-                ScrollOffset = (int) ( ( (double) e.X / width ) * ( Controls.Count - VisibleItems ) );
+            if (Dragging && e.X > ItemWidth && e.X < ItemWidth + ScrollWidth) {
+                var height = VisibleItems * ( ItemHeight + JHeight ) - 2;
+                ScrollIndex = (int) ( ( (double) e.Y / height ) * ( Controls.Count - VisibleItems ) );
 
-                ScrollOffset = Math.Min(Math.Max(ScrollOffset, 0), Controls.Count);
+                ScrollIndex = Math.Min(Math.Max(ScrollIndex, 0), Controls.Count);
             }
             if (MouseOver != null) MouseOver(new Point(e.X, e.Y));
             return base.OnMouseOver(e);
@@ -127,14 +125,13 @@ namespace OurSonic.UIManager
             if (!Visible) return false;
 
             if (e.Delta > 0) {
-                if (ScrollOffset > 0)
-                    ScrollOffset--;
+                if (ScrollIndex > 0)
+                    ScrollIndex--;
             } else {
-                if (ScrollOffset < Controls.Count - VisibleItems)
-                    ScrollOffset++;
+                if (ScrollIndex < Controls.Count - VisibleItems)
+                    ScrollIndex++;
             }
-
-            foreach (var control in Controls) {
+            foreach (var control in Controls.Array()) {
                 if (control.Y <= e.Y && control.Y + control.Height > e.Y && control.X <= e.X && control.X + control.Width > e.X) {
                     e.X -= control.X;
                     e.Y -= control.Y;
@@ -153,39 +150,44 @@ namespace OurSonic.UIManager
 
             canv.FillStyle = BackColor;
 
-            var width = VisibleItems * ( ItemWidth + JWidth ) - 2;
+            var height = VisibleItems * ( ItemHeight + JHeight ) - 2;
 
             canv.FillStyle = BackColor;
             canv.LineWidth = 1;
             canv.StrokeStyle = "#333";
-            CHelp.RoundRect(canv, TotalX, TotalY, VisibleItems * ( ItemWidth + JWidth ) + 2, ItemHeight + ScrollWidth + 6, 3, true, true);
+            CHelp.RoundRect(canv, TotalX, TotalY, ItemWidth + ScrollWidth + 6, VisibleItems * ( ItemHeight + JHeight ), 3, true, true);
 
             canv.FillStyle = "grey";
             canv.LineWidth = 1;
             canv.StrokeStyle = "#444";
-            canv.FillRect(TotalX + 2, TotalY + ItemHeight + 6, VisibleItems * ( ItemWidth + JWidth ), ScrollWidth);
+            canv.FillRect(TotalX + ItemWidth + 2 + 2, TotalY + 2, ScrollWidth, Height);
 
             canv.FillStyle = "FFDDFF";
             canv.LineWidth = 1;
             canv.StrokeStyle = "#FFDDFF";
-            ScrollPosition = width * ScrollOffset / ( Controls.Count - VisibleItems );
+            ScrollPosition = height * ScrollIndex / ( Controls.Count - VisibleItems );
 
-            canv.FillRect(TotalX + ( ScrollPosition ) + 2, TotalY + ItemHeight + 6, 5, ScrollWidth - 2);
+            canv.FillRect(TotalX + ItemWidth + 2 + 2 + 2, TotalY + 2 + ( ScrollPosition ), ScrollWidth - 2, 5);
 
-            var curX = 3;
-            for (var i = ScrollOffset; i < Math.Min(Controls.Count, ScrollOffset + VisibleItems); i++) {
+            var curY = 3;
+            for (var i = ScrollIndex; i < Math.Min(Controls.Count, ScrollIndex + VisibleItems); i++) {
                 Controls[i].Parent = this;
-                Controls[i].X = curX;
-                Controls[i].Y = 2;
+                Controls[i].X = 2;
+                Controls[i].Y = curY;
                 Controls[i].Height = ItemHeight;
                 Controls[i].Width = ItemWidth;
 
-                curX += ItemWidth + JWidth;
+                curY += ItemHeight + JHeight;
                 Controls[i].Draw(canv);
             }
-
             canv.Restore();
+
             base.Draw(canv);
+        }
+
+        public void ClearControls()
+        {
+            Controls = new List<Element>();
         }
     }
 }

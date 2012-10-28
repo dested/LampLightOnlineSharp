@@ -8,7 +8,7 @@ namespace TowerD.Client
     {
         private Point myScale;
         [IntrinsicProperty]
-        private List<Waypoint> Waypoints { get; set; }
+        public List<Waypoint> Waypoints { get; set; }
         [IntrinsicProperty]
         public WaypointDrawer Drawer { get; set; }
 
@@ -38,38 +38,53 @@ namespace TowerD.Client
             return Waypoints[Waypoints.Count - 1];
         }
 
-        public IEnumerable<Point> Travel(int stepsTotal, Point scale)
+        public IEnumerable<Point> Travel(int stepsTotal, Point scale, bool reverse)
         {
             DoublePoint cur = new DoublePoint(0, 0);
             DoublePoint dist = new DoublePoint(0, 0);
 
-            double stp = ((double)stepsTotal / ((double)Waypoints.Count-1));
+            double stp = ( (double) stepsTotal / ( (double) Waypoints.Count - 1 ) );
 
-            for (int index = 0; index < Waypoints.Count - 1; index++) {
-                var waypoint = Waypoints[index];
-                var nextWaypoint = Waypoints[index + 1];
+            if (reverse) {
+                for (int index = Waypoints.Count - 1; index >= 1; index--) {
+                    var waypoint = Waypoints[index];
+                    var nextWaypoint = Waypoints[index - 1];
 
-                cur.X = waypoint.X * scale.X;
-                cur.Y = waypoint.Y * scale.Y;
+                    cur.X = waypoint.X * scale.X;
+                    cur.Y = waypoint.Y * scale.Y;
 
-                dist.X = ((double)nextWaypoint.X - waypoint.X) / stp;
-                dist.Y = ((double)nextWaypoint.Y - waypoint.Y) / stp;
+                    dist.X = ( (double) nextWaypoint.X - waypoint.X ) / stp;
+                    dist.Y = ( (double) nextWaypoint.Y - waypoint.Y ) / stp;
 
-                for (int i = 0; i < stp; i++)
-                {
-                    cur.X += dist.X * scale.X;
-                    cur.Y += dist.Y * scale.Y;
-                    yield return new Point((int) cur.X, (int) cur.Y);
+                    for (int i = 0; i < stp; i++) {
+                        cur.X += dist.X * scale.X;
+                        cur.Y += dist.Y * scale.Y;
+                        yield return new Point((int) cur.X, (int) cur.Y);
+                    }
+                }
+            } else {
+                for (int index = 0; index < Waypoints.Count - 1; index++) {
+                    var waypoint = Waypoints[index];
+                    var nextWaypoint = Waypoints[index + 1];
+
+                    cur.X = waypoint.X * scale.X;
+                    cur.Y = waypoint.Y * scale.Y;
+
+                    dist.X = ( (double) nextWaypoint.X - waypoint.X ) / stp;
+                    dist.Y = ( (double) nextWaypoint.Y - waypoint.Y ) / stp;
+
+                    for (int i = 0; i < stp; i++) {
+                        cur.X += dist.X * scale.X;
+                        cur.Y += dist.Y * scale.Y;
+                        yield return new Point((int) cur.X, (int) cur.Y);
+                    }
                 }
             }
         }
 
-        public WaypointMap Reverse()
+        public void Reorganize()
         {
-
-            Waypoint[] waypoints = new List<Waypoint>(Waypoints).Array();
-            waypoints.Reverse();
-            return new WaypointMap(this.Drawer.EndColor, this.Drawer.StartColor, waypoints, myScale);
+            Drawer.Reoganize();
         }
     }
     public class Waypoint
@@ -84,13 +99,14 @@ namespace TowerD.Client
             Y = y;
         }
 
-        public WaypointMap GetPath()
+        public void Reorganize()
         {
-            if (Map == null) {
-                return null; 
-            }
+            Map.Reorganize();
+        }
 
-            return Map.Last() == this ? Map.Reverse() : Map;
+        public List<Point> Travel(int steps, Point scale)
+        {
+            return new List<Point>(Map.Travel(steps, scale, Map.Last() == this));
         }
     }
 }

@@ -1,12 +1,8 @@
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using Client.UIManager;
-using CommonAPI;
-using CommonClientLibraries;
 using CommonLibraries;
-using CommonWebLibraries;
 using jQueryApi;
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class Button<T> : Button
     {
@@ -45,7 +41,7 @@ namespace OurSonic.UIManager
             Text = text;
             Toggle = false;
             Toggled = false;
-            Font = Client.UIManager.UIManager.ButtonFont;
+            Font = UIManager.ButtonFont;
             Clicking = false;
             Button1Grad = null;
             Button2Grad = null;

@@ -1,8 +1,7 @@
 using System;
 using System.Html.Media.Graphics;
-using Client.UIManager;
 using CommonLibraries;
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class HtmlBox : Element
     {

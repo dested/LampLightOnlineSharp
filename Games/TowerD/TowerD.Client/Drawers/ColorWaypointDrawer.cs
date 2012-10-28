@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Html.Media.Graphics;
-using System.Runtime.CompilerServices;
 using CommonLibraries;
 namespace TowerD.Client.Drawers
 {
@@ -8,8 +7,6 @@ namespace TowerD.Client.Drawers
     {
         private readonly Point myScale;
         private List<ParticleSystem> systems;
-        public Color StartColor { get; set; }
-        public Color EndColor { get; set; }
 
         public ColorWaypointDrawer(Color startColor, Color endColor, WaypointMap map, Point scale)
         {
@@ -21,13 +18,20 @@ namespace TowerD.Client.Drawers
 
         #region WaypointDrawer Members
 
+        public Color StartColor { get; set; }
+        public Color EndColor { get; set; }
         public WaypointMap Map { get; set; }
+
+        public void Reoganize()
+        {
+            Init();
+        }
 
         public void Init()
         {
             systems = new List<ParticleSystem>();
 
-            var items = new List<Point>(Map.Travel(30, myScale));
+            var items = new List<Point>(Map.Travel(50, myScale, false));
 
             for (int index = 0; index < items.Count; index++) {
                 var point = items[index];
@@ -89,9 +93,10 @@ namespace TowerD.Client.Drawers
                 system.StartColor = StartColors;
                 system.EndColor = EndColors;
 
-                system.Size = 7;
-                system.MaxParticles = 10;
-                system.LifeSpan = 10;
+                system.Size = 9;
+                system.MaxParticles = 4;
+                system.LifeSpan = 4;
+                system.LifeSpanRandom = 2;
                 system.Speed = 1;
                 system.Gravity = new DoublePoint(0, 0);
                 system.Position = point;

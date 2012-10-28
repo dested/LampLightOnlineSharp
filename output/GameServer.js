@@ -1,7 +1,4 @@
-require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');require('./RawDeflate.js');
-require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');require('./RawDeflate.js');
-require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');require('./RawDeflate.js');
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // GameServer.DataManager
 var $GameServer_DataManager = function() {
 	this.$connection = null;

@@ -7,6 +7,9 @@ namespace TowerD.Client
 {
     public class Particle
     {
+        private static CanvasInformation info = CanvasInformation.Create(300, 300);
+        private int curGradIndex = 0;
+        private List<Gradient> grads = new List<Gradient>();
         [IntrinsicProperty]
         public ParticleSystem System { get; set; }
         [IntrinsicProperty]
@@ -38,109 +41,96 @@ namespace TowerD.Client
             Color = new double[4];
         }
 
-        private static CanvasInformation info = CanvasInformation.Create(300, 300);
-        private List<Gradient> grads = new List<Gradient>();
- 
         public void BuildCache(int delta)
         {
             return;
             var timetolive = TimeToLive;
 
-            while (progress(delta))
-            {
+            while (progress(delta)) {
                 string key = DrawColor + Size /*+ Sharpness*/;
                 if (!System.cachedGrads.ContainsKey(key)) {
-
-
-
-                    if (Game.DebugText[0].Falsey()) {
-                        Game.DebugText[0] = 0;
-                    }
-                    Game.DebugText[0] = (int)Game.DebugText[0] + 1;
-
+                    if (Game.DebugText[0].Falsey()) Game.DebugText[0] = 0;
+                    Game.DebugText[0] = (int) Game.DebugText[0] + 1;
 
                     var grad = obtainGradient(info.Context, this);
-                    grads.Add(grad);
+                    grads.Add((Gradient) grad);
 
-                    System.cachedGrads[key] = grad;
-                }else {
-                    grads.Add(System.cachedGrads[key]);
-                }
-            } 
+                    System.cachedGrads[key] = (Gradient) grad;
+                } else grads.Add(System.cachedGrads[key]);
+            }
             TimeToLive = timetolive;
         }
 
         private bool progress(int delta)
         {
-
-            if (this.TimeToLive <= 0)
+            if (TimeToLive <= 0)
                 return false;
             // Calculate the new direction based on gravity
-            this.TimeToLive -= delta;
+            TimeToLive -= delta;
 
             // Update Colors based on delta
-            var r = this.Color[0] += (this.DeltaColor[0] * delta);
-            var g = this.Color[1] += (this.DeltaColor[1] * delta);
-            var b = this.Color[2] += (this.DeltaColor[2] * delta);
-            var a = this.Color[3] += (this.DeltaColor[3] * delta);
+            var r = Color[0] += ( DeltaColor[0] * delta );
+            var g = Color[1] += ( DeltaColor[1] * delta );
+            var b = Color[2] += ( DeltaColor[2] * delta );
+            var a = Color[3] += ( DeltaColor[3] * delta );
 
             // Calculate the rgba string to draw.
             var draw = new List<string>();
-            draw.Add(("rgba(" + (r > 255 ? 255 : r < 0 ? 0 : ~~(int)r)));
-            draw.Add((g > 255 ? 255 : g < 0 ? 0 : ~~(int)g).ToString());
-            draw.Add((b > 255 ? 255 : b < 0 ? 0 : ~~(int)b).ToString());
-            draw.Add((a > 1 ? "1" : a < 0 ? "0" : a.ToFixed(2)) + ")");
-            this.DrawColor = draw.Join(",");
+            draw.Add(( "rgba(" + ( r > 255 ? 255 : r < 0 ? 0 : ~~(int) r ) ));
+            draw.Add(( g > 255 ? 255 : g < 0 ? 0 : ~~(int) g ).ToString());
+            draw.Add(( b > 255 ? 255 : b < 0 ? 0 : ~~(int) b ).ToString());
+            draw.Add(( a > 1 ? "1" : a < 0 ? "0" : a.ToFixed(2) ) + ")");
+            DrawColor = draw.Join(",");
             draw.RemoveAt(3);
             draw.Add("0)");
-            this.DrawColorTransparent = draw.Join(",");
+            DrawColorTransparent = draw.Join(",");
             return true;
         }
+
         public bool Update(int delta)
         {
-
-            if (this.TimeToLive <= 0)
+            if (TimeToLive <= 0)
                 return false;
 
-            this.Direction = this.Direction.Add(System.Gravity);
-            this.Position = this.Position.Add(this.Direction);
+            Direction = Direction.Add(System.Gravity);
+            Position = Position.Add(Direction);
 
             return progress(delta);
             return true;
         }
 
-        private int curGradIndex = 0;
         public void Render(CanvasContext2D context)
         {
-            var x =  Position.X;
-            var y =  Position.Y;
+            var x = Position.X;
+            var y = Position.Y;
 
             context.Save();
 
             context.Translate(x, y);
 
             drawGrad(context, obtainGradient(context, this), Size);
-         //   drawGrad(context, grads[curGradIndex++], Size);
-
+            //   drawGrad(context, grads[curGradIndex++], Size);
 
             context.Restore();
         }
 
-
-        private static void drawGrad(CanvasContext2D context, Gradient radgrad, double size)
+        private static void drawGrad(CanvasContext2D context, object radgrad, double size)
         {
             context.FillStyle = radgrad;
             context.FillRect(0, 0, size, size);
         }
 
-        private Gradient obtainGradient(CanvasContext2D context, Particle particle)
+        private object obtainGradient(CanvasContext2D context, Particle particle)
         {
-            var halfSize = (int)particle.Size >> 1;
+            var halfSize = (int) particle.Size >> 1;
 
             /*   string key = halfSize + particle.DrawColor + particle.SizeSmall;
             if (grads.ContainsKey(key)) {
                 return grads[key];
             }*/
+
+            if (Game.DRAWFAST)
+                return particle.DrawColor;
 
             var radgrad = context.CreateRadialGradient(halfSize, halfSize, particle.SizeSmall, halfSize, halfSize, halfSize);
             //var radgrad = context.CreateLinearGradient(halfSize, halfSize, particle.SizeSmall, halfSize);

@@ -38,12 +38,21 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\debug all\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <NoStdLib>true</NoStdLib>
+    <NoStdLib>True</NoStdLib>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debugall|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\debugall\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -51,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.5.1\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="Script.jQuery">
       <HintPath>..\packages\Saltarelle.jQuery.1.4.0\lib\Script.jQuery.dll</HintPath>
@@ -65,8 +74,7 @@
       <HintPath>..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Script.Web">
-      <HintPath>..\packages\Saltarelle.Web.1.4.0.1\lib\Script.Web.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Saltarelle.Web.1.5.1\lib\Script.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -75,24 +83,6 @@
   <ItemGroup>
     <Compile Include="ClientManager.cs" />
     <Compile Include="GameManager.cs" />
-    <Compile Include="UIManagerAreas.cs" />
-    <Compile Include="UIManager\Button.cs" />
-    <Compile Include="UIManager\EditorEngine.cs" />
-    <Compile Include="UIManager\Element.cs" />
-    <Compile Include="UIManager\HScrollBox.cs" />
-    <Compile Include="UIManager\HtmlBox.cs" />
-    <Compile Include="UIManager\Image.cs" />
-    <Compile Include="UIManager\ImageButton.cs" />
-    <Compile Include="UIManager\LayoutPanel.cs" />
-    <Compile Include="UIManager\Panel.cs" />
-    <Compile Include="UIManager\Pointer.cs" />
-    <Compile Include="UIManager\PropertyButton.cs" />
-    <Compile Include="UIManager\ScrollBox.cs" />
-    <Compile Include="UIManager\Table.cs" />
-    <Compile Include="UIManager\TextArea.cs" />
-    <Compile Include="UIManager\TextBox.cs" />
-    <Compile Include="UIManager\UIArea.cs" />
-    <Compile Include="UIManager\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\API\ClientAPI\ClientAPI.csproj">
@@ -124,8 +114,8 @@
       <Name>CommonWebLibraries</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.1\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
     <PostBuildEvent>Copy $(TargetDir)*.js $(SolutionDir)Output</PostBuildEvent>
   </PropertyGroup>

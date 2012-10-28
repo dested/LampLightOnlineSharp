@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using Client.UIManager;
 using CommonLibraries;
-namespace OurSonic.UIManager
+namespace CommonClientLibraries.UIManager
 {
     public class Table<T> : Table
     {

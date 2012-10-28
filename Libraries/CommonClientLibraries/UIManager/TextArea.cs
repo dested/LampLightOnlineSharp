@@ -1,7 +1,7 @@
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using CommonAPI;
-namespace OurSonic.UIManager
+using CommonLibraries;
+namespace CommonClientLibraries.UIManager
 {
     public class TextArea : Element
     {
@@ -17,7 +17,7 @@ namespace OurSonic.UIManager
                 : base(x, y)
         {
             Text = text;
-            Font = Client.UIManager.UIManager.TextFont;
+            Font = UIManager.TextFont;
             Color = "black";
             oldText = "";
         }

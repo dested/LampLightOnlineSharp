@@ -47,61 +47,61 @@ namespace LampLightOnlineBuild
                             })
                     }*/
                                                                       {
-                                                                             "ChatServer", new Application(true,
-                                                                                                                             "new ChatServer.ChatServer();",
-                                                                                                                             new List<string> {
-                                                                                                                                                      @"./CommonLibraries.js",
-                                                                                                                                                      @"./CommonServerLibraries.js",
-                                                                                                                                                      @"./Models.js",
-                                                                                                                                              })
+                                                                              "ChatServer", new Application(true,
+                                                                                                            "new ChatServer.ChatServer();",
+                                                                                                            new List<string> {
+                                                                                                                                     @"./CommonLibraries.js",
+                                                                                                                                     @"./CommonServerLibraries.js",
+                                                                                                                                     @"./Models.js",
+                                                                                                                             })
                                                                       }, {
-                                                                               "GameServer", new Application(true,
-                                                                                                                                "new GameServer.GameServer();",
-                                                                                                                                new List<string> {
-                                                                                                                                                         @"./CommonLibraries.js",
-                                                                                                                                                         @"./CommonServerLibraries.js",
-                                                                                                                                                         @"./Models.js",
-                                                                                                                                                         @"./RawDeflate.js",
-                                                                                                                                                 })
+                                                                                 "GameServer", new Application(true,
+                                                                                                               "new GameServer.GameServer();",
+                                                                                                               new List<string> {
+                                                                                                                                        @"./CommonLibraries.js",
+                                                                                                                                        @"./CommonServerLibraries.js",
+                                                                                                                                        @"./Models.js",
+                                                                                                                                        @"./RawDeflate.js",
+                                                                                                                                })
                                                                          }, {
-                                                                                 "GatewayServer", new Application(true,
-                                                                                                                                      "new GatewayServer.GatewayServer();",
-                                                                                                                                      new List<string> {
-                                                                                                                                                               @"./CommonLibraries.js",
-                                                                                                                                                               @"./CommonServerLibraries.js",
-                                                                                                                                                               @"./Models.js",
-                                                                                                                                                       })
+                                                                                    "GatewayServer", new Application(true,
+                                                                                                                     "new GatewayServer.GatewayServer();",
+                                                                                                                     new List<string> {
+                                                                                                                                              @"./CommonLibraries.js",
+                                                                                                                                              @"./CommonServerLibraries.js",
+                                                                                                                                              @"./Models.js",
+                                                                                                                                      })
                                                                             }, {
-                                                                                    "HeadServer", new Application(true,
-                                                                                                                                      "new HeadServer.HeadServer();",
-                                                                                                                                      new List<string> {
-                                                                                                                                                               @"./CommonLibraries.js",
-                                                                                                                                                               @"./CommonServerLibraries.js",
-                                                                                                                                                               @"./Models.js",
-                                                                                                                                                       })
-                                                                               }, {"SiteServer", new Application(true,
-                                                                                                                                         "",
-                                                                                                                                         new List<string> {
-                                                                                                                                                                  @"./CommonLibraries.js",
-                                                                                                                                                                  @"./CommonServerLibraries.js",
-                                                                                                                                                                  @"./Models.js",
-                                                                                                                                                          })
+                                                                                       "HeadServer", new Application(true,
+                                                                                                                     "new HeadServer.HeadServer();",
+                                                                                                                     new List<string> {
+                                                                                                                                              @"./CommonLibraries.js",
+                                                                                                                                              @"./CommonServerLibraries.js",
+                                                                                                                                              @"./Models.js",
+                                                                                                                                      })
+                                                                               }, {
+                                                                                          "SiteServer", new Application(true,
+                                                                                                                        "",
+                                                                                                                        new List<string> {
+                                                                                                                                                 @"./CommonLibraries.js",
+                                                                                                                                                 @"./CommonServerLibraries.js",
+                                                                                                                                                 @"./Models.js",
+                                                                                                                                         })
                                                                                   },
                                                                       {"Client", new Application(false, "", new List<string> {})},
-                                                                      
                                                                       {"CommonWebLibraries", new Application(false, "", new List<string> {})},
-                                                                      {"CommonLibraries", new Application(false, "", new List<string> {})}, 
-                                                                      {"CommonClientLibraries", new Application(false, "", new List<string> {})}, 
-                                                                      {"ClientAPI", new Application(false, "", new List<string> {})}, 
-                                                                      {"ServerAPI", new Application(false, "", new List<string> {})}, 
-                                                                      {"CommonAPI", new Application(false, "", new List<string> {})}, 
+                                                                      {"CommonLibraries", new Application(false, "", new List<string> {})},
+                                                                      {"CommonClientLibraries", new Application(false, "", new List<string> {})},
+                                                                      {"ClientAPI", new Application(false, "", new List<string> {})},
+                                                                      {"ServerAPI", new Application(false, "", new List<string> {})},
+                                                                      {"CommonAPI", new Application(false, "", new List<string> {})},
                                                               };
 #if FTP
             Console.WriteLine("connecting ftp");
             Ftp webftp = new Ftp();
             webftp.Connect(ConfigurationSettings.AppSettings["ftpurl"]);
             webftp.Login(ConfigurationSettings.AppSettings["ftpusername"], ConfigurationSettings.AppSettings["ftppassword"]);
-            
+
             Console.WriteLine("connected");
 
             webftp.Progress += (e, c) => {
@@ -123,7 +123,7 @@ namespace LampLightOnlineBuild
 #endif
 
             foreach (var depend in depends) {
-                var to = pre +"\\"+ llo + @"\output\" + depend.Key + ".js";/*
+                var to = pre + "\\" + llo + @"\output\" + depend.Key + ".js"; /*
                 var output = "";
 
                 if (depend.Value.Node)
@@ -145,20 +145,18 @@ namespace LampLightOnlineBuild
                 //     lines.Add(depend.Value.After);*/
 
                 var name = to.Split(new char[] {'\\'}, StringSplitOptions.RemoveEmptyEntries).Last();
-             //   File.WriteAllText(to, text);
+                //   File.WriteAllText(to, text);
 
 #if FTP
 
                 long length = new FileInfo(to).Length;
-                if (webftp.GetFileSize("/httpdocs/lamp/" + name) != length)
-                {
+                if (webftp.GetFileSize("/httpdocs/lamp/" + name) != length) {
                     Console.WriteLine("ftp start " + length.ToString("N0"));
                     webftp.Upload("/httpdocs/lamp/" + name, to);
                     Console.WriteLine("ftp complete " + to);
                 }
 #endif
             }
-
 
             string[] games = {"TowerD"};
 
@@ -167,9 +165,7 @@ namespace LampLightOnlineBuild
 
                 string[] exts = {"client", "common", "server"};
 
-
                 foreach (var ext in exts) {
-                      
                     //     lines.Add(depend.Value.After); 
                     string fm = to + depend + "." + ext + ".js";
 
@@ -182,9 +178,7 @@ namespace LampLightOnlineBuild
                     Console.WriteLine("ftp complete " + fm);
 #endif
                 }
-              
             }
-
         }
 
         #region Nested type: Application

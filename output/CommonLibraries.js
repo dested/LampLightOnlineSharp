@@ -1,4 +1,50 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
+// CommonLibraries.DelegateOrValue
+var $CommonLibraries_DelegateOrValue$1 = function(T) {
+	var $type = function(d) {
+		this.isValue = false;
+		this.$method = null;
+		this.$value = T.getDefaultValue();
+		this.$method = d;
+		this.isValue = false;
+	};
+	$type.prototype = {
+		$evaluate: function() {
+			if (this.isValue === true) {
+				return this.$value;
+			}
+			else if (this.isValue === false) {
+				return this.$method();
+			}
+			return T.getDefaultValue();
+		}
+	};
+	$type.$ctor1 = function(d) {
+		this.isValue = false;
+		this.$method = null;
+		this.$value = T.getDefaultValue();
+		this.$value = d;
+		this.isValue = true;
+	};
+	$type.$ctor1.prototype = $type.prototype;
+	$type.op_Implicit$2 = function(d) {
+		return new (Type.makeGenericType($CommonLibraries_DelegateOrValue$1, [T]).$ctor1)(d);
+	};
+	$type.op_Implicit$1 = function(d) {
+		return new (Type.makeGenericType($CommonLibraries_DelegateOrValue$1, [T]))(d);
+	};
+	$type.op_Implicit = function(d) {
+		return d.$evaluate();
+	};
+	Type.registerGenericClassInstance($type, $CommonLibraries_DelegateOrValue$1, [T], function() {
+		return Object;
+	}, function() {
+		return [];
+	});
+	return $type;
+};
+Type.registerGenericClass(global, 'CommonLibraries.DelegateOrValue$1', $CommonLibraries_DelegateOrValue$1, 1);
+////////////////////////////////////////////////////////////////////////////////
 // CommonLibraries.DoublePoint
 var $CommonLibraries_DoublePoint = function() {
 };

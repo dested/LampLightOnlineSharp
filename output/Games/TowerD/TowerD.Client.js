@@ -8,7 +8,12 @@ Type.registerEnum(global, 'TowerD.Client.Color', $TowerD_Client_Color, false);
 // TowerD.Client.Game
 var $TowerD_Client_Game = function() {
 	this.scale = CommonLibraries.Point.$ctor1(40, 30);
+	this.$clicking = false;
+	this.$myClickState = null;
 	this.$myPlayers = null;
+	this.$selectedKingdom = null;
+	this.$selectedTower = null;
+	this.$selectedWaypoint = null;
 	this.kingdoms = null;
 	this.waypointMaps = null;
 	ClientAPI.LampClient.call(this);
@@ -70,24 +75,14 @@ var $TowerD_Client_Game = function() {
 	$t15.add(this.waypointMaps[5].last());
 	$t13.waypoints = $t15;
 	$t16['Chris'] = $t13;
-	KeyboardJS.bind.key('space', Function.mkdel(this, function() {
-		var $t17 = Object.getObjectEnumerator(this.kingdoms);
-		try {
-			while ($t17.moveNext()) {
-				var kingdom = $t17.get_current();
-				var $t19 = kingdom.value.units;
-				var $t18 = [];
-				$t18.add(new $TowerD_Client_Pieces_Unit_QuickShooterUnit(kingdom.value.waypoints[0].getPath(), this.scale, kingdom.value.color));
-				$t18.add(new $TowerD_Client_Pieces_Unit_QuickShooterUnit(kingdom.value.waypoints[1].getPath(), this.scale, kingdom.value.color));
-				$t18.add(new $TowerD_Client_Pieces_Unit_QuickShooterUnit(kingdom.value.waypoints[2].getPath(), this.scale, kingdom.value.color));
-				$t19.addRange($t18);
-			}
-		}
-		finally {
-			$t17.dispose();
-		}
-	}), function() {
-	});
+	//
+	//            KeyboardJS.Instance().Bind.Key("space",
+	//
+	//            () => {
+	//
+	//            },
+	//
+	//            () => { });
 };
 $TowerD_Client_Game.prototype = {
 	init: function(players, context) {
@@ -140,16 +135,185 @@ $TowerD_Client_Game.prototype = {
 			waypointMap.drawer.tick();
 		}
 	},
+	buildUI: function(manager) {
+		var manageData;
+		var $t1 = new CommonClientLibraries.UIManager.UIArea(this.windowLocation.width - 400, 100, 250, 300);
+		$t1.closable = true;
+		manager.addArea(manageData = $t1);
+		manageData.visible = true;
+		var $t2 = new CommonClientLibraries.UIManager.TextArea(30, 25, Type.makeGenericType(CommonLibraries.DelegateOrValue$1, [String]).op_Implicit$2('Manage Defense'));
+		$t2.color = 'blue';
+		manageData.addControl(CommonClientLibraries.UIManager.TextArea).call(manageData, $t2);
+		this.$myClickState = null;
+		var $t3 = new (Type.makeGenericType(CommonClientLibraries.UIManager.Button$1, [ss.Int32]))(0, 20, 50, 100, 25, Type.makeGenericType(CommonLibraries.DelegateOrValue$1, [String]).op_Implicit$1(Function.mkdel(this, function() {
+			switch (this.$myClickState.data) {
+				case 0: {
+					return 'Move Kingdom';
+				}
+				case 1: {
+					return 'Move Waypoint';
+				}
+				case 2: {
+					return 'Add Waypoint';
+				}
+				case 3: {
+					return 'Place Tower';
+				}
+			}
+			return '';
+		})));
+		$t3.click = Function.mkdel(this, function(p) {
+			this.$myClickState.data++;
+			this.$myClickState.data = this.$myClickState.data % 4;
+		});
+		this.$myClickState = $t3;
+		manageData.addControl(Type.makeGenericType(CommonClientLibraries.UIManager.Button$1, [ss.Int32])).call(manageData, this.$myClickState);
+		var $t4 = new CommonClientLibraries.UIManager.Button(20, 80, 100, 25, Type.makeGenericType(CommonLibraries.DelegateOrValue$1, [String]).op_Implicit$2('Send Wave'));
+		$t4.click = Function.mkdel(this, function(p1) {
+			var $t5 = Object.getObjectEnumerator(this.kingdoms);
+			try {
+				while ($t5.moveNext()) {
+					var kingdom = $t5.get_current();
+					var $t7 = kingdom.value.units;
+					var $t6 = [];
+					$t6.add(new $TowerD_Client_Pieces_Unit_QuickShooterUnit(kingdom.value.waypoints[0].travel(150, this.scale), kingdom.value.color));
+					$t6.add(new $TowerD_Client_Pieces_Unit_QuickShooterUnit(kingdom.value.waypoints[1].travel(150, this.scale), kingdom.value.color));
+					$t6.add(new $TowerD_Client_Pieces_Unit_QuickShooterUnit(kingdom.value.waypoints[2].travel(150, this.scale), kingdom.value.color));
+					$t7.addRange($t6);
+				}
+			}
+			finally {
+				$t5.dispose();
+			}
+		});
+		manageData.addControl(CommonClientLibraries.UIManager.Button).call(manageData, $t4);
+		var $t8 = new CommonClientLibraries.UIManager.Button(20, 125, 100, 25, Type.makeGenericType(CommonLibraries.DelegateOrValue$1, [String]).op_Implicit$1(function() {
+			return ($TowerD_Client_Game.DRAWFAST ? 'Draw Slow' : 'Draw Fast');
+		}));
+		$t8.click = function(p2) {
+			$TowerD_Client_Game.DRAWFAST = !$TowerD_Client_Game.DRAWFAST;
+		};
+		manageData.addControl(CommonClientLibraries.UIManager.Button).call(manageData, $t8);
+	},
 	mouseMove: function(jQueryEvent) {
+		if (!this.$clicking) {
+			return false;
+		}
+		var point = CommonLibraries.Point.$ctor1(ss.Int32.div(jQueryEvent.clientX, this.scale.x), ss.Int32.div(jQueryEvent.clientY, this.scale.y));
+		switch (this.$myClickState.data) {
+			case 0: {
+				if (ss.isValue(this.$selectedTower)) {
+					if (ss.isNullOrUndefined(this.$towerExistsAt(point.x, point.y))) {
+						this.$selectedTower.set_x(point.x);
+						this.$selectedTower.set_y(point.y);
+						if (ss.referenceEquals(this.$selectedKingdom.get_kingdomTower(), this.$selectedTower)) {
+							this.$selectedKingdom.waypoints[0].set_x(point.x);
+							this.$selectedKingdom.waypoints[0].set_y(point.y);
+							this.$selectedKingdom.waypoints[0].reorganize();
+							this.$selectedKingdom.waypoints[1].set_x(point.x);
+							this.$selectedKingdom.waypoints[1].set_y(point.y);
+							this.$selectedKingdom.waypoints[1].reorganize();
+							this.$selectedKingdom.waypoints[2].set_x(point.x);
+							this.$selectedKingdom.waypoints[2].set_y(point.y);
+							this.$selectedKingdom.waypoints[2].reorganize();
+						}
+					}
+				}
+				return true;
+			}
+			case 1: {
+				if (ss.isValue(this.$selectedWaypoint)) {
+					this.$selectedWaypoint.set_x(point.x);
+					this.$selectedWaypoint.set_y(point.y);
+					this.$selectedWaypoint.reorganize();
+				}
+				return true;
+			}
+			case 2: {
+				break;
+			}
+			case 3: {
+				break;
+			}
+		}
 		return false;
 	},
 	onClick: function(jQueryEvent) {
-		var tower = new $TowerD_Client_Pieces_Towers_SingeShotTower(3, ss.Int32.div(jQueryEvent.clientX, this.scale.x), ss.Int32.div(jQueryEvent.clientY, this.scale.y));
-		this.kingdoms['Steve'].towers.add(tower);
-		tower.get_drawer().init();
+		this.$clicking = true;
+		this.$selectedWaypoint = null;
+		this.$selectedTower = null;
+		var point = CommonLibraries.Point.$ctor1(ss.Int32.div(jQueryEvent.clientX, this.scale.x), ss.Int32.div(jQueryEvent.clientY, this.scale.y));
+		switch (this.$myClickState.data) {
+			case 0: {
+				this.$selectedKingdom = null;
+				var $t1 = Object.getObjectEnumerator(this.kingdoms);
+				try {
+					while ($t1.moveNext()) {
+						var kingdom = $t1.get_current();
+						for (var $t2 = 0; $t2 < kingdom.value.towers.length; $t2++) {
+							var tower1 = kingdom.value.towers[$t2];
+							if (tower1.get_x() === point.x && tower1.get_y() === point.y) {
+								this.$selectedKingdom = kingdom.value;
+								this.$selectedTower = tower1;
+								break;
+							}
+						}
+					}
+				}
+				finally {
+					$t1.dispose();
+				}
+				break;
+			}
+			case 1: {
+				for (var $t3 = 0; $t3 < this.waypointMaps.length; $t3++) {
+					var waypointMap = this.waypointMaps[$t3];
+					for (var $t4 = 0; $t4 < waypointMap.waypoints.length; $t4++) {
+						var p = waypointMap.waypoints[$t4];
+						if (p.get_x() === point.x && p.get_y() === point.y) {
+							this.$selectedWaypoint = p;
+							break;
+						}
+					}
+				}
+				break;
+			}
+			case 2: {
+				break;
+			}
+			case 3: {
+				if (ss.isValue(this.$selectedKingdom)) {
+					if (ss.isNullOrUndefined(this.$towerExistsAt(point.x, point.y))) {
+						var tower = new $TowerD_Client_Pieces_Towers_SingeShotTower(this.$selectedKingdom.color, point.x, point.y);
+						this.$selectedKingdom.towers.add(this.$selectedTower = tower);
+						tower.get_drawer().init();
+					}
+				}
+				break;
+			}
+		}
 		return ClientAPI.LampClient.prototype.onClick.call(this, jQueryEvent);
 	},
+	$towerExistsAt: function(x, y) {
+		var $t1 = Object.getObjectEnumerator(this.kingdoms);
+		try {
+			while ($t1.moveNext()) {
+				var kingdom = $t1.get_current();
+				for (var $t2 = 0; $t2 < kingdom.value.towers.length; $t2++) {
+					var tower = kingdom.value.towers[$t2];
+					if (tower.get_x() === x && tower.get_y() === y) {
+						return tower;
+					}
+				}
+			}
+		}
+		finally {
+			$t1.dispose();
+		}
+		return null;
+	},
 	mouseUp: function(jQueryEvent) {
+		this.$clicking = false;
 		return ClientAPI.LampClient.prototype.mouseUp.call(this, jQueryEvent);
 	},
 	draw: function(context) {
@@ -194,9 +358,16 @@ var $TowerD_Client_Kingdom = function() {
 	this.towers = [];
 	this.units = [];
 };
+$TowerD_Client_Kingdom.prototype = {
+	get_kingdomTower: function() {
+		return this.towers[0];
+	}
+};
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Particle
 var $TowerD_Client_Particle = function() {
+	this.$curGradIndex = 0;
+	this.$grads = [];
 	this.system = null;
 	this.position = null;
 	this.direction = null;
@@ -208,8 +379,6 @@ var $TowerD_Client_Particle = function() {
 	this.deltaColor = null;
 	this.drawColor = null;
 	this.drawColorTransparent = null;
-	this.$grads = [];
-	this.$curGradIndex = 0;
 	this.position = CommonLibraries.Point.$ctor1(0, 0);
 	this.direction = CommonLibraries.DoublePoint.$ctor1(0, 0);
 	this.deltaColor = new Array(4);
@@ -283,6 +452,9 @@ $TowerD_Client_Particle.prototype = {
 		//   if (grads.ContainsKey(key)) {
 		//   return grads[key];
 		//   }
+		if ($TowerD_Client_Game.DRAWFAST) {
+			return particle.drawColor;
+		}
 		var radgrad = context.createRadialGradient(halfSize, halfSize, particle.sizeSmall, halfSize, halfSize, halfSize);
 		//var radgrad = context.CreateLinearGradient(halfSize, halfSize, particle.SizeSmall, halfSize);
 		radgrad.addColorStop(0, particle.drawColor);
@@ -329,7 +501,7 @@ var $TowerD_Client_ParticleSystem = function() {
 	this.position = CommonLibraries.Point.$ctor1(100, 100);
 	this.positionRandom = CommonLibraries.Point.$ctor1(10, 10);
 	this.size = 45;
-	this.sizeRandom = 15;
+	this.sizeRandom = 8;
 	this.speed = 5;
 	this.speedRandom = 1.5;
 	this.lifeSpan = 9;
@@ -459,11 +631,11 @@ $TowerD_Client_Waypoint.prototype = {
 	set_y: function(value) {
 		this.$1$YField = value;
 	},
-	getPath: function() {
-		if (ss.isNullOrUndefined(this.get_map())) {
-			return null;
-		}
-		return (ss.referenceEquals(this.get_map().last(), this) ? this.get_map().reverse() : this.get_map());
+	reorganize: function() {
+		this.get_map().reorganize();
+	},
+	travel: function(steps, scale) {
+		return Array.fromEnumerable(this.get_map().travel(steps, scale, ss.referenceEquals(this.get_map().last(), this)));
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -490,10 +662,10 @@ $TowerD_Client_WaypointMap.prototype = {
 	last: function() {
 		return this.waypoints[this.waypoints.length - 1];
 	},
-	travel: function(stepsTotal, scale) {
+	travel: function(stepsTotal, scale, reverse) {
 		return new ss.IteratorBlockEnumerable(function() {
-			return (function(stepsTotal, scale) {
-				var $result, $state = 0, cur, dist, stp, index, waypoint, nextWaypoint, i;
+			return (function(stepsTotal, scale, reverse) {
+				var $result, $state = 0, cur, dist, stp, index, index1, waypoint, nextWaypoint, i, waypoint1, nextWaypoint1, i1;
 				return new ss.IteratorBlockEnumerator(function() {
 					$sm1:
 					for (;;) {
@@ -503,48 +675,95 @@ $TowerD_Client_WaypointMap.prototype = {
 								cur = CommonLibraries.DoublePoint.$ctor1(0, 0);
 								dist = CommonLibraries.DoublePoint.$ctor1(0, 0);
 								stp = stepsTotal / (this.waypoints.length - 1);
-								index = 0;
-								$state = 1;
-								continue $sm1;
+								if (reverse) {
+									index = this.waypoints.length - 1;
+									$state = 1;
+									continue $sm1;
+								}
+								else {
+									index1 = 0;
+									$state = 2;
+									continue $sm1;
+								}
 							}
 							case 1: {
 								$state = -1;
-								if (!(index < this.waypoints.length - 1)) {
+								if (!(index >= 1)) {
 									$state = -1;
 									break $sm1;
 								}
 								waypoint = this.waypoints[index];
-								nextWaypoint = this.waypoints[index + 1];
+								nextWaypoint = this.waypoints[index - 1];
 								cur.x = waypoint.get_x() * scale.x;
 								cur.y = waypoint.get_y() * scale.y;
 								dist.x = (nextWaypoint.get_x() - waypoint.get_x()) / stp;
 								dist.y = (nextWaypoint.get_y() - waypoint.get_y()) / stp;
 								i = 0;
-								$state = 3;
+								$state = 4;
 								continue $sm1;
 							}
-							case 3: {
+							case 2: {
+								$state = -1;
+								if (!(index1 < this.waypoints.length - 1)) {
+									$state = -1;
+									break $sm1;
+								}
+								waypoint1 = this.waypoints[index1];
+								nextWaypoint1 = this.waypoints[index1 + 1];
+								cur.x = waypoint1.get_x() * scale.x;
+								cur.y = waypoint1.get_y() * scale.y;
+								dist.x = (nextWaypoint1.get_x() - waypoint1.get_x()) / stp;
+								dist.y = (nextWaypoint1.get_y() - waypoint1.get_y()) / stp;
+								i1 = 0;
+								$state = 6;
+								continue $sm1;
+							}
+							case 4: {
 								$state = -1;
 								if (!(i < stp)) {
-									$state = 2;
+									$state = 3;
 									continue $sm1;
 								}
 								cur.x += dist.x * scale.x;
 								cur.y += dist.y * scale.y;
 								$result = CommonLibraries.Point.$ctor1(ss.Int32.trunc(cur.x), ss.Int32.trunc(cur.y));
-								$state = 4;
+								$state = 7;
 								return true;
 							}
-							case 2: {
+							case 3: {
 								$state = -1;
-								index++;
+								index--;
 								$state = 1;
 								continue $sm1;
 							}
-							case 4: {
+							case 6: {
+								$state = -1;
+								if (!(i1 < stp)) {
+									$state = 5;
+									continue $sm1;
+								}
+								cur.x += dist.x * scale.x;
+								cur.y += dist.y * scale.y;
+								$result = CommonLibraries.Point.$ctor1(ss.Int32.trunc(cur.x), ss.Int32.trunc(cur.y));
+								$state = 8;
+								return true;
+							}
+							case 5: {
+								$state = -1;
+								index1++;
+								$state = 2;
+								continue $sm1;
+							}
+							case 7: {
 								$state = -1;
 								i++;
-								$state = 3;
+								$state = 4;
+								continue $sm1;
+							}
+							case 8: {
+								$state = -1;
+								i1++;
+								$state = 6;
 								continue $sm1;
 							}
 							default: {
@@ -556,13 +775,11 @@ $TowerD_Client_WaypointMap.prototype = {
 				}, function() {
 					return $result;
 				}, null, this);
-			}).call(this, stepsTotal, scale);
+			}).call(this, stepsTotal, scale, reverse);
 		}, this);
 	},
-	reverse: function() {
-		var waypoints = this.waypoints.clone();
-		waypoints.reverse();
-		return new $TowerD_Client_WaypointMap(this.drawer.get_endColor(), this.drawer.get_startColor(), waypoints, this.$myScale);
+	reorganize: function() {
+		this.drawer.reoganize();
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -597,9 +814,12 @@ $TowerD_Client_Drawers_ColorWaypointDrawer.prototype = {
 	set_map: function(value) {
 		this.$1$MapField = value;
 	},
+	reoganize: function() {
+		this.init();
+	},
 	init: function() {
 		this.$systems = [];
-		var items = Array.fromEnumerable(this.get_map().travel(30, this.$myScale));
+		var items = Array.fromEnumerable(this.get_map().travel(50, this.$myScale, false));
 		for (var index = 0; index < items.length; index++) {
 			var point = items[index];
 			var system = new $TowerD_Client_ParticleSystem();
@@ -661,9 +881,10 @@ $TowerD_Client_Drawers_ColorWaypointDrawer.prototype = {
 			EndColors[3] = ss.Int32.trunc(EndColors[3] + (EndColors2[3] - EndColors[3]) * (index / items.length));
 			system.startColor = StartColors;
 			system.endColor = EndColors;
-			system.size = 7;
-			system.maxParticles = 10;
-			system.lifeSpan = 10;
+			system.size = 9;
+			system.maxParticles = 4;
+			system.lifeSpan = 4;
+			system.lifeSpanRandom = 2;
 			system.speed = 1;
 			system.gravity = CommonLibraries.DoublePoint.$ctor1(0, 0);
 			system.position = point;
@@ -703,7 +924,7 @@ $TowerD_Client_Drawers_GunWeaponDrawer.prototype = {
 		this.$system.startColor = [255, 0, 0, 1];
 		this.$system.endColor = [127, 55, 0, 1];
 		this.$system.size = 20;
-		this.$system.maxParticles = 200;
+		this.$system.maxParticles = 15;
 		this.$system.lifeSpan = 40;
 		this.$system.init();
 	},
@@ -750,7 +971,7 @@ $TowerD_Client_Drawers_KingdomDrawer.prototype = {
 			}
 		}
 		this.$system.size = 28;
-		this.$system.maxParticles = 50;
+		this.$system.maxParticles = 35;
 		this.$system.lifeSpan = 6;
 		this.$system.speed = 3;
 		this.$system.gravity = CommonLibraries.DoublePoint.$ctor1(0, 0);
@@ -768,8 +989,8 @@ $TowerD_Client_Drawers_KingdomDrawer.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Drawers.QuickShooterDrawer
 var $TowerD_Client_Drawers_QuickShooterDrawer = function(color) {
-	this.$system = null;
 	this.$curSpeed = 0;
+	this.$system = null;
 	this.color = 0;
 	this.color = color;
 };
@@ -894,7 +1115,7 @@ $TowerD_Client_Drawers_UnitDrawer.prototype = { destroy: null, resetSpeed: null,
 // TowerD.Client.Drawers.WaypointDrawer
 var $TowerD_Client_Drawers_WaypointDrawer = function() {
 };
-$TowerD_Client_Drawers_WaypointDrawer.prototype = { get_startColor: null, set_startColor: null, get_endColor: null, set_endColor: null, get_map: null, set_map: null };
+$TowerD_Client_Drawers_WaypointDrawer.prototype = { get_startColor: null, set_startColor: null, get_endColor: null, set_endColor: null, get_map: null, set_map: null, reoganize: null };
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Drawers.WeaponDrawer
 var $TowerD_Client_Drawers_WeaponDrawer = function() {
@@ -1005,13 +1226,12 @@ var $TowerD_Client_Pieces_Towers_Tower = function() {
 $TowerD_Client_Pieces_Towers_Tower.prototype = { get_weapons: null, set_weapons: null, get_shields: null, set_shields: null, get_x: null, set_x: null, get_y: null, set_y: null, get_drawer: null, set_drawer: null, tick: null };
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Pieces.Unit.QuickShooterUnit
-var $TowerD_Client_Pieces_Unit_QuickShooterUnit = function(map, scale, color) {
+var $TowerD_Client_Pieces_Unit_QuickShooterUnit = function(map, color) {
 	this.$ind = 0;
-	this.$travelPoints = null;
-	this.$1$MapField = null;
-	this.$1$ColorField = 0;
-	this.$spinUpTimer = 0;
 	this.$spinDownTimer = 0;
+	this.$spinUpTimer = 0;
+	this.$travelPoints = null;
+	this.$1$ColorField = 0;
 	this.$1$SpinUpTimeField = 0;
 	this.$1$SpinDownTimeField = 0;
 	this.$1$WeaponsField = null;
@@ -1019,23 +1239,16 @@ var $TowerD_Client_Pieces_Unit_QuickShooterUnit = function(map, scale, color) {
 	this.$1$XField = 0;
 	this.$1$YField = 0;
 	this.$1$DrawerField = null;
-	this.set_map(map);
 	this.set_color(color);
-	this.$travelPoints = Array.fromEnumerable(map.travel(150, scale));
+	this.$travelPoints = map;
 	this.set_drawer(new $TowerD_Client_Drawers_QuickShooterDrawer(color));
 	this.get_drawer().init();
 	this.$spinUpTimer = 0;
 	this.$spinDownTimer = 0;
-	this.set_spinDownTime(80);
+	this.set_spinDownTime(50);
 	this.set_spinUpTime(40);
 };
 $TowerD_Client_Pieces_Unit_QuickShooterUnit.prototype = {
-	get_map: function() {
-		return this.$1$MapField;
-	},
-	set_map: function(value) {
-		this.$1$MapField = value;
-	},
 	get_color: function() {
 		return this.$1$ColorField;
 	},
@@ -1085,18 +1298,19 @@ $TowerD_Client_Pieces_Unit_QuickShooterUnit.prototype = {
 		this.$1$DrawerField = value;
 	},
 	tick: function() {
-		var okay = true;
+		var okay;
 		var p;
 		if (this.$ind === 0) {
 			p = this.$travelPoints[this.$ind];
 			this.set_x(p.x);
 			this.set_y(p.y);
 			if (this.$spinUpTimer++ < this.get_spinUpTime()) {
-				this.get_drawer().magnifySpeed(2.95);
+				this.get_drawer().magnifySpeed(5.95);
 				okay = true;
 			}
 			else {
 				this.$ind++;
+				okay = true;
 			}
 		}
 		else if (this.$ind === this.$travelPoints.length - 1) {
@@ -1104,7 +1318,7 @@ $TowerD_Client_Pieces_Unit_QuickShooterUnit.prototype = {
 			this.set_x(p.x);
 			this.set_y(p.y);
 			if (this.$spinDownTimer++ < this.get_spinDownTime()) {
-				this.get_drawer().magnifySpeed(3.8);
+				this.get_drawer().magnifySpeed(7.2);
 				okay = true;
 			}
 			else {
@@ -1159,5 +1373,6 @@ Type.registerClass(global, 'TowerD.Client.Drawers.SingeShotDrawer', $TowerD_Clie
 Type.registerClass(global, 'TowerD.Client.Pieces.Towers.KingdomTower', $TowerD_Client_Pieces_Towers_KingdomTower, Object, $TowerD_Client_Pieces_Towers_Tower);
 Type.registerClass(global, 'TowerD.Client.Pieces.Towers.SingeShotTower', $TowerD_Client_Pieces_Towers_SingeShotTower, Object, $TowerD_Client_Pieces_Towers_Tower);
 Type.registerClass(global, 'TowerD.Client.Pieces.Unit.QuickShooterUnit', $TowerD_Client_Pieces_Unit_QuickShooterUnit, Object, $TowerD_Client_Pieces_Unit_Unit);
+$TowerD_Client_Game.DRAWFAST = false;
 $TowerD_Client_Game.debugText = null;
 $TowerD_Client_Particle.$info = CommonClientLibraries.CanvasInformation.create(300, 300);

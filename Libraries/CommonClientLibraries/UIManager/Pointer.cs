@@ -1,6 +1,6 @@
 using System;
 using CommonLibraries;
-namespace Client.UIManager
+namespace CommonClientLibraries.UIManager
 {
     [Serializable]
     public class Pointer : Point

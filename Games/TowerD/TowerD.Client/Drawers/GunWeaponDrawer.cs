@@ -17,7 +17,7 @@ namespace TowerD.Client.Drawers
             system.StartColor = new int[] {255, 0, 0, 1};
             system.EndColor = new int[] {127, 55, 0, 1};
             system.Size = 20;
-            system.MaxParticles = 200;
+            system.MaxParticles = 15;
             system.LifeSpan = 40;
 
             system.Init();

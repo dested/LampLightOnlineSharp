@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Html.Media.Graphics;
-using System.Runtime.CompilerServices;
+﻿using System.Html.Media.Graphics;
 using ClientAPI;
 using CommonAPI;
+using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using TowerD.Client;
 using jQueryApi;
@@ -24,35 +22,35 @@ namespace Client
             return game.MouseMove(queryEvent);
         }
 
+        public void BuildUI(UIManager uiManager)
+        {
+            game.BuildUI(uiManager);
+        }
+
         public bool OnClick(jQueryEvent queryEvent)
         {
             return game.OnClick(queryEvent);
-
         }
 
         public bool MouseUp(jQueryEvent queryEvent)
         {
             return game.MouseUp(queryEvent);
-
         }
 
         public void Draw(CanvasContext2D context)
         {
             game.Draw(context);
-
         }
 
         public void Tick()
         {
-            game.WindowLocation = WindowLocation;
             game.Tick();
         }
 
         public void Start(CanvasContext2D context)
         {
+            game.WindowLocation = WindowLocation;
             game.Init(new LampPlayer[0], context);
         }
     }
-
-
 }
