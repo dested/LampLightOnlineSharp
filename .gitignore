@@ -34,8 +34,6 @@ _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*
 
-#Project files
-[Bb]uild/
 
 #Subversion files
 .svn
@@ -43,3 +41,4 @@ _ReSharper*/
 # Office Temp Files
 ~$*
 
+/Tools/Build/App.config
