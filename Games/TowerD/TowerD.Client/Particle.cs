@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using CommonClientLibraries;
@@ -9,7 +10,6 @@ namespace TowerD.Client
     {
         private static CanvasInformation info = CanvasInformation.Create(300, 300);
         private int curGradIndex = 0;
-        private List<Gradient> grads = new List<Gradient>();
         [IntrinsicProperty]
         public ParticleSystem System { get; set; }
         [IntrinsicProperty]
@@ -21,7 +21,7 @@ namespace TowerD.Client
         [IntrinsicProperty]
         public double Size { get; set; }
         [IntrinsicProperty]
-        public double TimeToLive { get; set; }
+        public int TimeToLive { get; set; }
         [IntrinsicProperty]
         public double SizeSmall { get; set; }
         [IntrinsicProperty]
@@ -41,22 +41,34 @@ namespace TowerD.Client
             Color = new double[4];
         }
 
-        public void BuildCache(int delta)
+        private ParticleSystem.ParticleSystemCache cache;
+        public void BuildCache(int delta, ParticleSystem.ParticleSystemCache cache)
         {
-            return;
+
+            this.cache = cache;
+            if (cache.Images!=null) {
+                return;
+            }
+            cache.Images=new List<CanvasInformation>();
             var timetolive = TimeToLive;
 
-            while (progress(delta)) {
-                string key = DrawColor + Size /*+ Sharpness*/;
-                if (!System.cachedGrads.ContainsKey(key)) {
+            while (progress(delta))
+            {
+                string key = DrawColor + Size + Sharpness;
                     if (Game.DebugText[0].Falsey()) Game.DebugText[0] = 0;
-                    Game.DebugText[0] = (int) Game.DebugText[0] + 1;
+                    Game.DebugText[0] = (int)Game.DebugText[0] + 1;
 
-                    var grad = obtainGradient(info.Context, this);
-                    grads.Add((Gradient) grad);
 
-                    System.cachedGrads[key] = (Gradient) grad;
-                } else grads.Add(System.cachedGrads[key]);
+                    var inf = CanvasInformation.Create((int)(Size * 2), (int)(Size * 2));
+              
+
+                    var old = Position;
+                    Position = new Point((int)Size, (int)Size);
+                    Render(inf.Context,true);
+                    Position = old;
+
+                    cache.Images.Add( inf);
+                
             }
             TimeToLive = timetolive;
         }
@@ -69,17 +81,17 @@ namespace TowerD.Client
             TimeToLive -= delta;
 
             // Update Colors based on delta
-            var r = Color[0] += ( DeltaColor[0] * delta );
-            var g = Color[1] += ( DeltaColor[1] * delta );
-            var b = Color[2] += ( DeltaColor[2] * delta );
-            var a = Color[3] += ( DeltaColor[3] * delta );
+            var r = Color[0] += (DeltaColor[0] * delta);
+            var g = Color[1] += (DeltaColor[1] * delta);
+            var b = Color[2] += (DeltaColor[2] * delta);
+            var a = Color[3] += (DeltaColor[3] * delta);
 
             // Calculate the rgba string to draw.
             var draw = new List<string>();
-            draw.Add(( "rgba(" + ( r > 255 ? 255 : r < 0 ? 0 : ~~(int) r ) ));
-            draw.Add(( g > 255 ? 255 : g < 0 ? 0 : ~~(int) g ).ToString());
-            draw.Add(( b > 255 ? 255 : b < 0 ? 0 : ~~(int) b ).ToString());
-            draw.Add(( a > 1 ? "1" : a < 0 ? "0" : a.ToFixed(2) ) + ")");
+            draw.Add(("rgba(" + (r > 255 ? 255 : r < 0 ? 0 : ~~(int)r)));
+            draw.Add((g > 255 ? 255 : g < 0 ? 0 : ~~(int)g).ToString());
+            draw.Add((b > 255 ? 255 : b < 0 ? 0 : ~~(int)b).ToString());
+            draw.Add((a > 1 ? "1" : a < 0 ? "0" : a.ToFixed(2)) + ")");
             DrawColor = draw.Join(",");
             draw.RemoveAt(3);
             draw.Add("0)");
@@ -99,7 +111,7 @@ namespace TowerD.Client
             return true;
         }
 
-        public void Render(CanvasContext2D context)
+        public void Render(CanvasContext2D context,bool force)
         {
             var x = Position.X;
             var y = Position.Y;
@@ -107,11 +119,30 @@ namespace TowerD.Client
             context.Save();
 
             context.Translate(x, y);
+            if (Game.DRAWFAST)
+            {
+                drawCircle(context, obtainGradient(context, this), Size);
 
-            drawGrad(context, obtainGradient(context, this), Size);
-            //   drawGrad(context, grads[curGradIndex++], Size);
+            }
+            else
+            {
+                if (force)
+                    drawGrad(context, obtainGradient(context, this), Size);
+                else
+                    drawImage(context, this.cache.Images[curGradIndex++], Size);
+
+            }
 
             context.Restore();
+        }
+
+        private void drawCircle(CanvasContext2D context, object radgrad, double size)
+        {
+            context.FillStyle = radgrad;
+            context.BeginPath();
+            context.Arc(0, 0, size / 2, 0, Math.PI * 2, true);
+            context.ClosePath();
+            context.Fill();
         }
 
         private static void drawGrad(CanvasContext2D context, object radgrad, double size)
@@ -120,14 +151,21 @@ namespace TowerD.Client
             context.FillRect(0, 0, size, size);
         }
 
+        private static void drawImage(CanvasContext2D context, CanvasInformation inf, double size)
+        {
+            context.DrawImage(inf.Canvas, -size, -size);
+        }
+
         private object obtainGradient(CanvasContext2D context, Particle particle)
         {
-            var halfSize = (int) particle.Size >> 1;
+            var halfSize = (int)particle.Size >> 1;
 
             /*   string key = halfSize + particle.DrawColor + particle.SizeSmall;
             if (grads.ContainsKey(key)) {
                 return grads[key];
             }*/
+
+
 
             if (Game.DRAWFAST)
                 return particle.DrawColor;

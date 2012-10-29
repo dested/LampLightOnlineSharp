@@ -1,4 +1,5 @@
 ﻿using System.Html;
+using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using CommonClientLibraries;
 using CommonClientLibraries.UIManager;
@@ -43,12 +44,13 @@ namespace Client
             resizeCanvas();
             int a = 0;
             Window.SetInterval(() => {
-                                   a++;
-                                   a++;
+                a++;
+                a++;
+                a++;
                                },
                                1000 / 60);
             Window.SetInterval(Tick, 1000 / 60);
-            Window.SetInterval(GameDraw, 1000 / 60);
+            Window.SetInterval(GameDraw, 1000 / 030);
             Window.SetInterval(UIDraw, 1000 / 10);
 
             gameManager.Start(gameCanvas.Context);
@@ -135,6 +137,8 @@ namespace Client
             gameCanvas.DomCanvas.Attribute("height", gameManager.WindowLocation.Height.ToString());
             uiGoodSize = new Point(canvasWidth, canvasHeight);
             gameGoodSize = new Point(gameManager.WindowLocation.Width, gameManager.WindowLocation.Height);
+            gameCanvas.Context.CompositeOperation = CompositeOperation.Lighter;
+            ;
         }
 
         public void Clear(CanvasInformation canv)

@@ -69,9 +69,10 @@ var $Client_ClientManager = function() {
 	window.setInterval(function() {
 		a++;
 		a++;
+		a++;
 	}, 16);
 	window.setInterval(Function.mkdel(this, this.$tick), 16);
-	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
+	window.setInterval(Function.mkdel(this, this.gameDraw), 33);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);
 	this.$gameManager.$start(this.$gameCanvas.context);
 	this.$gameManager.$buildUI(this.uiManager);
@@ -145,6 +146,8 @@ $Client_ClientManager.prototype = {
 		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.get_$windowLocation().height.toString());
 		this.$uiGoodSize = CommonLibraries.Point.$ctor1(this.$canvasWidth, this.$canvasHeight);
 		this.$gameGoodSize = CommonLibraries.Point.$ctor1(this.$gameManager.get_$windowLocation().width, this.$gameManager.get_$windowLocation().height);
+		this.$gameCanvas.context.globalCompositeOperation = 'lighter';
+		;
 	},
 	clear: function(canv) {
 		var w;

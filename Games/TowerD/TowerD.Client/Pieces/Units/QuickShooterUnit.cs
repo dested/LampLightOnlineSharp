@@ -4,31 +4,34 @@ using CommonLibraries;
 using TowerD.Client.Drawers;
 using TowerD.Client.Pieces.Shields;
 using TowerD.Client.Pieces.Weapons;
-namespace TowerD.Client.Pieces.Unit
+namespace TowerD.Client.Pieces.Units
 {
-    public class QuickShooterUnit : Unit
+    public class QuickShooterUnit : Units.Unit
     {
         private int ind;
         private int spinDownTimer;
         private int spinUpTimer;
         private List<Point> travelPoints;
-        public Color Color { get; set; }
         public int SpinUpTime { get; set; }
         public int SpinDownTime { get; set; }
 
-        public QuickShooterUnit(List<Point> map, Color color)
+        public QuickShooterUnit(List<Point> map, Kingdom kingdom)
         {
-            Color = color;
+            Kingdom = kingdom;
             travelPoints = map;
+            Weapons = new List<Weapon>();
+            Shields = new List<Shield>();
 
-            Drawer = new QuickShooterDrawer(color);
+            Weapons.Add(new GunWeapon(this));
+
+            Drawer = new QuickShooterDrawer(kingdom.Color);
             Drawer.Init();
 
             spinUpTimer = 0;
             spinDownTimer = 0;
 
-            SpinDownTime = (int) ( 20 * 2.5 );
-            SpinUpTime = 20 * 2;
+            SpinDownTime = (int) ( 20 * 1.5 );
+            SpinUpTime = 20 * 1;
         }
 
         #region Unit Members
@@ -38,6 +41,7 @@ namespace TowerD.Client.Pieces.Unit
         public int X { get; set; }
         public int Y { get; set; }
         public UnitDrawer Drawer { get; set; }
+        public Kingdom Kingdom { get; set; }
 
         public bool Tick()
         {
@@ -73,6 +77,10 @@ namespace TowerD.Client.Pieces.Unit
                 okay = true;
             }
 
+            foreach (var weapon in Weapons) {
+                weapon.Tick();
+            }
+
             Drawer.Tick();
             return okay;
         }
@@ -80,6 +88,11 @@ namespace TowerD.Client.Pieces.Unit
         public void Draw(CanvasContext2D context, int x, int y)
         {
             Drawer.Draw(context, X, Y);
+            foreach (var weapon in Weapons)
+            {
+                weapon.Draw(context,X,Y);
+            }
+
         }
 
         #endregion

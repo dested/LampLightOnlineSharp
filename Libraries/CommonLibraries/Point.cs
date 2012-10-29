@@ -53,5 +53,10 @@ namespace CommonLibraries
             Y += (int) scaleFactor;
             return this;
         }
+
+        public Point Clone()
+        {
+            return new Point(X, Y );
+        }
     }
 }

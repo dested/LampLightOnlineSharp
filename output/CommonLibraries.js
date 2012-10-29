@@ -209,6 +209,9 @@ $CommonLibraries_Point.add$1 = function($this, scaleFactor) {
 	$this.y += ss.Int32.trunc(scaleFactor);
 	return $CommonLibraries_DoublePoint.op_Implicit($this);
 };
+$CommonLibraries_Point.clone = function($this) {
+	return $CommonLibraries_Point.$ctor1($this.x, $this.y);
+};
 $CommonLibraries_Point.$ctor1 = function(x, y) {
 	var $this = {};
 	$this.x = 0;

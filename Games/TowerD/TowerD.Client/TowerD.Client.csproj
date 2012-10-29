@@ -116,8 +116,9 @@
     <Compile Include="Pieces\Towers\KingdomTower.cs" />
     <Compile Include="Pieces\Towers\SingeShotTower.cs" />
     <Compile Include="Pieces\Towers\Tower.cs" />
-    <Compile Include="Pieces\Unit\QuickShooterUnit.cs" />
-    <Compile Include="Pieces\Unit\Unit.cs" />
+    <Compile Include="Pieces\Units\QuickShooterUnit.cs" />
+    <Compile Include="Pieces\Units\Unit.cs" />
+    <Compile Include="Pieces\Weapons\GunWeapon.cs" />
     <Compile Include="Pieces\Weapons\Weapon.cs" />
     <Compile Include="WaypointMap.cs" />
   </ItemGroup>

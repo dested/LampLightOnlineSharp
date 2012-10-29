@@ -35,7 +35,7 @@ namespace TowerD.Client.Drawers
 
             for (int index = 0; index < items.Count; index++) {
                 var point = items[index];
-                var system = new ParticleSystem();
+                var system = new ParticleSystem(3);
 
                 int[] StartColors = null;
                 int[] EndColors = null;

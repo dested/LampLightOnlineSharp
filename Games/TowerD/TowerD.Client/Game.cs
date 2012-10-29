@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using ClientAPI;
@@ -7,7 +8,8 @@ using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using TowerD.Client.Pieces.Towers;
-using TowerD.Client.Pieces.Unit;
+
+using TowerD.Client.Pieces.Units;
 using jQueryApi;
 namespace TowerD.Client
 {
@@ -21,6 +23,7 @@ namespace TowerD.Client
         private Kingdom selectedKingdom;
         private Tower selectedTower;
         private Waypoint selectedWaypoint;
+        public static Game Instance;
         [IntrinsicProperty]
         public JsDictionary<string, Kingdom> Kingdoms { get; set; }
         [IntrinsicProperty]
@@ -30,6 +33,7 @@ namespace TowerD.Client
 
         public Game()
         {
+            Instance = this;
             DebugText = new object[0];
             WaypointMaps = new List<WaypointMap>();
             WaypointMaps.Add(new WaypointMap(Color.Red, Color.Green, new Waypoint[] {new Waypoint(4, 4), new Waypoint(40 - 4, 4)}, Scale));
@@ -158,11 +162,15 @@ namespace TowerD.Client
             manageData.AddControl(new Button(20, 80, 100, 25, "Send Wave") {
                                                                                    Click = (p) => {
                                                                                                foreach (var kingdom in Kingdoms) {
-                                                                                                   kingdom.Value.Units.AddRange(new List<Unit>() {
-                                                                                                                                                         new QuickShooterUnit(kingdom.Value.Waypoints[0].Travel(150, Scale), kingdom.Value.Color),
-                                                                                                                                                         new QuickShooterUnit(kingdom.Value.Waypoints[1].Travel(150, Scale), kingdom.Value.Color),
-                                                                                                                                                         new QuickShooterUnit(kingdom.Value.Waypoints[2].Travel(150, Scale), kingdom.Value.Color)
-                                                                                                                                                 });
+
+                                                                                                   for (int i = 0; i < 4; i++) {
+                                                                                                       KeyValuePair<string, Kingdom> kingdom1 = kingdom;
+                                                                                                       Window.SetTimeout(() => {
+                                                                                                           kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[0].Travel(150, Scale), kingdom1.Value));
+                                                                                                           kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[1].Travel(150, Scale), kingdom1.Value));
+                                                                                                           kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[2].Travel(150, Scale), kingdom1.Value));
+                                                                                                       }, 750*i);
+                                                                                                   }
                                                                                                }
                                                                                            }
                                                                            });
@@ -280,6 +288,8 @@ namespace TowerD.Client
 
         public override void Draw(CanvasContext2D context)
         {
+             
+
             foreach (var kingdom in Kingdoms) {
                 foreach (var tower in kingdom.Value.Towers) {
                     tower.Drawer.Draw(context, tower.X * Scale.X, tower.Y * Scale.Y);

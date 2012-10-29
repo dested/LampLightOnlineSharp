@@ -18,7 +18,7 @@ namespace TowerD.Client.Drawers
 
         public void Init()
         {
-            system = new ParticleSystem();
+            system = new ParticleSystem(20);
 
             system.Position = new Point(300, 190);
 
