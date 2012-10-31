@@ -95,7 +95,7 @@ namespace TowerD.Client.Drawers
 
                 system.Size = 9;
                 system.MaxParticles = 4;
-                system.LifeSpan = 4;
+                system.LifeSpan = 11;
                 system.LifeSpanRandom = 2;
                 system.Speed = 1;
                 system.Gravity = new DoublePoint(0, 0);

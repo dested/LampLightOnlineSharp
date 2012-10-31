@@ -4,9 +4,22 @@ var $CommonClientLibraries_CanvasInformation = function(context, domCanvas) {
 	this.context = null;
 	this.domCanvas = null;
 	this.canvas = null;
+	this.image = null;
+	this.imageReady = false;
 	this.context = context;
 	this.domCanvas = domCanvas;
 	this.canvas = domCanvas[0];
+};
+$CommonClientLibraries_CanvasInformation.prototype = {
+	ready: function() {
+		return;
+		var image = new Image();
+		image.addEventListener('load', Function.mkdel(this, function(e) {
+			this.image = image;
+			this.imageReady = true;
+		}), false);
+		image.src = Type.cast(this.canvas.toDataURL(), String);
+	}
 };
 $CommonClientLibraries_CanvasInformation.get_blackPixel = function() {
 	if (ss.isNullOrUndefined($CommonClientLibraries_CanvasInformation.$blackPixel)) {
@@ -171,8 +184,8 @@ $CommonClientLibraries_UIManager_CHelp.roundRect = function(ctx, x, y, width, he
 	ctx.restore();
 };
 $CommonClientLibraries_UIManager_CHelp.getCursorPosition = function(ev) {
-	if (!!(ev.targetTouches && ev.targetTouches.length > 0)) {
-		ev = ev.targetTouches[0];
+	if (!!(ev.originalEvent && ev.originalEvent.targetTouches && ev.originalEvent.targetTouches.length > 0)) {
+		ev = ev.originalEvent.targetTouches[0];
 	}
 	if (!!(ss.isValue(ev.pageX) && ss.isValue(ev.pageY))) {
 		return $CommonClientLibraries_UIManager_Pointer.$ctor(ev.pageX, ev.pageY, 0, ev.which === 3);

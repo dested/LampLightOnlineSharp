@@ -1,6 +1,7 @@
 using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
+using CommonLibraries;
 using jQueryApi;
 namespace CommonClientLibraries
 {
@@ -28,6 +29,10 @@ namespace CommonClientLibraries
                 return blackPixel;
             }
         }
+        [IntrinsicProperty]
+        public ImageElement Image { get; set; }
+        [IntrinsicProperty]
+        public bool ImageReady { get; set; }
 
         public CanvasInformation(CanvasContext2D context, jQueryObject domCanvas)
         {
@@ -35,6 +40,7 @@ namespace CommonClientLibraries
             DomCanvas = domCanvas;
             Canvas = (CanvasElement) domCanvas[0];
         }
+
 
         public static CanvasInformation Create(int w, int h)
         {
@@ -51,6 +57,19 @@ namespace CommonClientLibraries
 
             var ctx = (CanvasContext2D) canvas.GetContext("2d");
             return new CanvasInformation(ctx, jQuery.FromElement(canvas));
+        }
+
+        public void Ready()
+        {
+            return;
+            ImageElement image = new ImageElement();
+            image.AddEventListener("load",
+                                     e => {
+                                         Image = image; 
+                                         ImageReady = true;
+                                     },
+                                     false);
+            image.Src = Canvas.Me().toDataURL();
         }
     }
 }

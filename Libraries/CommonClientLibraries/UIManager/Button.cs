@@ -160,7 +160,7 @@ namespace CommonClientLibraries.UIManager
 
         public static Pointer GetCursorPosition(jQueryEvent ev)
         {
-            if (ev.Me().targetTouches && ev.Me().targetTouches.length > 0) ev = ev.Me().targetTouches[0];
+            if (ev.Me().originalEvent && ev.Me().originalEvent.targetTouches && ev.Me().originalEvent.targetTouches.length > 0) ev = ev.Me().originalEvent.targetTouches[0];
 
             if (ev.PageX.Me() != null && ev.PageY.Me() != null)
                 return new Pointer(ev.PageX, ev.PageY, 0, ev.Which == 3);

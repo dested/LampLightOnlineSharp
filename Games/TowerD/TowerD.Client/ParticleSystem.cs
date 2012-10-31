@@ -11,9 +11,9 @@ namespace TowerD.Client
         private readonly int myNumOfCaches;
         private int totalEmited;
         [IntrinsicProperty]
-        public int EmitCounter { get; set; }
+        public double EmitCounter { get; set; }
         [IntrinsicProperty]
-        public int EmissionRate { get; set; }
+        public double EmissionRate { get; set; }
         [IntrinsicProperty]
         public int Duration { get; set; }
         [IntrinsicProperty]
@@ -93,7 +93,7 @@ namespace TowerD.Client
 
         public void Init()
         {
-            EmissionRate = MaxParticles / LifeSpan;
+            EmissionRate = (double)MaxParticles / LifeSpan;
             EmitCounter = 0;
             BuildCaches();
         }

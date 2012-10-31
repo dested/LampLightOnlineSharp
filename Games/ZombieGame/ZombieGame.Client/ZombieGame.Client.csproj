@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{64947CA4-DF68-457B-8E0D-22139EF63DF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ZombieGame.Client</RootNamespace>
+    <AssemblyName>ZombieGame.Client</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NoStdLib>True</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debug all|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\debug all\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debugall|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\debugall\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.jQuery">
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.1.4.0\lib\Script.jQuery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Script.jQuery.UI">
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.UI.1.4.0\lib\Script.jQuery.UI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Script.Linq">
+      <HintPath>..\..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.Web">
+      <HintPath>..\..\..\packages\Saltarelle.Web.1.4.0.1\lib\Script.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\API\ClientAPI\ClientAPI.csproj">
+      <Project>{1A35F8BB-B5A5-429F-B693-4F2728488249}</Project>
+      <Name>ClientAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
+      <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
+      <Name>CommonClientLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\CommonLibraries\CommonLibraries.csproj">
+      <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
+      <Name>CommonLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\WebLibraries\CommonWebLibraries\CommonWebLibraries.csproj">
+      <Project>{6DA30112-FDBD-4E48-9F52-7268FCE19D25}</Project>
+      <Name>CommonWebLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ZombieGame.Common\ZombieGame.Common.csproj">
+      <Project>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</Project>
+      <Name>ZombieGame.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Game.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy $(TargetDir)*.js $(SolutionDir)Output\Games\ZombieGame</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

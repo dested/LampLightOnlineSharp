@@ -390,7 +390,7 @@ var $TowerD_Client_Particle = function() {
 $TowerD_Client_Particle.prototype = {
 	buildCache: function(delta, cache) {
 		this.$cache = cache;
-		if (ss.isValue(cache.images)) {
+		if (ss.isValue(cache.images) || $TowerD_Client_Game.DRAWFAST) {
 			return;
 		}
 		cache.images = [];
@@ -401,11 +401,13 @@ $TowerD_Client_Particle.prototype = {
 				$TowerD_Client_Game.debugText[0] = 0;
 			}
 			$TowerD_Client_Game.debugText[0] = ss.Nullable.unbox(Type.cast($TowerD_Client_Game.debugText[0], ss.Int32)) + 1;
-			var inf = CommonClientLibraries.CanvasInformation.create(ss.Int32.trunc(this.size * 2), ss.Int32.trunc(this.size * 2));
+			var inf = CommonClientLibraries.CanvasInformation.create(ss.Int32.trunc(this.size), ss.Int32.trunc(this.size));
 			var old = this.position;
-			this.position = CommonLibraries.Point.$ctor1(ss.Int32.trunc(this.size), ss.Int32.trunc(this.size));
+			var halfSize = ss.Int32.trunc(this.size) >> 1;
+			this.position = CommonLibraries.Point.$ctor1(ss.Int32.div(ss.Int32.trunc(this.size), 2) - halfSize, ss.Int32.div(ss.Int32.trunc(this.size), 2) - halfSize);
 			this.render(inf.context, true);
 			this.position = old;
+			inf.ready();
 			cache.images.add(inf);
 		}
 		this.timeToLive = timetolive;
@@ -440,7 +442,6 @@ $TowerD_Client_Particle.prototype = {
 		this.direction = CommonLibraries.DoublePoint.add(this.direction, this.system.gravity);
 		this.position = CommonLibraries.Point.add(this.position, this.direction);
 		return this.$progress(delta);
-		return true;
 	},
 	render: function(context, force) {
 		var x = this.position.x;
@@ -450,7 +451,7 @@ $TowerD_Client_Particle.prototype = {
 		if ($TowerD_Client_Game.DRAWFAST) {
 			this.$drawCircle(context, this.$obtainGradient(context, this), this.size);
 		}
-		else if (force) {
+		else if (force || ss.isNullOrUndefined(this.$cache.images)) {
 			$TowerD_Client_Particle.$drawGrad(context, this.$obtainGradient(context, this), this.size);
 		}
 		else {
@@ -487,7 +488,12 @@ $TowerD_Client_Particle.$drawGrad = function(context, radgrad, size) {
 	context.fillRect(0, 0, size, size);
 };
 $TowerD_Client_Particle.$drawImage = function(context, inf, size) {
-	context.drawImage(inf.canvas, -size, -size);
+	if (inf.imageReady) {
+		context.drawImage(inf.image, 0, 0);
+	}
+	else {
+		context.drawImage(inf.canvas, 0, 0);
+	}
 };
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.ParticleSystem
@@ -551,7 +557,7 @@ var $TowerD_Client_ParticleSystem = function(numOfCaches) {
 };
 $TowerD_Client_ParticleSystem.prototype = {
 	init: function() {
-		this.emissionRate = ss.Int32.div(this.maxParticles, this.lifeSpan);
+		this.emissionRate = this.maxParticles / this.lifeSpan;
 		this.emitCounter = 0;
 		this.$buildCaches();
 	},
@@ -624,7 +630,7 @@ $TowerD_Client_ParticleSystem.prototype = {
 			this.active = false;
 		}
 		if (this.active && this.emissionRate > 0) {
-			var rate = ss.Int32.div(1, this.emissionRate);
+			var rate = 1 / this.emissionRate;
 			this.emitCounter += delta;
 			while (this.particles.length < this.maxParticles && this.emitCounter > rate) {
 				this.addParticle();
@@ -949,7 +955,7 @@ $TowerD_Client_Drawers_ColorWaypointDrawer.prototype = {
 			system.endColor = EndColors;
 			system.size = 9;
 			system.maxParticles = 4;
-			system.lifeSpan = 4;
+			system.lifeSpan = 11;
 			system.lifeSpanRandom = 2;
 			system.speed = 1;
 			system.gravity = CommonLibraries.DoublePoint.$ctor1(0, 0);

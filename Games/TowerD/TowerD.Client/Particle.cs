@@ -46,7 +46,7 @@ namespace TowerD.Client
         {
 
             this.cache = cache;
-            if (cache.Images!=null) {
+            if (cache.Images!=null || Game.DRAWFAST) {
                 return;
             }
             cache.Images=new List<CanvasInformation>();
@@ -59,13 +59,17 @@ namespace TowerD.Client
                     Game.DebugText[0] = (int)Game.DebugText[0] + 1;
 
 
-                    var inf = CanvasInformation.Create((int)(Size * 2), (int)(Size * 2));
+                    var inf = CanvasInformation.Create((int)(Size ), (int)(Size ));
               
 
                     var old = Position;
-                    Position = new Point((int)Size, (int)Size);
+                    var halfSize = (int)Size >> 1;
+
+                    Position = new Point((int)Size / 2 - halfSize, (int)Size / 2 - halfSize);
                     Render(inf.Context,true);
                     Position = old;
+
+                inf.Ready();
 
                     cache.Images.Add( inf);
                 
@@ -108,11 +112,11 @@ namespace TowerD.Client
             Position = Position.Add(Direction);
 
             return progress(delta);
-            return true;
         }
 
         public void Render(CanvasContext2D context,bool force)
         {
+
             var x = Position.X;
             var y = Position.Y;
 
@@ -126,7 +130,7 @@ namespace TowerD.Client
             }
             else
             {
-                if (force)
+                if (force || this.cache.Images==null)
                     drawGrad(context, obtainGradient(context, this), Size);
                 else
                     drawImage(context, this.cache.Images[curGradIndex++], Size);
@@ -153,7 +157,14 @@ namespace TowerD.Client
 
         private static void drawImage(CanvasContext2D context, CanvasInformation inf, double size)
         {
-            context.DrawImage(inf.Canvas, -size, -size);
+            
+            if (inf.ImageReady)
+            {
+                context.DrawImage(inf.Image , 0, 0);
+            }
+            else {
+                context.DrawImage(inf.Canvas, 0, 0);
+            }
         }
 
         private object obtainGradient(CanvasContext2D context, Particle particle)
