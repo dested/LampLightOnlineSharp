@@ -4,6 +4,7 @@ using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using TowerD.Client;
+using WebLibraries;
 using jQueryApi;
 namespace Client
 {
@@ -15,6 +16,7 @@ namespace Client
         public GameManager()
         {
             game = new Game();
+
         }
 
         public bool MouseMove(jQueryEvent queryEvent)
@@ -51,6 +53,7 @@ namespace Client
         {
             game.WindowLocation = WindowLocation;
             game.Init(new LampPlayer[0], context);
+            game.BindKeys(KeyboardJS.Instance());
         }
     }
 }

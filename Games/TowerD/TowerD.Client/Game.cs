@@ -8,7 +8,6 @@ using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using TowerD.Client.Pieces.Towers;
-
 using TowerD.Client.Pieces.Units;
 using jQueryApi;
 namespace TowerD.Client
@@ -16,6 +15,7 @@ namespace TowerD.Client
     public class Game : LampClient
     {
         public static bool DRAWFAST;
+        public static Game Instance;
         public Point Scale = new Point(40, 30);
         private bool clicking = false;
         private Button<int> myClickState;
@@ -23,7 +23,6 @@ namespace TowerD.Client
         private Kingdom selectedKingdom;
         private Tower selectedTower;
         private Waypoint selectedWaypoint;
-        public static Game Instance;
         [IntrinsicProperty]
         public JsDictionary<string, Kingdom> Kingdoms { get; set; }
         [IntrinsicProperty]
@@ -162,14 +161,14 @@ namespace TowerD.Client
             manageData.AddControl(new Button(20, 80, 100, 25, "Send Wave") {
                                                                                    Click = (p) => {
                                                                                                foreach (var kingdom in Kingdoms) {
-
                                                                                                    for (int i = 0; i < 4; i++) {
                                                                                                        KeyValuePair<string, Kingdom> kingdom1 = kingdom;
                                                                                                        Window.SetTimeout(() => {
-                                                                                                           kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[0].Travel(150, Scale), kingdom1.Value));
-                                                                                                           kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[1].Travel(150, Scale), kingdom1.Value));
-                                                                                                           kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[2].Travel(150, Scale), kingdom1.Value));
-                                                                                                       }, 750*i);
+                                                                                                                             kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[0].Travel(150, Scale), kingdom1.Value));
+                                                                                                                             kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[1].Travel(150, Scale), kingdom1.Value));
+                                                                                                                             kingdom1.Value.Units.Add(new QuickShooterUnit(kingdom1.Value.Waypoints[2].Travel(150, Scale), kingdom1.Value));
+                                                                                                                         },
+                                                                                                                         750 * i);
                                                                                                    }
                                                                                                }
                                                                                            }
@@ -288,8 +287,6 @@ namespace TowerD.Client
 
         public override void Draw(CanvasContext2D context)
         {
-             
-
             foreach (var kingdom in Kingdoms) {
                 foreach (var tower in kingdom.Value.Towers) {
                     tower.Drawer.Draw(context, tower.X * Scale.X, tower.Y * Scale.Y);

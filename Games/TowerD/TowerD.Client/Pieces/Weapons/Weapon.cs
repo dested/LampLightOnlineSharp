@@ -10,7 +10,6 @@ namespace TowerD.Client.Pieces.Weapons
         int Cooldown { get; set; }
         int Stength { get; set; }
         WeaponDrawer Drawer { get; set; }
-
         bool Tick();
         void Draw(CanvasContext2D context, int x, int y);
     }

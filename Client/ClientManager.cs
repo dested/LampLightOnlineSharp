@@ -44,9 +44,9 @@ namespace Client
             resizeCanvas();
             int a = 0;
             Window.SetInterval(() => {
-                a++;
-                a++;
-                a++;
+                                   a++;
+                                   a++;
+                                   a++;
                                },
                                1000 / 60);
             Window.SetInterval(Tick, 1000 / 60);

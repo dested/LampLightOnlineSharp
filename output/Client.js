@@ -33,6 +33,7 @@ $Client_$GameManager.prototype = {
 	$start: function(context) {
 		this.$game.windowLocation = this.get_$windowLocation();
 		this.$game.init([], context);
+		this.$game.bindKeys(KeyboardJS);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,8 +54,8 @@ var $Client_ClientManager = function() {
 	elem.parentNode.removeChild(elem);
 	var stats = new xStats();
 	document.body.appendChild(stats.element);
-	this.$gameCanvas = CommonClientLibraries.CanvasInformation.create$1(document.getElementById(this.$gameCanvasName), 0, 0);
-	this.$uiCanvas = CommonClientLibraries.CanvasInformation.create$1(document.getElementById(this.$uiCanvasName), 0, 0);
+	this.$gameCanvas = CommonClientLibraries.CanvasInformation.create$3(document.getElementById(this.$gameCanvasName), 0, 0);
+	this.$uiCanvas = CommonClientLibraries.CanvasInformation.create$3(document.getElementById(this.$uiCanvasName), 0, 0);
 	this.uiManager = new CommonClientLibraries.UIManager.UIManager();
 	this.$gameManager = new $Client_$GameManager();
 	this.$bindInput();

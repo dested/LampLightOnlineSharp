@@ -94,7 +94,7 @@
       <Name>CommonWebLibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\ZombieGame.Common\ZombieGame.Common.csproj">
-      <Project>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</Project>
+      <Project>{095442DE-167D-4051-BEB5-B20890BD471C}</Project>
       <Name>ZombieGame.Common</Name>
     </ProjectReference>
   </ItemGroup>
@@ -103,6 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="GameMap.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="thing to know.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />

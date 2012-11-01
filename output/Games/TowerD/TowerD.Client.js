@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Color
 var $TowerD_Client_Color = function() {
 };
@@ -369,6 +369,7 @@ $TowerD_Client_Kingdom.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Particle
 var $TowerD_Client_Particle = function() {
+	this.$cache = null;
 	this.$curGradIndex = 0;
 	this.system = null;
 	this.position = null;
@@ -381,7 +382,6 @@ var $TowerD_Client_Particle = function() {
 	this.deltaColor = null;
 	this.drawColor = null;
 	this.drawColorTransparent = null;
-	this.$cache = null;
 	this.position = CommonLibraries.Point.$ctor1(0, 0);
 	this.direction = CommonLibraries.DoublePoint.$ctor1(0, 0);
 	this.deltaColor = new Array(4);
@@ -401,7 +401,7 @@ $TowerD_Client_Particle.prototype = {
 				$TowerD_Client_Game.debugText[0] = 0;
 			}
 			$TowerD_Client_Game.debugText[0] = ss.Nullable.unbox(Type.cast($TowerD_Client_Game.debugText[0], ss.Int32)) + 1;
-			var inf = CommonClientLibraries.CanvasInformation.create(ss.Int32.trunc(this.size), ss.Int32.trunc(this.size));
+			var inf = CommonClientLibraries.CanvasInformation.create$2(ss.Int32.trunc(this.size), ss.Int32.trunc(this.size));
 			var old = this.position;
 			var halfSize = ss.Int32.trunc(this.size) >> 1;
 			this.position = CommonLibraries.Point.$ctor1(ss.Int32.div(ss.Int32.trunc(this.size), 2) - halfSize, ss.Int32.div(ss.Int32.trunc(this.size), 2) - halfSize);
@@ -499,6 +499,9 @@ $TowerD_Client_Particle.$drawImage = function(context, inf, size) {
 // TowerD.Client.ParticleSystem
 var $TowerD_Client_ParticleSystem = function(numOfCaches) {
 	this.$myNumOfCaches = 0;
+	this.$caches = [];
+	this.$curRand = ss.Int32.trunc(Math.random() * 100);
+	this.$tick = 0;
 	this.$totalEmited = 0;
 	this.emitCounter = 0;
 	this.emissionRate = 0;
@@ -524,10 +527,7 @@ var $TowerD_Client_ParticleSystem = function(numOfCaches) {
 	this.active = false;
 	this.particles = null;
 	this.maxParticles = 0;
-	this.$tick = 0;
-	this.$curRand = ss.Int32.trunc(Math.random() * 100);
 	this.maxEmitted = 0;
-	this.$caches = [];
 	this.$myNumOfCaches = numOfCaches;
 	this.maxParticles = 150;
 	this.particles = [];
@@ -987,8 +987,8 @@ $TowerD_Client_Drawers_Drawer.prototype = { init: null, tick: null, draw: null }
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Drawers.GunWeaponDrawer
 var $TowerD_Client_Drawers_GunWeaponDrawer = function() {
-	this.$system = null;
 	this.$projectiles = [];
+	this.$system = null;
 };
 $TowerD_Client_Drawers_GunWeaponDrawer.prototype = {
 	init: function() {
@@ -1459,15 +1459,15 @@ $TowerD_Client_Pieces_Units_Unit.prototype = { get_weapons: null, set_weapons: n
 ////////////////////////////////////////////////////////////////////////////////
 // TowerD.Client.Pieces.Weapons.GunWeapon
 var $TowerD_Client_Pieces_Weapons_GunWeapon = function(unit) {
-	this.$1$UnitField = null;
 	this.$cooldownTimer = 0;
+	this.$curTarget = null;
+	this.$1$UnitField = null;
 	this.$1$RangeField = 0;
 	this.$1$OffsetXField = 0;
 	this.$1$OffsetYField = 0;
 	this.$1$CooldownField = 0;
 	this.$1$StengthField = 0;
 	this.$1$DrawerField = null;
-	this.$curTarget = null;
 	this.set_$unit(unit);
 	this.set_drawer(new $TowerD_Client_Drawers_GunWeaponDrawer());
 	this.get_drawer().init();
@@ -1589,4 +1589,4 @@ Type.registerClass(global, 'TowerD.Client.Pieces.Weapons.GunWeapon', $TowerD_Cli
 $TowerD_Client_Game.DRAWFAST = false;
 $TowerD_Client_Game.instance = null;
 $TowerD_Client_Game.debugText = null;
-$TowerD_Client_Particle.$info = CommonClientLibraries.CanvasInformation.create(300, 300);
+$TowerD_Client_Particle.$info = CommonClientLibraries.CanvasInformation.create$2(300, 300);

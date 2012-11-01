@@ -1,0 +1,4 @@
+﻿
+JsDictionary<T,T2> commonly 
+	JsDictionary<string,SomeObject> someHash;
+

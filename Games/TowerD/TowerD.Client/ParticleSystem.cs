@@ -9,6 +9,9 @@ namespace TowerD.Client
     public class ParticleSystem
     {
         private readonly int myNumOfCaches;
+        private List<ParticleSystemCache> caches = new List<ParticleSystemCache>();
+        private int curRand = (int) ( Math.Random() * 100 );
+        private int tick;
         private int totalEmited;
         [IntrinsicProperty]
         public double EmitCounter { get; set; }
@@ -58,6 +61,8 @@ namespace TowerD.Client
         public List<Particle> Particles { get; set; }
         [IntrinsicProperty]
         public int MaxParticles { get; set; }
+        [IntrinsicProperty]
+        public int MaxEmitted { get; set; }
 
         public ParticleSystem(int numOfCaches)
         {
@@ -93,19 +98,16 @@ namespace TowerD.Client
 
         public void Init()
         {
-            EmissionRate = (double)MaxParticles / LifeSpan;
+            EmissionRate = (double) MaxParticles / LifeSpan;
             EmitCounter = 0;
             BuildCaches();
         }
-        int tick;
-        private int curRand = (int) ( Math.Random()*100 );
+
         public Particle AddParticle()
         {
             if (Particles.Count == MaxParticles) return null;
 
-
-            if (tick++ % curRand == 0)
-            {
+            if (tick++ % curRand == 0) {
                 caches[(int) ( ( caches.Count - 1 ) * Math.Random() )] = newCache();
                 curRand = (int) ( Math.Random() * 100 );
             }
@@ -118,37 +120,15 @@ namespace TowerD.Client
             return particle;
         }
 
-        [IntrinsicProperty]
-        public int MaxEmitted { get; set; }
-
         private static double Random()
         {
             return Math.Random() * 2 - 1;
         }
 
-        public class ParticleSystemCache
-        {
-            [IntrinsicProperty]
-            public int Size { get; set; }
-            [IntrinsicProperty]
-            public int TimeToLive { get; set; }
-            [IntrinsicProperty]
-            public double Sharpness { get; set; }
-            [IntrinsicProperty]
-            public double[] Start { get; set; }
-            [IntrinsicProperty]
-            public double[] End { get; set; }
-            [IntrinsicProperty]
-            public List<CanvasInformation> Images { get; set; }
-         }
-        private List<ParticleSystemCache> caches = new List<ParticleSystemCache>();
-
         private void BuildCaches()
         {
-            for (int i = 0; i < myNumOfCaches; i++)
-            {
+            for (int i = 0; i < myNumOfCaches; i++) {
                 caches.Add(newCache());
-
             }
         }
 
@@ -158,18 +138,18 @@ namespace TowerD.Client
                                                      Size = (int) ( Size + SizeRandom * Random() ),
                                                      TimeToLive = ( (int) ( LifeSpan + LifeSpanRandom * Random() ) ),
                                                      Sharpness = Sharpness + SharpnessRandom * Random(),
-                                                     Start = new[]{
-                                                                          StartColor[0] + StartColorRandom[0] * Random(),
-                                                                          StartColor[1] + StartColorRandom[1] * Random(),
-                                                                          StartColor[2] + StartColorRandom[2] * Random(),
-                                                                          StartColor[3] + StartColorRandom[3] * Random()
-                                                                  },
-                                                     End = new[]{
-                                                                        EndColor[0] + EndColorRandom[0] * Random(),
-                                                                        EndColor[1] + EndColorRandom[1] * Random(),
-                                                                        EndColor[2] + EndColorRandom[2] * Random(),
-                                                                        EndColor[3] + EndColorRandom[3] * Random()
-                                                                }
+                                                     Start = new[] {
+                                                                           StartColor[0] + StartColorRandom[0] * Random(),
+                                                                           StartColor[1] + StartColorRandom[1] * Random(),
+                                                                           StartColor[2] + StartColorRandom[2] * Random(),
+                                                                           StartColor[3] + StartColorRandom[3] * Random()
+                                                                   },
+                                                     End = new[] {
+                                                                         EndColor[0] + EndColorRandom[0] * Random(),
+                                                                         EndColor[1] + EndColorRandom[1] * Random(),
+                                                                         EndColor[2] + EndColorRandom[2] * Random(),
+                                                                         EndColor[3] + EndColorRandom[3] * Random()
+                                                                 }
                                              };
         }
 
@@ -177,7 +157,6 @@ namespace TowerD.Client
         {
             return caches[(int) ( Math.Random() * ( caches.Count - 1 ) )];
         }
-
 
         private void initParticle(Particle particle)
         {
@@ -221,9 +200,7 @@ namespace TowerD.Client
 
         public void Update(int delta)
         {
-            if (MaxEmitted != -1 && totalEmited > MaxEmitted) {
-                Active = false;
-            }
+            if (MaxEmitted != -1 && totalEmited > MaxEmitted) Active = false;
             if (Active && EmissionRate > 0) {
                 var rate = 1 / EmissionRate;
                 EmitCounter += delta;
@@ -255,8 +232,28 @@ namespace TowerD.Client
         public void Render(CanvasContext2D context)
         {
             foreach (var particle in Particles) {
-                particle.Render(context,false);
+                particle.Render(context, false);
             }
         }
+
+        #region Nested type: ParticleSystemCache
+
+        public class ParticleSystemCache
+        {
+            [IntrinsicProperty]
+            public int Size { get; set; }
+            [IntrinsicProperty]
+            public int TimeToLive { get; set; }
+            [IntrinsicProperty]
+            public double Sharpness { get; set; }
+            [IntrinsicProperty]
+            public double[] Start { get; set; }
+            [IntrinsicProperty]
+            public double[] End { get; set; }
+            [IntrinsicProperty]
+            public List<CanvasInformation> Images { get; set; }
+        }
+
+        #endregion
     }
 }

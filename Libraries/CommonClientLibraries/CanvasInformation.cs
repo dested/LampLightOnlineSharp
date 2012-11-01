@@ -41,7 +41,6 @@ namespace CommonClientLibraries
             Canvas = (CanvasElement) domCanvas[0];
         }
 
-
         public static CanvasInformation Create(int w, int h)
         {
             var canvas = (CanvasElement) Document.CreateElement("canvas");
@@ -64,12 +63,32 @@ namespace CommonClientLibraries
             return;
             ImageElement image = new ImageElement();
             image.AddEventListener("load",
-                                     e => {
-                                         Image = image; 
-                                         ImageReady = true;
-                                     },
-                                     false);
+                                   e => {
+                                       Image = image;
+                                       ImageReady = true;
+                                   },
+                                   false);
             image.Src = Canvas.Me().toDataURL();
+        }
+
+        public static CanvasInformation Create(ImageElement tileImage)
+        {
+
+            var item = Create(tileImage.Width, tileImage.Height);
+
+            item.Context.DrawImage(tileImage,0,0);
+
+            return item;
+        }
+
+        public static CanvasInformation Create(ImageData imageData)
+        {
+
+            var item = Create(imageData.Width, imageData.Height);
+            item.Context.PutImageData(imageData, 0, 0);
+
+            return item;
+
         }
     }
 }

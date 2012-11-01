@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
+using WebLibraries;
 using jQueryApi;
 namespace ClientAPI
 {
@@ -17,7 +18,12 @@ namespace ClientAPI
             return false;
         }
 
+        
+
         public virtual void BuildUI(UIManager manager) {}
+
+
+        public virtual void BindKeys(KeyboardJS manager) {}
 
         public virtual bool OnClick(jQueryEvent jQueryEvent)
         {

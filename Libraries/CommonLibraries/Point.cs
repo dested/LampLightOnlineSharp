@@ -56,7 +56,7 @@ namespace CommonLibraries
 
         public Point Clone()
         {
-            return new Point(X, Y );
+            return new Point(X, Y);
         }
     }
 }

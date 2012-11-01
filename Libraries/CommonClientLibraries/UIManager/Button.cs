@@ -1,3 +1,5 @@
+using System;
+using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using CommonLibraries;
@@ -166,6 +168,14 @@ namespace CommonClientLibraries.UIManager
                 return new Pointer(ev.PageX, ev.PageY, 0, ev.Which == 3);
             //if (ev.x != null && ev.y != null) return new { x: ev.x, y: ev.y };
             return new Pointer(ev.ClientX, ev.ClientY, 0, ev.Which == 3);
+        }
+
+        public static void LoadImageFromFile(string tileMapFile, Action<ImageElement> loaded)
+        {
+            ImageElement element = new ImageElement();
+            element.AddEventListener("load", e => { loaded(element); }, false);
+            element.Src = tileMapFile;
+
         }
     }
 }

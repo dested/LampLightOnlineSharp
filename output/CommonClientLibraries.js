@@ -23,18 +23,18 @@ $CommonClientLibraries_CanvasInformation.prototype = {
 };
 $CommonClientLibraries_CanvasInformation.get_blackPixel = function() {
 	if (ss.isNullOrUndefined($CommonClientLibraries_CanvasInformation.$blackPixel)) {
-		var m = $CommonClientLibraries_CanvasInformation.create(0, 0);
+		var m = $CommonClientLibraries_CanvasInformation.create$2(0, 0);
 		m.context.fillStyle = 'black';
 		m.context.fillRect(0, 0, 1, 1);
 		$CommonClientLibraries_CanvasInformation.$blackPixel = m.canvas;
 	}
 	return $CommonClientLibraries_CanvasInformation.$blackPixel;
 };
-$CommonClientLibraries_CanvasInformation.create = function(w, h) {
+$CommonClientLibraries_CanvasInformation.create$2 = function(w, h) {
 	var canvas = document.createElement('canvas');
-	return $CommonClientLibraries_CanvasInformation.create$1(canvas, w, h);
+	return $CommonClientLibraries_CanvasInformation.create$3(canvas, w, h);
 };
-$CommonClientLibraries_CanvasInformation.create$1 = function(canvas, w, h) {
+$CommonClientLibraries_CanvasInformation.create$3 = function(canvas, w, h) {
 	if (w === 0) {
 		w = 1;
 	}
@@ -45,6 +45,16 @@ $CommonClientLibraries_CanvasInformation.create$1 = function(canvas, w, h) {
 	canvas.height = h;
 	var ctx = canvas.getContext('2d');
 	return new $CommonClientLibraries_CanvasInformation(ctx, $(canvas));
+};
+$CommonClientLibraries_CanvasInformation.create = function(tileImage) {
+	var item = $CommonClientLibraries_CanvasInformation.create$2(tileImage.width, tileImage.height);
+	item.context.drawImage(tileImage, 0, 0);
+	return item;
+};
+$CommonClientLibraries_CanvasInformation.create$1 = function(imageData) {
+	var item = $CommonClientLibraries_CanvasInformation.create$2(imageData.width, imageData.height);
+	item.context.putImageData(imageData, 0, 0);
+	return item;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonClientLibraries.UIManager.Button
@@ -73,7 +83,7 @@ var $CommonClientLibraries_UIManager_Button = function(x, y, width, height, text
 $CommonClientLibraries_UIManager_Button.prototype = {
 	construct: function() {
 		$CommonClientLibraries_UIManager_Element.prototype.construct.call(this);
-		var canv = $CommonClientLibraries_CanvasInformation.create(1, 1).context;
+		var canv = $CommonClientLibraries_CanvasInformation.create$2(1, 1).context;
 		this.button1Grad = canv.createLinearGradient(0, 0, 0, 1);
 		this.button1Grad.addColorStop(0, '#FFFFFF');
 		this.button1Grad.addColorStop(1, '#A5A5A5');
@@ -192,6 +202,13 @@ $CommonClientLibraries_UIManager_CHelp.getCursorPosition = function(ev) {
 	}
 	//if (ev.x != null && ev.y != null) return new { x: ev.x, y: ev.y };
 	return $CommonClientLibraries_UIManager_Pointer.$ctor(ev.clientX, ev.clientY, 0, ev.which === 3);
+};
+$CommonClientLibraries_UIManager_CHelp.loadImageFromFile = function(tileMapFile, loaded) {
+	var element = new Image();
+	element.addEventListener('load', function(e) {
+		loaded(element);
+	}, false);
+	element.src = tileMapFile;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonClientLibraries.UIManager.EditorEngine
@@ -823,7 +840,7 @@ var $CommonClientLibraries_UIManager_ImageButton = function(x, y, width, height)
 $CommonClientLibraries_UIManager_ImageButton.prototype = {
 	construct: function() {
 		$CommonClientLibraries_UIManager_Element.prototype.construct.call(this);
-		var canv = $CommonClientLibraries_CanvasInformation.create(1, 1).context;
+		var canv = $CommonClientLibraries_CanvasInformation.create$2(1, 1).context;
 		this.button1Grad = canv.createLinearGradient(0, 0, 0, 1);
 		this.button1Grad.addColorStop(0, '#FFFFFF');
 		this.button1Grad.addColorStop(1, '#A5A5A5');
@@ -1659,7 +1676,7 @@ var $CommonClientLibraries_UIManager_TextBox = function(x, y, width, height, tex
 $CommonClientLibraries_UIManager_TextBox.prototype = {
 	construct: function() {
 		$CommonClientLibraries_UIManager_Element.prototype.construct.call(this);
-		var canv = $CommonClientLibraries_CanvasInformation.create(1, 1).context;
+		var canv = $CommonClientLibraries_CanvasInformation.create$2(1, 1).context;
 		this.button1Grad = canv.createLinearGradient(0, 0, 0, 1);
 		this.button1Grad.addColorStop(0, '#FFFFFF');
 		this.button1Grad.addColorStop(1, '#A5A5A5');
@@ -1956,7 +1973,7 @@ $CommonClientLibraries_UIManager_UIArea.prototype = {
 		}
 		canv.save();
 		if (!this.cachedDrawing) {
-			var cg = $CommonClientLibraries_CanvasInformation.create(this.width + 20, this.height + 20);
+			var cg = $CommonClientLibraries_CanvasInformation.create$2(this.width + 20, this.height + 20);
 			var cv = cg.context;
 			cv.translate(10, 10);
 			var lingrad = cv.createLinearGradient(0, 0, 0, this.height);

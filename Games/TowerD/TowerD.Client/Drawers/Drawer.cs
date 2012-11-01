@@ -7,7 +7,8 @@ namespace TowerD.Client.Drawers
         void ResetSpeed();
         void MagnifySpeed(double rate);
     }
-    public interface WeaponDrawer : Drawer {
+    public interface WeaponDrawer : Drawer
+    {
         void AddProjectile(int x, int y);
     }
     public interface ShieldDrawer : Drawer {}

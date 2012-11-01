@@ -6,7 +6,7 @@ using TowerD.Client.Pieces.Shields;
 using TowerD.Client.Pieces.Weapons;
 namespace TowerD.Client.Pieces.Units
 {
-    public class QuickShooterUnit : Units.Unit
+    public class QuickShooterUnit : Unit
     {
         private int ind;
         private int spinDownTimer;
@@ -88,11 +88,9 @@ namespace TowerD.Client.Pieces.Units
         public void Draw(CanvasContext2D context, int x, int y)
         {
             Drawer.Draw(context, X, Y);
-            foreach (var weapon in Weapons)
-            {
-                weapon.Draw(context,X,Y);
+            foreach (var weapon in Weapons) {
+                weapon.Draw(context, X, Y);
             }
-
         }
 
         #endregion

@@ -6,10 +6,8 @@ namespace TowerD.Client.Drawers
 {
     public class GunWeaponDrawer : WeaponDrawer
     {
-        private ParticleSystem system;
-
         private List<ParticleSystem> projectiles = new List<ParticleSystem>();
-
+        private ParticleSystem system;
         public GunWeaponDrawer() {}
 
         #region WeaponDrawer Members
@@ -31,10 +29,8 @@ namespace TowerD.Client.Drawers
         public void Tick()
         {
             system.Update(1);
-            foreach (var particleSystem in projectiles)
-            {
+            foreach (var particleSystem in projectiles) {
                 particleSystem.Update(1);
-
             }
         }
 
@@ -42,42 +38,33 @@ namespace TowerD.Client.Drawers
         {
             system.Position.X = x;
             system.Position.Y = y;
-       //     system.Render(context);
+            //     system.Render(context);
 
-            foreach (var particleSystem in projectiles)
-            {
+            foreach (var particleSystem in projectiles) {
                 particleSystem.Render(context);
             }
-
         }
 
         public void AddProjectile(int x, int y)
         {
+            var proj = new ParticleSystem(6);
 
-
-
-
-
-
-           var  proj = new ParticleSystem(6);
-
-           proj.Position = system.Position.Clone();
-            proj.StartColor = new int[] { 127, 0, 0, 1 };
-            proj.EndColor = new int[] { 127, 55, 0, 1 }; 
+            proj.Position = system.Position.Clone();
+            proj.StartColor = new int[] {127, 0, 0, 1};
+            proj.EndColor = new int[] {127, 55, 0, 1};
             proj.Size = 15;
             proj.MaxParticles = 25;
             proj.LifeSpan = 25;
             double angle = Math.Atan2(-y - proj.Position.Y, -x - proj.Position.X) / Math.PI * 180 + 180;
 
-            proj.Angle = (int)(angle);
+            proj.Angle = (int) ( angle );
             proj.AngleRandom = 10;
             proj.MaxEmitted = 10;
             proj.Speed = 10;
-            proj.Gravity =new DoublePoint(0,0);
+            proj.Gravity = new DoublePoint(0, 0);
             proj.Init();
 
             projectiles.Add(proj);
-
         }
 
         #endregion

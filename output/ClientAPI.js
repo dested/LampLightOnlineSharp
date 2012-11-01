@@ -11,6 +11,8 @@ $ClientAPI_LampClient.prototype = {
 	},
 	buildUI: function(manager) {
 	},
+	bindKeys: function(manager) {
+	},
 	onClick: function(jQueryEvent) {
 		return false;
 	},
