@@ -2,8 +2,7 @@
 using ClientAPI;
 using CommonAPI;
 using CommonClientLibraries.UIManager;
-using CommonLibraries;
-using TowerD.Client;
+using CommonLibraries; 
 using WebLibraries;
 using jQueryApi;
 namespace Client
@@ -15,7 +14,8 @@ namespace Client
 
         public GameManager()
         {
-            game = new Game();
+          //  game = new TowerD.Client.Game();
+            game = new ZombieGame.Client.Game();
 
         }
 

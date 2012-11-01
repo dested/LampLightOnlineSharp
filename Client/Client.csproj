@@ -54,6 +54,17 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugZombie|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugZombie\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -100,6 +111,14 @@
     <ProjectReference Include="..\Games\TowerD\TowerD.Common\TowerD.Common.csproj">
       <Project>{C867C57E-BACE-4BDA-869D-AB34B8C32315}</Project>
       <Name>TowerD.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Games\ZombieGame\ZombieGame.Client\ZombieGame.Client.csproj">
+      <Project>{64947CA4-DF68-457B-8E0D-22139EF63DF9}</Project>
+      <Name>ZombieGame.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Games\ZombieGame\ZombieGame.Common\ZombieGame.Common.csproj">
+      <Project>{095442DE-167D-4051-BEB5-B20890BD471C}</Project>
+      <Name>ZombieGame.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
       <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>

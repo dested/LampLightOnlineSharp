@@ -1,4 +1,4 @@
 ﻿
-JsDictionary<T,T2> commonly 
+JsDictionary<T,T2> is just a normal Dictionary 
 	JsDictionary<string,SomeObject> someHash;
 

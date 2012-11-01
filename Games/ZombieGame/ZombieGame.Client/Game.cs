@@ -6,6 +6,7 @@ using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using WebLibraries;
+using ZombieGame.Common.JSONObjects;
 using jQueryApi;
 namespace ZombieGame.Client
 {
@@ -36,7 +37,54 @@ namespace ZombieGame.Client
 
         public override void Init(LampPlayer[] players, CanvasContext2D context)
         {
+
             myPlayers = players;
+
+
+
+            gameManager.LoadTiles(new JsonTileMap() {
+                                                            Name = "Pretty",
+                                                            TileWidth = 32,
+                                                            TileHeight = 32,
+                                                            TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/forestground06dv5_0.png"
+                                                    },() => {
+
+                                                          gameManager.LoadTiles(new JsonTileMap() {
+                                                                                                          Name = "Pretty2",
+                                                                                                          TileWidth = 32,
+                                                                                                          TileHeight = 32,
+                                                                                                          TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png"
+                                                                                                  },
+                                                                                () => {
+                                                                                    gameManager.LoadMap(new JsonMap() {
+                                                                                                                              MapWidth = 19,
+                                                                                                                              MapHeight = 21,
+                                                                                                                              Name = "Pretties",
+                                                                                                                              TileMap = makeFakeMap("Pretty", 19, 21)
+                                                                                                                      });
+                                                                                    gameManager.LoadMap(new JsonMap() {
+                                                                                                                              MapWidth = 12,
+                                                                                                                              MapHeight = 10,
+                                                                                                                              Name = "Pretties2",
+                                                                                                                              TileMap = makeFakeMap("Pretty2", 12, 10)
+                                                                                                                      });
+                                                                                });
+                                                        
+
+                                                      });
+        }
+
+        private static string[][] makeFakeMap(string name,int w, int h)
+        {
+            string[][] keys=new string[w][];
+            for (int x = 0; x < w; x++) {
+                keys[x]=new string[h];
+                for (int y = 0; y < h; y++) {
+                    keys[x][y] = Tile.MakeKey(name, x, y);
+                }
+            }
+
+            return keys;
         }
 
         public override void Tick() {}
@@ -80,6 +128,12 @@ namespace ZombieGame.Client
         {
             context.FillStyle = "black";
             context.FillRect(100, 100, 200, 200);
+
+
+            gameManager.Draw(context);
+
+
+
 
             for (int i = 0; i < DebugText.Length; i++) {
                 if (DebugText[i].Truthy()) {

@@ -12,7 +12,7 @@ namespace LampLightOnlineBuild
         private static void Main(string[] args)
         {
             string llo = "LampLightOnlineSharp";
-            var pre = Directory.GetCurrentDirectory() + @"\..\..\..\..\..\";
+            var pre = Directory.GetCurrentDirectory() + @"\..\..\..\..\..\..\";
 
             /*
 
@@ -158,7 +158,7 @@ namespace LampLightOnlineBuild
 #endif
             }
 
-            string[] games = {"TowerD"};
+            string[] games = { "TowerD", "ZombieGame" };
 
             foreach (var depend in games) {
                 var to = pre + llo + @"\output\Games\" + depend + @"\";

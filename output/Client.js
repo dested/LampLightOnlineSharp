@@ -3,7 +3,8 @@
 var $Client_$GameManager = function() {
 	this.$game = null;
 	this.$1$WindowLocationField = null;
-	this.$game = new TowerD.Client.Game();
+	//  game = new TowerD.Client.Game();
+	this.$game = new ZombieGame.Client.Game();
 };
 $Client_$GameManager.prototype = {
 	get_$windowLocation: function() {
