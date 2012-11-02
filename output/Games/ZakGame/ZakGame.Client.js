@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // ZakGame.Client.Game
 var $ZakGame_Client_Game = function() {
 	this.$clicking = false;
@@ -86,4 +86,3 @@ $ZakGame_Client_Game.prototype = {
 Type.registerClass(global, 'ZakGame.Client.Game', $ZakGame_Client_Game, ClientAPI.LampClient);
 $ZakGame_Client_Game.instance = null;
 $ZakGame_Client_Game.debugText = null;
-

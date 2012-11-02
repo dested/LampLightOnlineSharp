@@ -133,6 +133,10 @@
       <Project>{64947CA4-DF68-457B-8E0D-22139EF63DF9}</Project>
       <Name>ZombieGame.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Games\ZombieGame\ZombieGame.Common\ZombieGame.Common.csproj">
+      <Project>{095442DE-167D-4051-BEB5-B20890BD471C}</Project>
+      <Name>ZombieGame.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
       <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
       <Name>CommonClientLibraries</Name>
