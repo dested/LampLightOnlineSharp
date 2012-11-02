@@ -101,6 +101,15 @@ $CommonLibraries_DoublePoint.$ctor = function(pos) {
 // CommonLibraries.Extensions
 var $CommonLibraries_Extensions = function() {
 };
+$CommonLibraries_Extensions.getSafe = function(T) {
+	return function(o, x, y) {
+		var m = o[x];
+		if (ss.isNullOrUndefined(m)) {
+			return T.getDefaultValue();
+		}
+		return o[x][y];
+	};
+};
 $CommonLibraries_Extensions.percent$1 = function(num) {
 	return num + '%';
 };

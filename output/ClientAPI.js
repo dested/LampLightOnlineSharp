@@ -22,6 +22,8 @@ $ClientAPI_LampClient.prototype = {
 	mouseUp: function(jQueryEvent) {
 		return false;
 	},
+	resize: function() {
+	},
 	draw: function(context) {
 	},
 	tick: function() {

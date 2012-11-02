@@ -1,5 +1,6 @@
 ﻿using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
+using CommonLibraries;
 using ZombieGame.Common.JSONObjects;
 namespace ZombieGame.Client
 {
@@ -13,7 +14,7 @@ namespace ZombieGame.Client
         [IntrinsicProperty]
         public string Name { get; set; }
         [IntrinsicProperty]
-        public Tile[,] TileMap { get; set; }
+        public Tile[][] TileMap { get; set; }
         [IntrinsicProperty]
         public CollisionType[][] CollisionMap { get; set; }
 
@@ -23,14 +24,15 @@ namespace ZombieGame.Client
             Name = jsonMap.Name;
             MapWidth = jsonMap.MapWidth;
             MapHeight = jsonMap.MapHeight;
-            TileMap = new Tile[MapWidth,MapHeight];
+            TileMap = new Tile[MapWidth][];
             CollisionMap = new CollisionType[MapWidth][];
             for (int x = 0; x < MapWidth; x++) {
+                TileMap[x] = new Tile[MapHeight];
                 CollisionMap[x] = new CollisionType[MapHeight];
                 for (int y = 0; y < MapHeight; y++) {
                     string key = jsonMap.TileMap[x][y];
                     var tile = myMapManager.myGameManager.TileManager.GetTileByKey(key);
-                    TileMap[x, y] = tile;
+                    TileMap[x][y] = tile;
                     CollisionMap[x][y] = tile.Collision;
                 }
             }
@@ -38,7 +40,7 @@ namespace ZombieGame.Client
 
         public Tile GetTileAt(int x, int y)
         {
-            return TileMap[x, y];
+            return TileMap[x][y];
         }
 
         public void Draw(CanvasContext2D context, int tileX, int tileY, int wWidth, int wHeight)
@@ -47,7 +49,7 @@ namespace ZombieGame.Client
 
             for (int x = tileX; x < wWidth; x++) {
                 for (int y = tileY; y < wHeight; y++) {
-                    Tile tile = TileMap[x, y];
+                    Tile tile = TileMap.GetSafe(x,y);
                     if (tile == null)
                         continue;
                     tile.Draw(context, tileX, tileY, x, y);

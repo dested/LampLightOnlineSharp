@@ -145,7 +145,8 @@ $Client_ClientManager.prototype = {
 		this.$canvasHeight = $(window).height();
 		this.$uiCanvas.domCanvas.attr('width', this.$canvasWidth.toString());
 		this.$uiCanvas.domCanvas.attr('height', this.$canvasHeight.toString());
-		this.$gameManager.set_$screen(CommonLibraries.Rectangle.$ctor1(0, 0, window.innerWidth, window.innerHeight));
+		this.$gameManager.get_$screen().width = window.innerWidth;
+		this.$gameManager.get_$screen().height = window.innerHeight;
 		this.$gameCanvas.domCanvas.attr('width', this.$gameManager.get_$screen().width.toString());
 		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.get_$screen().height.toString());
 		this.$uiGoodSize = CommonLibraries.Point.$ctor1(this.$canvasWidth, this.$canvasHeight);

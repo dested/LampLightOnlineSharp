@@ -132,7 +132,8 @@ namespace Client
             uiCanvas.DomCanvas.Attribute("width", canvasWidth.ToString());
             uiCanvas.DomCanvas.Attribute("height", canvasHeight.ToString());
 
-            gameManager.Screen = new Rectangle(0, 0, Window.InnerWidth, Window.InnerHeight);
+            gameManager.Screen.Width = Window.InnerWidth ;
+            gameManager.Screen.Height = Window.InnerHeight ;
             gameCanvas.DomCanvas.Attribute("width", gameManager.Screen.Width.ToString());
             gameCanvas.DomCanvas.Attribute("height", gameManager.Screen.Height.ToString());
             uiGoodSize = new Point(canvasWidth, canvasHeight);

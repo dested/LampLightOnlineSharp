@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.ClickMode
 var $ZombieGame_Client_ClickMode = function() {
 };
@@ -13,8 +13,8 @@ Type.registerEnum(global, 'ZombieGame.Client.CollisionType', $ZombieGame_Client_
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.Game
 var $ZombieGame_Client_Game = function() {
-	this.$gameManager = null;
 	this.$clicking = false;
+	this.$gameManager = null;
 	this.$myClickState = null;
 	this.$myPlayers = null;
 	ClientAPI.LampClient.call(this);
@@ -22,6 +22,8 @@ var $ZombieGame_Client_Game = function() {
 	$ZombieGame_Client_Game.debugText = [];
 };
 $ZombieGame_Client_Game.prototype = {
+	resize: function() {
+	},
 	bindKeys: function(manager) {
 		manager.bind.key('ctrl', Function.mkdel(this, function() {
 			//keydown
@@ -155,6 +157,7 @@ $ZombieGame_Client_Game.$fakeJsonMap = function() {
 // ZombieGame.Client.GameManager
 var $ZombieGame_Client_GameManager = function(game) {
 	this.$myGame = null;
+	this.$screenOffset = null;
 	this.tileManager = null;
 	this.mapManager = null;
 	this.windowManager = null;
@@ -162,7 +165,6 @@ var $ZombieGame_Client_GameManager = function(game) {
 	this.clickMode = 0;
 	this.unitManager = null;
 	this.scale = null;
-	this.$screenOffset = null;
 	this.$myGame = game;
 	this.tileManager = new $ZombieGame_Client_TileManager(this);
 	this.mapManager = new $ZombieGame_Client_MapManager(this, 400, 400);
@@ -234,27 +236,28 @@ var $ZombieGame_Client_GameMap = function(mapManager, jsonMap) {
 	this.name = jsonMap.name;
 	this.mapWidth = jsonMap.mapWidth;
 	this.mapHeight = jsonMap.mapHeight;
-	this.tileMap = Array.multidim($ZombieGame_Client_Tile.getDefaultValue(), this.mapWidth, this.mapHeight);
+	this.tileMap = new Array(this.mapWidth);
 	this.collisionMap = new Array(this.mapWidth);
 	for (var x = 0; x < this.mapWidth; x++) {
+		this.tileMap[x] = new Array(this.mapHeight);
 		this.collisionMap[x] = new Array(this.mapHeight);
 		for (var y = 0; y < this.mapHeight; y++) {
 			var key = jsonMap.tileMap[x][y];
 			var tile = this.$myMapManager.$myGameManager.tileManager.getTileByKey(key);
-			this.tileMap.set(x, y, tile);
+			this.tileMap[x][y] = tile;
 			this.collisionMap[x][y] = tile.get_collision();
 		}
 	}
 };
 $ZombieGame_Client_GameMap.prototype = {
 	getTileAt: function(x, y) {
-		return this.tileMap.get(x, y);
+		return this.tileMap[x][y];
 	},
 	draw: function(context, tileX, tileY, wWidth, wHeight) {
 		context.save();
 		for (var x = tileX; x < wWidth; x++) {
 			for (var y = tileY; y < wHeight; y++) {
-				var tile = this.tileMap.get(x, y);
+				var tile = CommonLibraries.Extensions.getSafe($ZombieGame_Client_Tile).call(null, this.tileMap, x, y);
 				if (ss.isNullOrUndefined(tile)) {
 					continue;
 				}
@@ -301,8 +304,8 @@ Type.registerEnum(global, 'ZombieGame.Client.GameMode', $ZombieGame_Client_GameM
 // ZombieGame.Client.MapManager
 var $ZombieGame_Client_MapManager = function(gameManager, totalRegionWidth, totalRegionHeight) {
 	this.$myGameManager = null;
-	this.$myTotalRegionWidth = 0;
 	this.$myTotalRegionHeight = 0;
+	this.$myTotalRegionWidth = 0;
 	this.$1$GameMapsField = null;
 	this.$1$CollisionMapField = null;
 	this.$1$GameMapLayoutsField = null;
@@ -490,9 +493,9 @@ $ZombieGame_Client_TileManager.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.Unit
 var $ZombieGame_Client_Unit = function() {
+	this.$movingTowards = null;
 	this.x = 0;
 	this.y = 0;
-	this.$movingTowards = null;
 	this.moveRate = 0;
 	this.updatePosition = null;
 	this.moveRate = 2;
@@ -523,8 +526,8 @@ $ZombieGame_Client_Unit.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.UnitManager
 var $ZombieGame_Client_UnitManager = function(gameManager) {
-	this.$characterCenterPadding = CommonLibraries.Point.$ctor1(150, 150);
 	this.$myGameManager = null;
+	this.$characterCenterPadding = CommonLibraries.Point.$ctor1(150, 150);
 	this.mainCharacter = null;
 	this.$myGameManager = gameManager;
 	var $t1 = new $ZombieGame_Client_Person();

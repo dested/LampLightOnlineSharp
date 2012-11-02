@@ -45,6 +45,16 @@ namespace CommonLibraries
             return new ExtraData<T, T2>(item, data);
         }
 */
+         
+        public static T GetSafe<T>(this T[][] o, int x, int y)
+        {
+            var m = o[x];
+            if (m == default( T[] )) {
+                return default( T);
+            }
+            return o[x][y];
+        
+    }
 
         public static string Percent(this int num)
         {

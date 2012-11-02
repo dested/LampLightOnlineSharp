@@ -46,8 +46,8 @@ $CommonAPI_LampPlayerMessageReceived.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.TaskHandler
 var $CommonAPI_TaskHandler = function() {
-	this.$1$TasksField = null;
 	this.$current = 0;
+	this.$1$TasksField = null;
 	this.set_tasks([]);
 };
 $CommonAPI_TaskHandler.prototype = {

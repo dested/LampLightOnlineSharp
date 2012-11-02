@@ -11,6 +11,11 @@ namespace ZombieGame.Client
 {
     public class Game : LampClient
     {
+        public override void Resize()
+        {
+
+        }
+
         public const int TILESIZE = 32;
         private bool clicking = false;
         private GameManager gameManager;
@@ -53,12 +58,14 @@ namespace ZombieGame.Client
             gameManager.GameMode = GameMode.Play;
 
             TaskHandler.Start(
-                    (completed) => { gameManager.LoadTiles(fakeJsonTileMap2(), completed); }).AddTask((completed) => { gameManager.LoadTiles(fakeJsonTileMap(), completed); }).AddTask((completed) => {
-                                                                                                                                                                                           GameMap bigMap = gameManager.MapManager.LoadMap(fakeJsonMap2());
-                                                                                                                                                                                           gameManager.MapManager.AddMapToRegion(bigMap, 0, 0);
-                                                                                                                                                                                           gameManager.MapManager.AddMapToRegion(gameManager.MapManager.LoadMap(fakeJsonMap()), bigMap.MapWidth, 0);
-                                                                                                                                                                                           completed();
-                                                                                                                                                                                       }).Do();
+                    (completed) => { gameManager.LoadTiles(fakeJsonTileMap2(), completed); }).AddTask((completed) => {
+                                                                                                          gameManager.LoadTiles(fakeJsonTileMap(), completed);
+                                                                                                      }).AddTask((completed) => {
+                                                                                                                     GameMap bigMap = gameManager.MapManager.LoadMap(fakeJsonMap2());
+                                                                                                                     gameManager.MapManager.AddMapToRegion(bigMap, 0, 0);
+                                                                                                                     gameManager.MapManager.AddMapToRegion(gameManager.MapManager.LoadMap(fakeJsonMap()), bigMap.MapWidth, 0);
+                                                                                                                     completed();
+                                                                                                                 }).Do();
 
             gameManager.Init();
         }
