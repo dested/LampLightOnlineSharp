@@ -9,6 +9,9 @@ $ClientAPI_LampClient.prototype = {
 	mouseMove: function(jQueryEvent) {
 		return false;
 	},
+	mouseScroll: function(jQueryEvent) {
+		return false;
+	},
 	buildUI: function(manager) {
 	},
 	bindKeys: function(manager) {

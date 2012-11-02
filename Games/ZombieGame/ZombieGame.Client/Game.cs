@@ -35,18 +35,18 @@ namespace ZombieGame.Client
             manager.Bind.Key("space",() => { /*keydown*/},() => { /*keyup*/});
         }
 
-        public override void Init(LampPlayer[] players, CanvasContext2D context)
+
+          public override void Init(LampPlayer[] players, CanvasContext2D context)
         {
 
             myPlayers = players;
 
-
-
+               
             gameManager.LoadTiles(new JsonTileMap() {
                                                             Name = "Pretty",
                                                             TileWidth = 32,
                                                             TileHeight = 32,
-                                                            TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/forestground06dv5_0.png"
+                                                            TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/LostGarden+WoodTiles.png"
                                                     },() => {
 
                                                           gameManager.LoadTiles(new JsonTileMap() {

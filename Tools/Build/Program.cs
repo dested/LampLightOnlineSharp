@@ -158,7 +158,7 @@ namespace LampLightOnlineBuild
 #endif
             }
 
-            string[] games = { "TowerD", "ZombieGame" };
+            string[] games = { "TowerD", "ZombieGame", "ZakGame" };
 
             foreach (var depend in games) {
                 var to = pre + llo + @"\output\Games\" + depend + @"\";
@@ -174,7 +174,7 @@ namespace LampLightOnlineBuild
 
 #if FTP
                     Console.WriteLine("ftp start " + text.Length.ToString("N0"));
-                    webftp.Upload("/httpdocs/lamp/Games/" + depend + "/" + depend + "." + ext + ".js", fm);
+                    webftp.Upload("/httpdocs/zak/Games/" + depend + "/" + depend + "." + ext + ".js", fm);
                     Console.WriteLine("ftp complete " + fm);
 #endif
                 }

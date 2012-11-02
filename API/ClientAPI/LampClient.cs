@@ -17,8 +17,11 @@ namespace ClientAPI
         {
             return false;
         }
-
-        
+        public virtual bool MouseScroll(jQueryEvent jQueryEvent)
+        {
+            return false;
+        }
+         
 
         public virtual void BuildUI(UIManager manager) {}
 

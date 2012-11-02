@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.Game
 var $ZombieGame_Client_Game = function() {
 	this.$gameManager = null;
@@ -20,7 +20,7 @@ $ZombieGame_Client_Game.prototype = {
 	},
 	init: function(players, context) {
 		this.$myPlayers = players;
-		this.$gameManager.loadTiles({ name: 'Pretty', tileWidth: 32, tileHeight: 32, tileMapFile: 'http://dested.com/lamp/Games/ZombieGame/assets/forestground06dv5_0.png' }, Function.mkdel(this, function() {
+		this.$gameManager.loadTiles({ name: 'Pretty', tileWidth: 32, tileHeight: 32, tileMapFile: 'http://dested.com/lamp/Games/ZombieGame/assets/LostGarden+WoodTiles.png' }, Function.mkdel(this, function() {
 			this.$gameManager.loadTiles({ name: 'Pretty2', tileWidth: 32, tileHeight: 32, tileMapFile: 'http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png' }, Function.mkdel(this, function() {
 				this.$gameManager.loadMap({ mapWidth: 19, mapHeight: 21, name: 'Pretties', tileMap: $ZombieGame_Client_Game.$makeFakeMap('Pretty', 19, 21) });
 				this.$gameManager.loadMap({ mapWidth: 12, mapHeight: 10, name: 'Pretties2', tileMap: $ZombieGame_Client_Game.$makeFakeMap('Pretty2', 12, 10) });
@@ -51,13 +51,6 @@ $ZombieGame_Client_Game.prototype = {
 		$t4.click = function(p1) {
 		};
 		manageData.addControl(CommonClientLibraries.UIManager.Button).call(manageData, $t4);
-		var $t5 = new CommonClientLibraries.UIManager.Button(20, 125, 100, 25, Type.makeGenericType(CommonLibraries.DelegateOrValue$1, [String]).op_Implicit$1(function() {
-			return ($ZombieGame_Client_Game.DRAWFAST ? 'Draw Slow' : 'Draw Fast');
-		}));
-		$t5.click = function(p2) {
-			$ZombieGame_Client_Game.DRAWFAST = !$ZombieGame_Client_Game.DRAWFAST;
-		};
-		manageData.addControl(CommonClientLibraries.UIManager.Button).call(manageData, $t5);
 	},
 	mouseMove: function(jQueryEvent) {
 		if (!this.$clicking) {
@@ -260,6 +253,5 @@ Type.registerClass(global, 'ZombieGame.Client.GameMap', $ZombieGame_Client_GameM
 Type.registerClass(global, 'ZombieGame.Client.MapManager', $ZombieGame_Client_MapManager, Object);
 Type.registerClass(global, 'ZombieGame.Client.Tile', $ZombieGame_Client_Tile, Object);
 Type.registerClass(global, 'ZombieGame.Client.TileManager', $ZombieGame_Client_TileManager, Object);
-$ZombieGame_Client_Game.DRAWFAST = false;
 $ZombieGame_Client_Game.instance = null;
 $ZombieGame_Client_Game.debugText = null;

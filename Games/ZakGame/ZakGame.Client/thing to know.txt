@@ -1,0 +1,4 @@
+﻿
+JsDictionary<T,T2> is just a normal Dictionary 
+	JsDictionary<string,SomeObject> someHash;
+
