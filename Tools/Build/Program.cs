@@ -96,6 +96,8 @@ namespace LampLightOnlineBuild
                                                                       {"ServerAPI", new Application(false, "", new List<string> {})},
                                                                       {"CommonAPI", new Application(false, "", new List<string> {})},
                                                               };
+
+            string loc = "/httpdocs/zak/";
 #if FTP
             Console.WriteLine("connecting ftp");
             Ftp webftp = new Ftp();
@@ -150,9 +152,10 @@ namespace LampLightOnlineBuild
 #if FTP
 
                 long length = new FileInfo(to).Length;
-                if (webftp.GetFileSize("/httpdocs/lamp/" + name) != length) {
+                if (webftp.GetFileSize(loc + name) != length)
+                {
                     Console.WriteLine("ftp start " + length.ToString("N0"));
-                    webftp.Upload("/httpdocs/lamp/" + name, to);
+                    webftp.Upload(loc + name, to);
                     Console.WriteLine("ftp complete " + to);
                 }
 #endif
@@ -174,7 +177,7 @@ namespace LampLightOnlineBuild
 
 #if FTP
                     Console.WriteLine("ftp start " + text.Length.ToString("N0"));
-                    webftp.Upload("/httpdocs/zak/Games/" + depend + "/" + depend + "." + ext + ".js", fm);
+                    webftp.Upload(loc+"Games/" + depend + "/" + depend + "." + ext + ".js", fm);
                     Console.WriteLine("ftp complete " + fm);
 #endif
                 }

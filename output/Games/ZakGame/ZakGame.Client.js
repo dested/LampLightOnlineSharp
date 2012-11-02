@@ -73,6 +73,7 @@ $ZakGame_Client_Game.prototype = {
 		context.fillStyle = 'red';
 		context.fillRect(100, 100, 200, 200);
 		context.drawImage(this.$someImage, 250, 250);
+		context.drawImage(this.$someImage, 350, 350, 100, 100, 200, 200, 100, 100);
 		for (var i = 0; i < $ZakGame_Client_Game.debugText.length; i++) {
 			if ($ZakGame_Client_Game.debugText[i]) {
 				context.save();

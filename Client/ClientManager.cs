@@ -137,8 +137,6 @@ namespace Client
             gameCanvas.DomCanvas.Attribute("height", gameManager.WindowLocation.Height.ToString());
             uiGoodSize = new Point(canvasWidth, canvasHeight);
             gameGoodSize = new Point(gameManager.WindowLocation.Width, gameManager.WindowLocation.Height);
-            gameCanvas.Context.CompositeOperation = CompositeOperation.Lighter;
-            ;
         }
 
         public void Clear(CanvasInformation canv)

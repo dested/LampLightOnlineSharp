@@ -149,8 +149,6 @@ $Client_ClientManager.prototype = {
 		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.get_$windowLocation().height.toString());
 		this.$uiGoodSize = CommonLibraries.Point.$ctor1(this.$canvasWidth, this.$canvasHeight);
 		this.$gameGoodSize = CommonLibraries.Point.$ctor1(this.$gameManager.get_$windowLocation().width, this.$gameManager.get_$windowLocation().height);
-		this.$gameCanvas.context.globalCompositeOperation = 'lighter';
-		;
 	},
 	clear: function(canv) {
 		var w;

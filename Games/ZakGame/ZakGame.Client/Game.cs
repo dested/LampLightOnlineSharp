@@ -110,7 +110,8 @@ namespace ZakGame.Client
             context.FillRect(100, 100, 200, 200);
 
 
-            context.DrawImage(someImage,250,250);
+            context.DrawImage(someImage, 250, 250);
+            context.DrawImage(someImage, 350, 350,100,100,200,200,100,100);
 
              
 
