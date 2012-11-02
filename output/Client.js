@@ -6,6 +6,7 @@ var $Client_$GameManager = function() {
 	//  game = new TowerD.Client.Game();
 	this.$game = new ZombieGame.Client.Game();
 	// game = new ZakGame.Client.Game();
+	this.set_$screen(CommonLibraries.Rectangle.$ctor1(0, 0, 0, 0));
 };
 $Client_$GameManager.prototype = {
 	get_$screen: function() {
@@ -67,18 +68,14 @@ var $Client_ClientManager = function() {
 	$(document).resize(Function.mkdel(this, function(e1) {
 		this.resizeCanvas();
 	}));
-	this.resizeCanvas();
 	var a = 0;
-	window.setInterval(function() {
-		a++;
-		a++;
-		a++;
-	}, 16);
-	window.setInterval(Function.mkdel(this, this.$tick), 16);
-	window.setInterval(Function.mkdel(this, this.gameDraw), 33);
+	//Window.SetInterval(() => {},1000 / 60);
+	window.setInterval(Function.mkdel(this, this.$tick), 100);
+	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);
 	this.$gameManager.$start(this.$gameCanvas.context);
 	this.$gameManager.$buildUI(this.uiManager);
+	this.resizeCanvas();
 };
 $Client_ClientManager.prototype = {
 	$tick: function() {

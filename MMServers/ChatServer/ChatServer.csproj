@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{12FC2061-AEE9-44D6-AF67-265C15C4642A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonAPI</RootNamespace>
-    <AssemblyName>CommonAPI</AssemblyName>
+    <RootNamespace>MM.ChatServer</RootNamespace>
+    <AssemblyName>MM.ChatServer</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debug all|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\debug all\</OutputPath>
@@ -40,7 +43,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debugall|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -70,24 +72,15 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Completed.cs" />
-    <Compile Include="DataObject.cs" />
-    <Compile Include="LampPlayer.cs" />
-    <Compile Include="LampPlayerMessage.cs" />
-    <Compile Include="LampEvent.cs" />
-    <Compile Include="TaskHandler.cs" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChatServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MM\" />
-    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
@@ -95,6 +88,9 @@
     </Reference>
     <Reference Include="Script.Linq">
       <HintPath>..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.NodeJS">
+      <HintPath>..\..\packages\Saltarelle.NodeJS.1.4.0.12\lib\Script.NodeJS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />

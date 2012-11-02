@@ -40,20 +40,15 @@ namespace Client
             bindInput();
             Window.AddEventListener("resize", e => resizeCanvas());
             jQuery.Document.Resize(e => resizeCanvas());
-            resizeCanvas();
             int a = 0;
-            Window.SetInterval(() => {
-                                   a++;
-                                   a++;
-                                   a++;
-                               },
-                               1000 / 60);
-            Window.SetInterval(Tick, 1000 / 60);
-            Window.SetInterval(GameDraw, 1000 / 030);
+            //Window.SetInterval(() => {},1000 / 60);
+            Window.SetInterval(Tick, 1000 / 10);
+            Window.SetInterval(GameDraw, 1000 / 60);
             Window.SetInterval(UIDraw, 1000 / 10);
 
             gameManager.Start(gameCanvas.Context);
             gameManager.BuildUI(UIManager);
+            resizeCanvas();
         }
 
         private static void Main()

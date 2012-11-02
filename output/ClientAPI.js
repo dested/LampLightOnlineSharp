@@ -6,20 +6,20 @@ var $ClientAPI_LampClient = function() {
 $ClientAPI_LampClient.prototype = {
 	init: function(players, context) {
 	},
-	mouseMove: function(jQueryEvent) {
+	mouseMove: function(pointer) {
 		return false;
 	},
-	mouseScroll: function(jQueryEvent) {
+	mouseScroll: function(pointer) {
 		return false;
 	},
 	buildUI: function(manager) {
 	},
 	bindKeys: function(manager) {
 	},
-	onClick: function(jQueryEvent) {
+	onClick: function(pointer) {
 		return false;
 	},
-	mouseUp: function(jQueryEvent) {
+	mouseUp: function(pointer) {
 		return false;
 	},
 	resize: function() {

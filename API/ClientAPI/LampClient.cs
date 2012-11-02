@@ -12,12 +12,12 @@ namespace ClientAPI
         public Rectangle Screen { get; set; }
         public virtual void Init(LampPlayer[] players, CanvasContext2D context) {}
 
-        public virtual bool MouseMove(Pointer jQueryEvent)
+        public virtual bool MouseMove(Pointer pointer)
         {
             return false;
         }
 
-        public virtual bool MouseScroll(Pointer jQueryEvent)
+        public virtual bool MouseScroll(Pointer pointer)
         {
             return false;
         }
@@ -25,12 +25,12 @@ namespace ClientAPI
         public virtual void BuildUI(UIManager manager) {}
         public virtual void BindKeys(KeyboardJS manager) {}
 
-        public virtual bool OnClick(Pointer jQueryEvent)
+        public virtual bool OnClick(Pointer pointer)
         {
             return false;
         }
 
-        public virtual bool MouseUp(Pointer jQueryEvent)
+        public virtual bool MouseUp(Pointer pointer)
         {
             return false;
         }

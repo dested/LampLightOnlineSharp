@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</ProjectGuid>
+    <ProjectGuid>{70874705-C97C-40D3-B303-3F9F1A635C51}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonAPI</RootNamespace>
-    <AssemblyName>CommonAPI</AssemblyName>
+    <RootNamespace>MMServerAPI</RootNamespace>
+    <AssemblyName>MMServerAPI</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>
@@ -70,24 +70,22 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Completed.cs" />
-    <Compile Include="DataObject.cs" />
-    <Compile Include="LampPlayer.cs" />
-    <Compile Include="LampPlayerMessage.cs" />
-    <Compile Include="LampEvent.cs" />
-    <Compile Include="TaskHandler.cs" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LampServer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MM\" />
-    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
@@ -95,6 +93,9 @@
     </Reference>
     <Reference Include="Script.Linq">
       <HintPath>..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.NodeJS">
+      <HintPath>..\..\packages\Saltarelle.NodeJS.1.4.0.12\lib\Script.NodeJS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />

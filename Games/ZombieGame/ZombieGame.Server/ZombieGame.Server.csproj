@@ -77,9 +77,9 @@
       <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
       <Name>CommonAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\API\ServerAPI\ServerAPI.csproj">
-      <Project>{529D26FE-DE85-4FC8-818A-ABF63952CAF0}</Project>
-      <Name>ServerAPI</Name>
+    <ProjectReference Include="..\..\..\API\MMServerAPI\MMServerAPI.csproj">
+      <Project>{70874705-C97C-40D3-B303-3F9F1A635C51}</Project>
+      <Name>MMServerAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\ZombieGame.Common\ZombieGame.Common.csproj">
       <Project>{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}</Project>
@@ -99,6 +99,9 @@
     <Reference Include="Script.Linq">
       <HintPath>..\..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Game.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />

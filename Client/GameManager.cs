@@ -17,6 +17,7 @@ namespace Client
             //  game = new TowerD.Client.Game();
             game = new Game();
             // game = new ZakGame.Client.Game();
+            Screen = new Rectangle(0, 0, 0, 0);
         }
 
         public bool MouseMove(Pointer queryEvent)

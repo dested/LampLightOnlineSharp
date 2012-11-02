@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{0C35B5D8-8171-44CB-B107-63A2840E7C3D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommonAPI</RootNamespace>
-    <AssemblyName>CommonAPI</AssemblyName>
+    <RootNamespace>MM.GameServer</RootNamespace>
+    <AssemblyName>MM.GameServer</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debug all|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\debug all\</OutputPath>
@@ -39,8 +42,6 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'debugall|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -70,25 +71,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Completed.cs" />
-    <Compile Include="DataObject.cs" />
-    <Compile Include="LampPlayer.cs" />
-    <Compile Include="LampPlayerMessage.cs" />
-    <Compile Include="LampEvent.cs" />
-    <Compile Include="TaskHandler.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MM\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
@@ -96,6 +79,42 @@
     <Reference Include="Script.Linq">
       <HintPath>..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="Script.NodeJS">
+      <HintPath>..\..\packages\Saltarelle.NodeJS.1.4.0.12\lib\Script.NodeJS.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataManager.cs" />
+    <Compile Include="GameServer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
+      <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
+      <Name>CommonClientLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\CommonLibraries\CommonLibraries.csproj">
+      <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
+      <Name>CommonLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\CommonServerLibraries\CommonServerLibraries.csproj">
+      <Project>{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}</Project>
+      <Name>CommonServerLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\NodeLibraries\MongoDB\MongoDB.csproj">
+      <Project>{EAC709D8-477C-41F5-93E9-1C39C3C5E5A9}</Project>
+      <Name>MongoDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\NodeLibraries\NodeJS\NodeJS.csproj">
+      <Project>{79800429-B885-4F5E-9A3B-48E50390214A}</Project>
+      <Name>NodeJS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />

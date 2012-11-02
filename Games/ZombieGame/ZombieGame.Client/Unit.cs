@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using CommonLibraries;
@@ -26,7 +27,10 @@ namespace ZombieGame.Client
             UpdatePosition(X, Y);
         }
 
-        public virtual void Draw(CanvasContext2D context) {}
+        public virtual void Draw(CanvasContext2D context)
+        {
+            
+        }
 
         public virtual void MoveTowards(int x, int y)
         {
@@ -46,5 +50,38 @@ namespace ZombieGame.Client
                 }
             }
         }
+    }
+    public class WaypointDeterminer
+    {
+        public WaypointDeterminer(Point start, Point end,int moveRate)
+        {
+            int _x=start.X, _y=start.Y;
+
+            while (true) {
+                if (Math.Abs(end.X - start.X) < 6 && Math.Abs(end.Y - start.X) < 6) //6 chosen arbitrarily
+                    break;
+                else {
+                    var m = end.Negate(_x, _y).Normalize(moveRate);
+                    _x += m.X;
+                    _y += m.Y;
+                    Points.Add(new Waypoint(){X=_x,Y=_y});
+                }
+            }
+        }
+        public bool Tick()
+        {
+            
+        }
+
+        [IntrinsicProperty]
+        public List<Waypoint> Points { get; set; }
+    }
+    public class Waypoint
+    {
+        [IntrinsicProperty]
+        public int X { get; set; }
+        [IntrinsicProperty]
+        public int Y { get; set; }
+        
     }
 }

@@ -125,7 +125,7 @@ namespace CommonClientLibraries.UIManager
         {
             if (!Visible) return false;
 
-            if (e.Delta > 0) {
+            if (e.WheelDelta > 0) {
                 if (ScrollOffset > 0)
                     ScrollOffset--;
             } else {

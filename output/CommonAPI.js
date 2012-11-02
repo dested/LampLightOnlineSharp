@@ -16,32 +16,20 @@ Type.registerGenericClass(global, 'CommonAPI.DataObject$1', $CommonAPI_DataObjec
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.LampPlayer
 var $CommonAPI_LampPlayer = function() {
-	this.onMessageRecieved = null;
-	this.playerName = null;
+	this.$1$PlayerNameField = null;
 };
 $CommonAPI_LampPlayer.prototype = {
-	sendMessage: function(T) {
-		return function(sudokuServerMessage) {
-		};
+	get_playerName: function() {
+		return this.$1$PlayerNameField;
+	},
+	set_playerName: function(value) {
+		this.$1$PlayerNameField = value;
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.LampPlayerMessage
 var $CommonAPI_LampPlayerMessage = function() {
 	this.player = null;
-};
-////////////////////////////////////////////////////////////////////////////////
-// CommonAPI.LampPlayerMessageReceived
-var $CommonAPI_LampPlayerMessageReceived = function() {
-	this.data = null;
-	$CommonAPI_LampPlayerMessage.call(this);
-};
-$CommonAPI_LampPlayerMessageReceived.prototype = {
-	getData: function(T) {
-		return function() {
-			return Type.cast(this.data, T);
-		};
-	}
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.TaskHandler
@@ -76,5 +64,4 @@ $CommonAPI_TaskHandler.start = function(task) {
 };
 Type.registerClass(global, 'CommonAPI.LampPlayer', $CommonAPI_LampPlayer, Object);
 Type.registerClass(global, 'CommonAPI.LampPlayerMessage', $CommonAPI_LampPlayerMessage, Object);
-Type.registerClass(global, 'CommonAPI.LampPlayerMessageReceived', $CommonAPI_LampPlayerMessageReceived, $CommonAPI_LampPlayerMessage);
 Type.registerClass(global, 'CommonAPI.TaskHandler', $CommonAPI_TaskHandler, Object);
