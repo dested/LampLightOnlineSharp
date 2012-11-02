@@ -2,7 +2,8 @@
 using System.Runtime.CompilerServices;
 namespace ZombieGame.Common.JSONObjects
 {
-    [Serializable] [Imported]
+    [Serializable]
+    [Imported]
     public class JsonTileMap
     {
         public string TileMapFile { get; set; }
@@ -19,5 +20,4 @@ namespace ZombieGame.Common.JSONObjects
         public int MapHeight { get; set; }
         public string[][] TileMap { get; set; }
     }
-
 }

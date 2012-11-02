@@ -24,9 +24,9 @@ namespace ZombieGame.Client
             MapWidth = jsonMap.MapWidth;
             MapHeight = jsonMap.MapHeight;
             TileMap = new Tile[MapWidth,MapHeight];
-            CollisionMap=new CollisionType[MapWidth][];
+            CollisionMap = new CollisionType[MapWidth][];
             for (int x = 0; x < MapWidth; x++) {
-                CollisionMap[x]=new CollisionType[MapHeight];
+                CollisionMap[x] = new CollisionType[MapHeight];
                 for (int y = 0; y < MapHeight; y++) {
                     string key = jsonMap.TileMap[x][y];
                     var tile = myMapManager.myGameManager.TileManager.GetTileByKey(key);
@@ -34,28 +34,26 @@ namespace ZombieGame.Client
                     CollisionMap[x][y] = tile.Collision;
                 }
             }
-            
         }
 
         public Tile GetTileAt(int x, int y)
         {
             return TileMap[x, y];
         }
-         
 
-        public void Draw(CanvasContext2D context, int _x, int _y)
+        public void Draw(CanvasContext2D context, int tileX, int tileY, int wWidth, int wHeight)
         {
             context.Save();
-            context.Scale(2,2); 
-            for (int x = 0; x < MapWidth; x++) {
-                for (int y = 0; y < MapHeight; y++) {
+
+            for (int x = tileX; x < wWidth; x++) {
+                for (int y = tileY; y < wHeight; y++) {
                     Tile tile = TileMap[x, y];
-                    tile.Draw(context, _x, _y, x, y);
+                    if (tile == null)
+                        continue;
+                    tile.Draw(context, tileX, tileY, x, y);
                 }
             }
             context.Restore();
-
         }
-
     }
 }

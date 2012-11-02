@@ -1,7 +1,7 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // ClientAPI.LampClient
 var $ClientAPI_LampClient = function() {
-	this.windowLocation = null;
+	this.screen = null;
 };
 $ClientAPI_LampClient.prototype = {
 	init: function(players, context) {

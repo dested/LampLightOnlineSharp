@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Html;
+using CommonAPI;
 using CommonClientLibraries;
 using ZombieGame.Common.JSONObjects;
 namespace ZombieGame.Client

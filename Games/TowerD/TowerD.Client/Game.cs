@@ -9,7 +9,6 @@ using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using TowerD.Client.Pieces.Towers;
 using TowerD.Client.Pieces.Units;
-using jQueryApi;
 namespace TowerD.Client
 {
     public class Game : LampClient
@@ -129,7 +128,7 @@ namespace TowerD.Client
         public override void BuildUI(UIManager manager)
         {
             UIArea manageData;
-            manager.AddArea(manageData = new UIArea(WindowLocation.Width - 400, 100, 250, 300) {Closable = true});
+            manager.AddArea(manageData = new UIArea(Screen.Width - 400, 100, 250, 300) {Closable = true});
             manageData.Visible = true;
             manageData.AddControl(new TextArea(30, 25, "Manage Defense") {Color = "blue"});
 
@@ -177,10 +176,10 @@ namespace TowerD.Client
             manageData.AddControl(new Button(20, 125, 100, 25, ( (Func<string>) ( () => { return DRAWFAST ? "Draw Slow" : "Draw Fast"; } ) )) {Click = (p) => { DRAWFAST = !DRAWFAST; }});
         }
 
-        public override bool MouseMove(jQueryEvent jQueryEvent)
+        public override bool MouseMove(Pointer jQueryEvent)
         {
             if (!clicking) return false;
-            Point point = new Point(jQueryEvent.ClientX / Scale.X, jQueryEvent.ClientY / Scale.Y);
+            Point point = new Point(jQueryEvent.X / Scale.X, jQueryEvent.Y / Scale.Y);
 
             switch (myClickState.Data) {
                 case 0:
@@ -219,13 +218,13 @@ namespace TowerD.Client
             return false;
         }
 
-        public override bool OnClick(jQueryEvent jQueryEvent)
+        public override bool OnClick(Pointer jQueryEvent)
         {
             clicking = true;
             selectedWaypoint = null;
             selectedTower = null;
 
-            Point point = new Point(jQueryEvent.ClientX / Scale.X, jQueryEvent.ClientY / Scale.Y);
+            Point point = new Point(jQueryEvent.X / Scale.X, jQueryEvent.Y / Scale.Y);
             switch (myClickState.Data) {
                 case 0:
                     selectedKingdom = null;
@@ -278,7 +277,7 @@ namespace TowerD.Client
             return null;
         }
 
-        public override bool MouseUp(jQueryEvent jQueryEvent)
+        public override bool MouseUp(Pointer jQueryEvent)
         {
             clicking = false;
 
@@ -303,7 +302,7 @@ namespace TowerD.Client
                 if (DebugText[i].Truthy()) {
                     context.Save();
                     context.StrokeStyle = "white";
-                    context.StrokeText(DebugText[i].ToString(), WindowLocation.Width - 120, i * 20 + 150);
+                    context.StrokeText(DebugText[i].ToString(), Screen.Width - 120, i * 20 + 150);
                     context.Restore();
                 }
             }

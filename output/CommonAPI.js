@@ -43,6 +43,38 @@ $CommonAPI_LampPlayerMessageReceived.prototype = {
 		};
 	}
 };
+////////////////////////////////////////////////////////////////////////////////
+// CommonAPI.TaskHandler
+var $CommonAPI_TaskHandler = function() {
+	this.$1$TasksField = null;
+	this.$current = 0;
+	this.set_tasks([]);
+};
+$CommonAPI_TaskHandler.prototype = {
+	get_tasks: function() {
+		return this.$1$TasksField;
+	},
+	set_tasks: function(value) {
+		this.$1$TasksField = value;
+	},
+	addTask: function(task) {
+		this.get_tasks().add(task);
+		return this;
+	},
+	do: function() {
+		this.get_tasks()[this.$current++](Function.mkdel(this, this.happen));
+	},
+	happen: function() {
+		if (this.$current === this.get_tasks().length) {
+			return;
+		}
+		this.get_tasks()[this.$current++](Function.mkdel(this, this.happen));
+	}
+};
+$CommonAPI_TaskHandler.start = function(task) {
+	return (new $CommonAPI_TaskHandler()).addTask(task);
+};
 Type.registerClass(global, 'CommonAPI.LampPlayer', $CommonAPI_LampPlayer, Object);
 Type.registerClass(global, 'CommonAPI.LampPlayerMessage', $CommonAPI_LampPlayerMessage, Object);
 Type.registerClass(global, 'CommonAPI.LampPlayerMessageReceived', $CommonAPI_LampPlayerMessageReceived, $CommonAPI_LampPlayerMessage);
+Type.registerClass(global, 'CommonAPI.TaskHandler', $CommonAPI_TaskHandler, Object);

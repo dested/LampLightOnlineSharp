@@ -13,5 +13,11 @@ namespace CommonClientLibraries.UIManager
             Delta = delta;
             Right = right;
         }
+
+        public Pointer(int x, int y, Pointer pointer) : base(x, y)
+        {
+            Delta = pointer.Delta;
+            Right = pointer.Right;
+        }
     }
 }

@@ -75,11 +75,13 @@
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Completed.cs" />
     <Compile Include="DataObject.cs" />
     <Compile Include="LampPlayer.cs" />
     <Compile Include="LampPlayerMessage.cs" />
     <Compile Include="LampPlayerMessageReceived.cs" />
     <Compile Include="LampEvent.cs" />
+    <Compile Include="TaskHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -98,7 +100,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>Copy $(TargetDir)*.js $(SolutionDir)Output\</PostBuildEvent>
+    <PostBuildEvent>Copy "$(TargetDir)*.js" "$(SolutionDir)Output\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

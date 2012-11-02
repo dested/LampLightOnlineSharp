@@ -4,36 +4,33 @@ using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using WebLibraries;
-using jQueryApi;
 namespace ClientAPI
 {
     public class LampClient
     {
         [IntrinsicProperty]
-        public Rectangle WindowLocation { get; set; }
+        public Rectangle Screen { get; set; }
         public virtual void Init(LampPlayer[] players, CanvasContext2D context) {}
 
-        public virtual bool MouseMove(jQueryEvent jQueryEvent)
+        public virtual bool MouseMove(Pointer jQueryEvent)
         {
             return false;
         }
-        public virtual bool MouseScroll(jQueryEvent jQueryEvent)
+
+        public virtual bool MouseScroll(Pointer jQueryEvent)
         {
             return false;
         }
-         
 
         public virtual void BuildUI(UIManager manager) {}
-
-
         public virtual void BindKeys(KeyboardJS manager) {}
 
-        public virtual bool OnClick(jQueryEvent jQueryEvent)
+        public virtual bool OnClick(Pointer jQueryEvent)
         {
             return false;
         }
 
-        public virtual bool MouseUp(jQueryEvent jQueryEvent)
+        public virtual bool MouseUp(Pointer jQueryEvent)
         {
             return false;
         }

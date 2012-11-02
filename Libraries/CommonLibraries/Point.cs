@@ -58,5 +58,17 @@ namespace CommonLibraries
         {
             return new Point(X, Y);
         }
+
+        /// name comes from the adobe api
+        /// http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Point.html
+        public Point Normalize(double scale)
+        {
+            var norm = Math.Sqrt(X * X + Y * Y);
+            if (norm != 0) {
+                X = (int) ( scale * X / norm );
+                Y = (int) ( scale * Y / norm );
+            }
+            return this;
+        }
     }
 }

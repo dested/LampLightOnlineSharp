@@ -1,5 +1,4 @@
 ﻿using System.Html;
-using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using CommonClientLibraries;
 using CommonClientLibraries.UIManager;
@@ -105,7 +104,7 @@ namespace Client
             Document.Body.Style.Cursor = "default";
             lastMouseMove = CHelp.GetCursorPosition(queryEvent);
             if (UIManager.OnMouseMove(lastMouseMove)) return;
-            if (gameManager.MouseMove(queryEvent)) return;
+            if (gameManager.MouseMove(lastMouseMove)) return;
 
             return;
         }
@@ -113,15 +112,16 @@ namespace Client
         private void canvasOnClick(jQueryEvent queryEvent)
         {
             queryEvent.PreventDefault();
-            if (UIManager.OnClick(CHelp.GetCursorPosition(queryEvent))) return;
-            if (gameManager.OnClick(queryEvent)) return;
+            Pointer cursorPosition = CHelp.GetCursorPosition(queryEvent);
+            if (UIManager.OnClick(cursorPosition)) return;
+            if (gameManager.OnClick(cursorPosition)) return;
         }
 
         private void canvasMouseUp(jQueryEvent queryEvent)
         {
             queryEvent.PreventDefault();
             UIManager.OnMouseUp(lastMouseMove);
-            if (gameManager.MouseUp(queryEvent)) return;
+            if (gameManager.MouseUp(lastMouseMove)) return;
         }
 
         public void resizeCanvas()
@@ -132,11 +132,11 @@ namespace Client
             uiCanvas.DomCanvas.Attribute("width", canvasWidth.ToString());
             uiCanvas.DomCanvas.Attribute("height", canvasHeight.ToString());
 
-            gameManager.WindowLocation = new Rectangle(0, 0, Window.InnerWidth, Window.InnerHeight);
-            gameCanvas.DomCanvas.Attribute("width", gameManager.WindowLocation.Width.ToString());
-            gameCanvas.DomCanvas.Attribute("height", gameManager.WindowLocation.Height.ToString());
+            gameManager.Screen = new Rectangle(0, 0, Window.InnerWidth, Window.InnerHeight);
+            gameCanvas.DomCanvas.Attribute("width", gameManager.Screen.Width.ToString());
+            gameCanvas.DomCanvas.Attribute("height", gameManager.Screen.Height.ToString());
             uiGoodSize = new Point(canvasWidth, canvasHeight);
-            gameGoodSize = new Point(gameManager.WindowLocation.Width, gameManager.WindowLocation.Height);
+            gameGoodSize = new Point(gameManager.Screen.Width, gameManager.Screen.Height);
         }
 
         public void Clear(CanvasInformation canv)

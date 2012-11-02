@@ -175,7 +175,6 @@ namespace CommonClientLibraries.UIManager
             ImageElement element = new ImageElement();
             element.AddEventListener("load", e => { loaded(element); }, false);
             element.Src = tileMapFile;
-
         }
     }
 }

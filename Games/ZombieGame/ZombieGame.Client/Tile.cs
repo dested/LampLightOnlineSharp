@@ -20,10 +20,6 @@ namespace ZombieGame.Client
         }
         public CollisionType Collision { get; set; }
 
-        public static string MakeKey(string name, int x, int y)
-        {
-            return string.Format("{0}-{1}-{2}", name, x, y);
-        }
         public Tile(CanvasInformation canvas, int x, int y, JsonTileMap jsonMap)
         {
             this.jsonMap = jsonMap;
@@ -36,13 +32,14 @@ namespace ZombieGame.Client
             Image = data;
         }
 
+        public static string MakeKey(string name, int x, int y)
+        {
+            return string.Format("{0}-{1}-{2}", name, x, y);
+        }
+
         private CollisionType RandomCollision()
         {
-            if (Math.Random() * 100 < 35) {
-
-                return (CollisionType) (int) ( Math.Random() * 4 +1);
-
-            }
+            if (Math.Random() * 100 < 35) return (CollisionType) (int) ( Math.Random() * 4 + 1 );
             return CollisionType.Empty;
         }
 
@@ -58,8 +55,7 @@ namespace ZombieGame.Client
             context.StrokeStyle = "red";
             context.StrokeRect(0, 0, Game.TILESIZE, Game.TILESIZE);
 
-            switch (Collision)
-            {
+            switch (Collision) {
                 case CollisionType.Full:
                     context.FillStyle = "rgba(233,12,22,0.6)";
                     context.FillRect(0, 0, Game.TILESIZE, Game.TILESIZE);
@@ -84,6 +80,5 @@ namespace ZombieGame.Client
 
             context.Restore();
         }
-
     }
 }

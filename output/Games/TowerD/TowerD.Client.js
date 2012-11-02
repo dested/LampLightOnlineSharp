@@ -138,7 +138,7 @@ $TowerD_Client_Game.prototype = {
 	},
 	buildUI: function(manager) {
 		var manageData;
-		var $t1 = new CommonClientLibraries.UIManager.UIArea(this.windowLocation.width - 400, 100, 250, 300);
+		var $t1 = new CommonClientLibraries.UIManager.UIArea(this.screen.width - 400, 100, 250, 300);
 		$t1.closable = true;
 		manager.addArea(manageData = $t1);
 		manageData.visible = true;
@@ -202,7 +202,7 @@ $TowerD_Client_Game.prototype = {
 		if (!this.$clicking) {
 			return false;
 		}
-		var point = CommonLibraries.Point.$ctor1(ss.Int32.div(jQueryEvent.clientX, this.scale.x), ss.Int32.div(jQueryEvent.clientY, this.scale.y));
+		var point = CommonLibraries.Point.$ctor1(ss.Int32.div(jQueryEvent.x, this.scale.x), ss.Int32.div(jQueryEvent.y, this.scale.y));
 		switch (this.$myClickState.data) {
 			case 0: {
 				if (ss.isValue(this.$selectedTower)) {
@@ -245,7 +245,7 @@ $TowerD_Client_Game.prototype = {
 		this.$clicking = true;
 		this.$selectedWaypoint = null;
 		this.$selectedTower = null;
-		var point = CommonLibraries.Point.$ctor1(ss.Int32.div(jQueryEvent.clientX, this.scale.x), ss.Int32.div(jQueryEvent.clientY, this.scale.y));
+		var point = CommonLibraries.Point.$ctor1(ss.Int32.div(jQueryEvent.x, this.scale.x), ss.Int32.div(jQueryEvent.y, this.scale.y));
 		switch (this.$myClickState.data) {
 			case 0: {
 				this.$selectedKingdom = null;
@@ -345,7 +345,7 @@ $TowerD_Client_Game.prototype = {
 			if ($TowerD_Client_Game.debugText[i]) {
 				context.save();
 				context.strokeStyle = 'white';
-				context.strokeText($TowerD_Client_Game.debugText[i].toString(), this.windowLocation.width - 120, i * 20 + 150);
+				context.strokeText($TowerD_Client_Game.debugText[i].toString(), this.screen.width - 120, i * 20 + 150);
 				context.restore();
 			}
 		}

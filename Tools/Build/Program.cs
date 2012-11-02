@@ -152,8 +152,7 @@ namespace LampLightOnlineBuild
 #if FTP
 
                 long length = new FileInfo(to).Length;
-                if (webftp.GetFileSize(loc + name) != length)
-                {
+                if (webftp.GetFileSize(loc + name) != length) {
                     Console.WriteLine("ftp start " + length.ToString("N0"));
                     webftp.Upload(loc + name, to);
                     Console.WriteLine("ftp complete " + to);
@@ -161,7 +160,7 @@ namespace LampLightOnlineBuild
 #endif
             }
 
-            string[] games = { "TowerD", "ZombieGame", "ZakGame" };
+            string[] games = {"ZombieGame" /*, "TowerD", "ZakGame" */};
 
             foreach (var depend in games) {
                 var to = pre + llo + @"\output\Games\" + depend + @"\";
@@ -177,7 +176,7 @@ namespace LampLightOnlineBuild
 
 #if FTP
                     Console.WriteLine("ftp start " + text.Length.ToString("N0"));
-                    webftp.Upload(loc+"Games/" + depend + "/" + depend + "." + ext + ".js", fm);
+                    webftp.Upload(loc + "Games/" + depend + "/" + depend + "." + ext + ".js", fm);
                     Console.WriteLine("ftp complete " + fm);
 #endif
                 }

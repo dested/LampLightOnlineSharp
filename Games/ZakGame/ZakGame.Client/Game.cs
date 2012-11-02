@@ -7,16 +7,15 @@ using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using WebLibraries;
-using jQueryApi;
 namespace ZakGame.Client
 {
     public class Game : LampClient
     {
-
         public static Game Instance;
         private bool clicking = false;
         private Button<bool> myClickState;
         private LampPlayer[] myPlayers;
+        private ImageElement someImage;
         [IntrinsicProperty]
         public static object[] DebugText { get; set; }
 
@@ -25,76 +24,73 @@ namespace ZakGame.Client
             Instance = this;
 
             DebugText = new object[0];
-
         }
 
         public override void BindKeys(KeyboardJS manager)
         {
-            manager.Bind.Key("space",() => { /*keydown*/},() => { /*keyup*/});
+            manager.Bind.Key("space",
+                             () => {
+                                 /*keydown*/
+                             },
+                             () => {
+                                 /*keyup*/
+                             });
         }
 
- 
-          public override void Init(LampPlayer[] players, CanvasContext2D context)
+        public override void Init(LampPlayer[] players, CanvasContext2D context)
         {
-
             myPlayers = players;
 
-              someImage = new ImageElement();
-              someImage.AddEventListener("load", e => { 
-                  //idk do something when the image is loaded
-              }, false);
-              someImage.Src = "http://dested.com/lamp/Games/ZombieGame/assets/LostGarden+WoodTiles.png";
-
-
+            someImage = new ImageElement();
+            someImage.AddEventListener("load",
+                                       e => {
+                                           //idk do something when the image is loaded
+                                       },
+                                       false);
+            someImage.Src = "http://dested.com/lamp/Games/ZombieGame/assets/LostGarden+WoodTiles.png";
         }
 
- 
-        public override void Tick()
-        {
-            
-
-        }
-
-        private ImageElement someImage;
+        public override void Tick() {}
 
         public override void BuildUI(UIManager manager)
         {
             UIArea manageData;
-            manager.AddArea(manageData = new UIArea(WindowLocation.Width - 400, 100, 250, 300) {Closable = true});
+            manager.AddArea(manageData = new UIArea(Screen.Width - 400, 100, 250, 300) {Closable = true});
             manageData.Visible = true;
             manageData.AddControl(new TextArea(30, 25, "Manage Defense") {Color = "blue"});
 
             myClickState = null;
-            myClickState = new Button<bool>(false,20,50,100,25,new Func<string>(() => {
-                                                                 return myClickState.Data ? "This" : "That";
-                                                             })) {
-                                                                         Click = (p) => { myClickState.Data = !myClickState.Data; }
-                                                                 };
+            myClickState = new Button<bool>(false, 20, 50, 100, 25, new Func<string>(() => { return myClickState.Data ? "This" : "That"; })) {
+                                                                                                                                                     Click = (p) => { myClickState.Data = !myClickState.Data; }
+                                                                                                                                             };
 
             manageData.AddControl(myClickState);
-            manageData.AddControl(new Button(20, 80, 100, 25, "Send Wave") {Click = (p) => {
-                //idk do something on button click
-                                                                                    }}); 
+            manageData.AddControl(new Button(20, 80, 100, 25, "Send Wave") {
+                                                                                   Click = (p) => {
+                                                                                               //idk do something on button click
+                                                                                           }
+                                                                           });
         }
 
-        public override bool MouseMove(jQueryEvent jQueryEvent)
+        public override bool MouseMove(Pointer jQueryEvent)
         {
             if (!clicking) return false;
+
             return false;
         }
 
-        public override bool OnClick(jQueryEvent jQueryEvent)
+        public override bool OnClick(Pointer jQueryEvent)
         {
             clicking = true;
-            var x = jQueryEvent.ClientX;
-            var y = jQueryEvent.ClientY;
+            var x = jQueryEvent.X;
+            var y = jQueryEvent.Y;
 
             DebugText[0] = x + " " + y;
             //idk do something with xy
             return false;
         }
 
-        public override bool MouseUp(jQueryEvent jQueryEvent)
+        public override bool MouseUp(Pointer jQueryEvent)
         {
             clicking = false;
 
@@ -103,30 +99,17 @@ namespace ZakGame.Client
 
         public override void Draw(CanvasContext2D context)
         {
-            
-            
-            
             context.FillStyle = "red";
             context.FillRect(100, 100, 200, 200);
 
-
             context.DrawImage(someImage, 250, 250);
-            context.DrawImage(someImage, 350, 350,100,100,200,200,100,100);
-
-             
-
-
-
-
-
-
-
+            context.DrawImage(someImage, 350, 350, 100, 100, 200, 200, 100, 100);
 
             for (int i = 0; i < DebugText.Length; i++) {
                 if (DebugText[i].Truthy()) {
                     context.Save();
                     context.StrokeStyle = "white";
-                    context.StrokeText(DebugText[i].ToString(), WindowLocation.Width - 120, i * 20 + 150);
+                    context.StrokeText(DebugText[i].ToString(), Screen.Width - 120, i * 20 + 150);
                     context.Restore();
                 }
             }

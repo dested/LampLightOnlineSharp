@@ -9,8 +9,7 @@ namespace CodeMirrorLibrary
     {
         public Element ScrollerElement
         {
-            [ScriptName("getScrollerElement")]
-            get { return null; }
+            [ScriptName("getScrollerElement")] get { return null; }
         }
 
         [ScriptName("fromTextArea")]

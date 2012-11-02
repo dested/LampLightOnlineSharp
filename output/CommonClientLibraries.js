@@ -198,10 +198,10 @@ $CommonClientLibraries_UIManager_CHelp.getCursorPosition = function(ev) {
 		ev = ev.originalEvent.targetTouches[0];
 	}
 	if (!!(ss.isValue(ev.pageX) && ss.isValue(ev.pageY))) {
-		return $CommonClientLibraries_UIManager_Pointer.$ctor(ev.pageX, ev.pageY, 0, ev.which === 3);
+		return $CommonClientLibraries_UIManager_Pointer.$ctor1(ev.pageX, ev.pageY, 0, ev.which === 3);
 	}
 	//if (ev.x != null && ev.y != null) return new { x: ev.x, y: ev.y };
-	return $CommonClientLibraries_UIManager_Pointer.$ctor(ev.clientX, ev.clientY, 0, ev.which === 3);
+	return $CommonClientLibraries_UIManager_Pointer.$ctor1(ev.clientX, ev.clientY, 0, ev.which === 3);
 };
 $CommonClientLibraries_UIManager_CHelp.loadImageFromFile = function(tileMapFile, loaded) {
 	var element = new Image();
@@ -956,7 +956,7 @@ $CommonClientLibraries_UIManager_Panel.prototype = {
 		return false;
 	},
 	focus: function(e) {
-		var e2 = $CommonClientLibraries_UIManager_Pointer.$ctor(0, 0, 0, false);
+		var e2 = $CommonClientLibraries_UIManager_Pointer.$ctor1(0, 0, 0, false);
 		var ch = this.controls;
 		for (var $t1 = 0; $t1 < ch.length; $t1++) {
 			var t = ch[$t1];
@@ -998,7 +998,7 @@ $CommonClientLibraries_UIManager_Panel.prototype = {
 		return false;
 	},
 	onClick: function(e) {
-		var e2 = $CommonClientLibraries_UIManager_Pointer.$ctor(0, 0, 0, false);
+		var e2 = $CommonClientLibraries_UIManager_Pointer.$ctor1(0, 0, 0, false);
 		if (!this.visible) {
 			return false;
 		}
@@ -1054,7 +1054,7 @@ $CommonClientLibraries_UIManager_Panel.prototype = {
 		}
 		for (var $t1 = 0; $t1 < this.controls.length; $t1++) {
 			var control = this.controls[$t1];
-			control.onMouseUp($CommonClientLibraries_UIManager_Pointer.$ctor(e.x - control.x, e.y - control.y, 0, false));
+			control.onMouseUp($CommonClientLibraries_UIManager_Pointer.$ctor1(e.x - control.x, e.y - control.y, 0, false));
 		}
 		var uiArea = Type.safeCast(this, $CommonClientLibraries_UIManager_UIArea);
 		if (ss.isValue(uiArea)) {
@@ -1130,12 +1130,20 @@ Type.registerGenericClass(global, 'CommonClientLibraries.UIManager.Panel$1', $Co
 // CommonClientLibraries.UIManager.Pointer
 var $CommonClientLibraries_UIManager_Pointer = function() {
 };
-$CommonClientLibraries_UIManager_Pointer.$ctor = function(x, y, delta, right) {
+$CommonClientLibraries_UIManager_Pointer.$ctor1 = function(x, y, delta, right) {
 	var $this = CommonLibraries.Point.$ctor1(x, y);
 	$this.delta = 0;
 	$this.right = false;
 	$this.delta = delta;
 	$this.right = right;
+	return $this;
+};
+$CommonClientLibraries_UIManager_Pointer.$ctor = function(x, y, pointer) {
+	var $this = CommonLibraries.Point.$ctor1(x, y);
+	$this.delta = 0;
+	$this.right = false;
+	$this.delta = pointer.delta;
+	$this.right = pointer.right;
 	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -2068,7 +2076,7 @@ $CommonClientLibraries_UIManager_UIManager.prototype = {
 			var are = cl[$t1];
 			if (are.visible && (are.isEditMode() ? (are.y - are.editorEngine.maxSize() <= cell.y && are.y + are.editorEngine.maxSize() + are.height > cell.y && are.x - are.editorEngine.maxSize() <= cell.x && are.x + are.editorEngine.maxSize() + are.width > cell.x) : (are.y <= cell.y && are.y + are.height > cell.y && are.x <= cell.x && are.x + are.width > cell.x))) {
 				goodArea = are;
-				var ec = $CommonClientLibraries_UIManager_Pointer.$ctor(cell.x - are.x, cell.y - are.y, 0, cell.right);
+				var ec = $CommonClientLibraries_UIManager_Pointer.$ctor1(cell.x - are.x, cell.y - are.y, 0, cell.right);
 				are.onClick(ec);
 				break;
 			}
@@ -2105,7 +2113,7 @@ $CommonClientLibraries_UIManager_UIManager.prototype = {
 		for (var $t1 = 0; $t1 < cl.length; $t1++) {
 			var are = cl[$t1];
 			if (are.dragging || are.isEditMode() || are.visible && are.y <= cell.y && are.y + are.height > cell.y && are.x <= cell.x && are.x + are.width > cell.x) {
-				var cell2 = $CommonClientLibraries_UIManager_Pointer.$ctor(cell.x - are.x, cell.y - are.y, 0, cell.right);
+				var cell2 = $CommonClientLibraries_UIManager_Pointer.$ctor1(cell.x - are.x, cell.y - are.y, 0, cell.right);
 				return are.onMouseOver(cell2);
 			}
 		}
@@ -2114,7 +2122,7 @@ $CommonClientLibraries_UIManager_UIManager.prototype = {
 	onMouseUp: function(cell) {
 		for (var $t1 = 0; $t1 < this.uiAreas.length; $t1++) {
 			var are = this.uiAreas[$t1];
-			var ec = $CommonClientLibraries_UIManager_Pointer.$ctor(cell.x - are.x, cell.y - are.y, 0, cell.right);
+			var ec = $CommonClientLibraries_UIManager_Pointer.$ctor1(cell.x - are.x, cell.y - are.y, 0, cell.right);
 			are.onMouseUp(ec);
 		}
 	},
@@ -2124,7 +2132,7 @@ $CommonClientLibraries_UIManager_UIManager.prototype = {
 		for (var $t1 = 0; $t1 < this.uiAreas.length; $t1++) {
 			var are = this.uiAreas[$t1];
 			if (are.visible && are.y <= cell.y && are.y + are.height > cell.y && are.x <= cell.x && are.x + are.width > cell.x) {
-				var cell2 = $CommonClientLibraries_UIManager_Pointer.$ctor(cell.x - are.x, cell.y - are.y, delta, cell.right);
+				var cell2 = $CommonClientLibraries_UIManager_Pointer.$ctor1(cell.x - are.x, cell.y - are.y, delta, cell.right);
 				return are.onScroll(cell2);
 			}
 		}

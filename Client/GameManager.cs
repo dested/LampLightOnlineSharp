@@ -2,25 +2,24 @@
 using ClientAPI;
 using CommonAPI;
 using CommonClientLibraries.UIManager;
-using CommonLibraries; 
+using CommonLibraries;
 using WebLibraries;
-using jQueryApi;
+using ZombieGame.Client;
 namespace Client
 {
     internal class GameManager
     {
         private LampClient game;
-        public Rectangle WindowLocation { get; set; }
+        public Rectangle Screen { get; set; }
 
         public GameManager()
         {
-          //  game = new TowerD.Client.Game();
-            game = new ZombieGame.Client.Game();
-           // game = new ZakGame.Client.Game();
-
+            //  game = new TowerD.Client.Game();
+            game = new Game();
+            // game = new ZakGame.Client.Game();
         }
 
-        public bool MouseMove(jQueryEvent queryEvent)
+        public bool MouseMove(Pointer queryEvent)
         {
             return game.MouseMove(queryEvent);
         }
@@ -30,12 +29,12 @@ namespace Client
             game.BuildUI(uiManager);
         }
 
-        public bool OnClick(jQueryEvent queryEvent)
+        public bool OnClick(Pointer queryEvent)
         {
             return game.OnClick(queryEvent);
         }
 
-        public bool MouseUp(jQueryEvent queryEvent)
+        public bool MouseUp(Pointer queryEvent)
         {
             return game.MouseUp(queryEvent);
         }
@@ -52,7 +51,7 @@ namespace Client
 
         public void Start(CanvasContext2D context)
         {
-            game.WindowLocation = WindowLocation;
+            game.Screen = Screen;
             game.Init(new LampPlayer[0], context);
             game.BindKeys(KeyboardJS.Instance());
         }

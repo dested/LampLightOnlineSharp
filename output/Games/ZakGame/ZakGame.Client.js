@@ -29,7 +29,7 @@ $ZakGame_Client_Game.prototype = {
 	},
 	buildUI: function(manager) {
 		var manageData;
-		var $t1 = new CommonClientLibraries.UIManager.UIArea(this.windowLocation.width - 400, 100, 250, 300);
+		var $t1 = new CommonClientLibraries.UIManager.UIArea(this.screen.width - 400, 100, 250, 300);
 		$t1.closable = true;
 		manager.addArea(manageData = $t1);
 		manageData.visible = true;
@@ -59,8 +59,8 @@ $ZakGame_Client_Game.prototype = {
 	},
 	onClick: function(jQueryEvent) {
 		this.$clicking = true;
-		var x = jQueryEvent.clientX;
-		var y = jQueryEvent.clientY;
+		var x = jQueryEvent.x;
+		var y = jQueryEvent.y;
 		$ZakGame_Client_Game.debugText[0] = x + ' ' + y;
 		//idk do something with xy
 		return false;
@@ -78,7 +78,7 @@ $ZakGame_Client_Game.prototype = {
 			if ($ZakGame_Client_Game.debugText[i]) {
 				context.save();
 				context.strokeStyle = 'white';
-				context.strokeText($ZakGame_Client_Game.debugText[i].toString(), this.windowLocation.width - 120, i * 20 + 150);
+				context.strokeText($ZakGame_Client_Game.debugText[i].toString(), this.screen.width - 120, i * 20 + 150);
 				context.restore();
 			}
 		}

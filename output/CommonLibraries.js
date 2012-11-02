@@ -212,6 +212,14 @@ $CommonLibraries_Point.add$1 = function($this, scaleFactor) {
 $CommonLibraries_Point.clone = function($this) {
 	return $CommonLibraries_Point.$ctor1($this.x, $this.y);
 };
+$CommonLibraries_Point.normalize = function($this, scale) {
+	var norm = Math.sqrt($this.x * $this.x + $this.y * $this.y);
+	if (norm !== 0) {
+		$this.x = ss.Int32.trunc(scale * $this.x / norm);
+		$this.y = ss.Int32.trunc(scale * $this.y / norm);
+	}
+	return $this;
+};
 $CommonLibraries_Point.$ctor1 = function(x, y) {
 	var $this = {};
 	$this.x = 0;

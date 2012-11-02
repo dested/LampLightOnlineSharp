@@ -2,17 +2,17 @@
 // Client.GameManager
 var $Client_$GameManager = function() {
 	this.$game = null;
-	this.$1$WindowLocationField = null;
+	this.$1$ScreenField = null;
 	//  game = new TowerD.Client.Game();
 	this.$game = new ZombieGame.Client.Game();
 	// game = new ZakGame.Client.Game();
 };
 $Client_$GameManager.prototype = {
-	get_$windowLocation: function() {
-		return this.$1$WindowLocationField;
+	get_$screen: function() {
+		return this.$1$ScreenField;
 	},
-	set_$windowLocation: function(value) {
-		this.$1$WindowLocationField = value;
+	set_$screen: function(value) {
+		this.$1$ScreenField = value;
 	},
 	$mouseMove: function(queryEvent) {
 		return this.$game.mouseMove(queryEvent);
@@ -33,7 +33,7 @@ $Client_$GameManager.prototype = {
 		this.$game.tick();
 	},
 	$start: function(context) {
-		this.$game.windowLocation = this.get_$windowLocation();
+		this.$game.screen = this.get_$screen();
 		this.$game.init([], context);
 		this.$game.bindKeys(KeyboardJS);
 	}
@@ -118,24 +118,25 @@ $Client_ClientManager.prototype = {
 		if (this.uiManager.onMouseMove(this.$lastMouseMove)) {
 			return;
 		}
-		if (this.$gameManager.$mouseMove(queryEvent)) {
+		if (this.$gameManager.$mouseMove(this.$lastMouseMove)) {
 			return;
 		}
 		return;
 	},
 	$canvasOnClick: function(queryEvent) {
 		queryEvent.preventDefault();
-		if (this.uiManager.onClick(CommonClientLibraries.UIManager.CHelp.getCursorPosition(queryEvent))) {
+		var cursorPosition = CommonClientLibraries.UIManager.CHelp.getCursorPosition(queryEvent);
+		if (this.uiManager.onClick(cursorPosition)) {
 			return;
 		}
-		if (this.$gameManager.$onClick(queryEvent)) {
+		if (this.$gameManager.$onClick(cursorPosition)) {
 			return;
 		}
 	},
 	$canvasMouseUp: function(queryEvent) {
 		queryEvent.preventDefault();
 		this.uiManager.onMouseUp(this.$lastMouseMove);
-		if (this.$gameManager.$mouseUp(queryEvent)) {
+		if (this.$gameManager.$mouseUp(this.$lastMouseMove)) {
 			return;
 		}
 	},
@@ -144,11 +145,11 @@ $Client_ClientManager.prototype = {
 		this.$canvasHeight = $(window).height();
 		this.$uiCanvas.domCanvas.attr('width', this.$canvasWidth.toString());
 		this.$uiCanvas.domCanvas.attr('height', this.$canvasHeight.toString());
-		this.$gameManager.set_$windowLocation(CommonLibraries.Rectangle.$ctor1(0, 0, window.innerWidth, window.innerHeight));
-		this.$gameCanvas.domCanvas.attr('width', this.$gameManager.get_$windowLocation().width.toString());
-		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.get_$windowLocation().height.toString());
+		this.$gameManager.set_$screen(CommonLibraries.Rectangle.$ctor1(0, 0, window.innerWidth, window.innerHeight));
+		this.$gameCanvas.domCanvas.attr('width', this.$gameManager.get_$screen().width.toString());
+		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.get_$screen().height.toString());
 		this.$uiGoodSize = CommonLibraries.Point.$ctor1(this.$canvasWidth, this.$canvasHeight);
-		this.$gameGoodSize = CommonLibraries.Point.$ctor1(this.$gameManager.get_$windowLocation().width, this.$gameManager.get_$windowLocation().height);
+		this.$gameGoodSize = CommonLibraries.Point.$ctor1(this.$gameManager.get_$screen().width, this.$gameManager.get_$screen().height);
 	},
 	clear: function(canv) {
 		var w;
