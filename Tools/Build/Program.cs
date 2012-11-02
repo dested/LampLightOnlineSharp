@@ -97,7 +97,7 @@ namespace LampLightOnlineBuild
                                                                       {"CommonAPI", new Application(false, "", new List<string> {})},
                                                               };
 
-            string loc = "/httpdocs/zak/";
+            string loc = ConfigurationSettings.AppSettings["ftpdir"];
 #if FTP
             Console.WriteLine("connecting ftp");
             Ftp webftp = new Ftp();

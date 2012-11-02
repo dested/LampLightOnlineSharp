@@ -15,8 +15,8 @@ namespace Client
         public GameManager()
         {
           //  game = new TowerD.Client.Game();
-          //  game = new ZombieGame.Client.Game();
-            game = new ZakGame.Client.Game();
+            game = new ZombieGame.Client.Game();
+           // game = new ZakGame.Client.Game();
 
         }
 

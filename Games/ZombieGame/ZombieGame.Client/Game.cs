@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using ClientAPI;
@@ -10,6 +11,7 @@ using ZombieGame.Common.JSONObjects;
 using jQueryApi;
 namespace ZombieGame.Client
 {
+    public delegate void Completed();
     public class Game : LampClient
     {
 
@@ -18,6 +20,7 @@ namespace ZombieGame.Client
         private bool clicking = false;
         private Button<bool> myClickState;
         private LampPlayer[] myPlayers;
+        public const int TILESIZE=32;
         [IntrinsicProperty]
         public static object[] DebugText { get; set; }
 
@@ -35,43 +38,80 @@ namespace ZombieGame.Client
             manager.Bind.Key("space",() => { /*keydown*/},() => { /*keyup*/});
         }
 
+        public class TaskHandler
+        {
+            public static TaskHandler Start(Action<Completed> task)
+            {
+                return new TaskHandler().AddTask(task);
+            }
+            public TaskHandler()
+            {
+                Tasks = new List<Action<Completed>>();
+            }
 
-          public override void Init(LampPlayer[] players, CanvasContext2D context)
+            public List<Action<Completed>> Tasks { get; set; }
+            public TaskHandler AddTask(Action<Completed> task)
+            {
+                Tasks.Add(task);
+                return this;
+            }
+
+            private int current = 0;
+            public void Do()
+            {
+
+                Tasks[current++](happen);
+            }
+            public void happen()
+            {
+                if (current == Tasks.Count)
+                    return;
+                Tasks[current++](happen);
+
+            }
+        }
+
+        public override void Init(LampPlayer[] players, CanvasContext2D context)
         {
 
             myPlayers = players;
 
-               
-            gameManager.LoadTiles(new JsonTileMap() {
-                                                            Name = "Pretty",
-                                                            TileWidth = 32,
-                                                            TileHeight = 32,
-                                                            TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/LostGarden+WoodTiles.png"
-                                                    },() => {
+            TaskHandler.Start((completed) => {
+                                  gameManager.LoadTiles(new JsonTileMap() {
+                                                                                  Name = "Pretty",
+                                                                                  TileWidth = 32,
+                                                                                  TileHeight = 32,
+                                                                                  TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/LostGarden+WoodTiles.png"
+                                                                          },
+                                                        completed);
+                              }).AddTask((completed) => {
 
-                                                          gameManager.LoadTiles(new JsonTileMap() {
-                                                                                                          Name = "Pretty2",
-                                                                                                          TileWidth = 32,
-                                                                                                          TileHeight = 32,
-                                                                                                          TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png"
-                                                                                                  },
-                                                                                () => {
-                                                                                    gameManager.LoadMap(new JsonMap() {
+                                             gameManager.LoadTiles(new JsonTileMap() {
+                                                                                             Name = "Pretty2",
+                                                                                             TileWidth = 32,
+                                                                                             TileHeight = 32,
+                                                                                             TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png"
+                                                                                     },
+                                                                   completed);
+
+                                         }).AddTask((completed) => {
+                                                        GameMap bigMap = gameManager.MapManager.LoadMap(new JsonMap() {
                                                                                                                               MapWidth = 19,
                                                                                                                               MapHeight = 21,
                                                                                                                               Name = "Pretties",
                                                                                                                               TileMap = makeFakeMap("Pretty", 19, 21)
                                                                                                                       });
-                                                                                    gameManager.LoadMap(new JsonMap() {
-                                                                                                                              MapWidth = 12,
-                                                                                                                              MapHeight = 10,
-                                                                                                                              Name = "Pretties2",
-                                                                                                                              TileMap = makeFakeMap("Pretty2", 12, 10)
-                                                                                                                      });
-                                                                                });
-                                                        
-
-                                                      });
+                                                        gameManager.MapManager.AddMapToRegion(bigMap, 0, 0);
+                                                        gameManager.MapManager.AddMapToRegion(gameManager.MapManager.LoadMap(new JsonMap() {
+                                                                                                                                                   MapWidth = 12,
+                                                                                                                                                   MapHeight = 10,
+                                                                                                                                                   Name = "Pretties2",
+                                                                                                                                                   TileMap = makeFakeMap("Pretty2", 12, 10)
+                                                                                                                                           }),
+                                                                                              bigMap.MapWidth,
+                                                                                              0);
+                                                        completed();
+                                                    }).Do();
         }
 
         private static string[][] makeFakeMap(string name,int w, int h)

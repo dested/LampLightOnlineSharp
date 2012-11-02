@@ -122,8 +122,14 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollisionType.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameManager.cs" />
     <Compile Include="GameMap.cs" />
+    <Compile Include="MapManager.cs" />
+    <Compile Include="Tile.cs" />
+    <Compile Include="TileManager.cs" />
+    <Compile Include="WindowManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="thing to know.txt" />
