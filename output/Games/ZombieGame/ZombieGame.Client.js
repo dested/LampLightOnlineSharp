@@ -156,17 +156,23 @@ $ZombieGame_Client_GameMap.prototype = {
 		return this.tileMap.get(x, y);
 	},
 	draw: function(context, _x, _y) {
+		context.save();
+		context.scale(2, 2);
 		for (var x = 0; x < this.mapWidth; x++) {
 			for (var y = 0; y < this.mapHeight; y++) {
 				var tile = this.tileMap.get(x, y);
 				context.save();
 				context.translate(_x + x * tile.image.canvas.width, _y + y * tile.image.canvas.height);
 				context.translate(ss.Int32.div(tile.image.canvas.width, 2), ss.Int32.div(tile.image.canvas.height, 2));
-				context.rotate(0.3);
+				//context.Rotate(fm);
+				context.translate(ss.Int32.div(-tile.image.canvas.width, 2), ss.Int32.div(-tile.image.canvas.height, 2));
 				context.drawImage(tile.image.canvas, 0, 0);
+				context.strokeStyle = 'red';
+				context.strokeRect(0, 0, tile.image.canvas.width, tile.image.canvas.height);
 				context.restore();
 			}
 		}
+		context.restore();
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////

@@ -24,7 +24,6 @@ namespace ZombieGame.Client
         {
             CHelp.LoadImageFromFile(jsonTileMap.TileMapFile, (image) => {
                 TileManager.LoadTiles(jsonTileMap, image, completed);
-                                                                 
                                                              });
         }
 
@@ -43,7 +42,7 @@ namespace ZombieGame.Client
     {
         internal readonly GameManager myGameManager;
         public JsDictionary<string, GameMap> GameMaps { get; set; }
-        public GameMap LoadedMap { get; set; }
+        public GameMap LoadedMap { get; set; } 
 
         public MapManager(GameManager gameManager)
         {
@@ -61,7 +60,8 @@ namespace ZombieGame.Client
         public void Draw(CanvasContext2D context)
         {
             GameMaps["Pretties"].Draw(context,0,0);
-            GameMaps["Pretties2"].Draw(context, GameMaps["Pretties"].MapWidth * GameMaps["Pretties"].TileMap[0,0].Image.Canvas.Width, 0);
+            GameMaps["Pretties2"].Draw(context, GameMaps["Pretties"].MapWidth * GameMaps["Pretties"].TileMap[0, 0].Image.Canvas.Width, 0);
+
 
         }
     }
@@ -128,9 +128,12 @@ namespace ZombieGame.Client
         {
             return TileMap[x, y];
         }
+         
 
         public void Draw(CanvasContext2D context, int _x, int _y)
         {
+            context.Save();
+            context.Scale(2,2); 
             for (int x = 0; x < MapWidth; x++) {
                 for (int y = 0; y < MapHeight; y++) {
                     Tile tile = TileMap[x, y];
@@ -138,12 +141,16 @@ namespace ZombieGame.Client
                     context.Translate(_x + x * tile.Image.Canvas.Width, _y + y * tile.Image.Canvas.Height);
 
                     context.Translate(tile.Image.Canvas.Width / 2, tile.Image.Canvas.Height / 2);
-                    context.Rotate(0.3);
+                    //context.Rotate(fm);
+                    context.Translate(-tile.Image.Canvas.Width / 2, -tile.Image.Canvas.Height / 2);
                     context.DrawImage(tile.Image.Canvas, 0,0);
+                    context.StrokeStyle = "red";
+                    context.StrokeRect(0, 0, tile.Image.Canvas.Width, tile.Image.Canvas.Height);
                     context.Restore();
-
                 }
             }
+            context.Restore();
+
         }
     }
     public class Tile

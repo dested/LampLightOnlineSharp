@@ -12,7 +12,7 @@ namespace ZombieGame.Client
 {
     public class Game : LampClient
     {
-        public static bool DRAWFAST;
+
         public static Game Instance;
         private GameManager gameManager;
         private bool clicking = false;
@@ -100,9 +100,7 @@ namespace ZombieGame.Client
             myClickState = new Button<bool>(false, 20, 50, 100, 25, new Func<string>(() => { return myClickState.Data ? "This" : "That"; })) {Click = (p) => { myClickState.Data = !myClickState.Data; }};
 
             manageData.AddControl(myClickState);
-            manageData.AddControl(new Button(20, 80, 100, 25, "Send Wave") {Click = (p) => { }});
-
-            manageData.AddControl(new Button(20, 125, 100, 25, ( (Func<string>) ( () => { return DRAWFAST ? "Draw Slow" : "Draw Fast"; } ) )) {Click = (p) => { DRAWFAST = !DRAWFAST; }});
+            manageData.AddControl(new Button(20, 80, 100, 25, "Send Wave") {Click = (p) => { }}); 
         }
 
         public override bool MouseMove(jQueryEvent jQueryEvent)
