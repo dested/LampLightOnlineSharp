@@ -550,6 +550,38 @@ $ZombieGame_Client_UnitManager.prototype = {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.Waypoint
+var $ZombieGame_Client_Waypoint = function() {
+	this.x = 0;
+	this.y = 0;
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.WaypointDeterminer
+var $ZombieGame_Client_WaypointDeterminer = function(start, end, moveRate) {
+	this.points = null;
+	var _x = start.x, _y = start.y;
+	while (true) {
+		if (Math.abs(end.x - start.x) < 6 && Math.abs(end.y - start.x) < 6) {
+			break;
+		}
+		else {
+			var m = CommonLibraries.Point.normalize(CommonLibraries.Point.negate$1(end, _x, _y), moveRate);
+			_x += m.x;
+			_y += m.y;
+			var $t2 = this.points;
+			var $t1 = new $ZombieGame_Client_Waypoint();
+			$t1.x = _x;
+			$t1.y = _y;
+			$t2.add($t1);
+		}
+	}
+};
+$ZombieGame_Client_WaypointDeterminer.prototype = {
+	tick: function() {
+		return false;
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.WindowManager
 var $ZombieGame_Client_WindowManager = function(gameManager, x, y, width, height) {
 	this.$myGameManager = null;
@@ -581,6 +613,8 @@ Type.registerClass(global, 'ZombieGame.Client.Tile', $ZombieGame_Client_Tile, Ob
 Type.registerClass(global, 'ZombieGame.Client.TileManager', $ZombieGame_Client_TileManager, Object);
 Type.registerClass(global, 'ZombieGame.Client.Unit', $ZombieGame_Client_Unit, Object);
 Type.registerClass(global, 'ZombieGame.Client.UnitManager', $ZombieGame_Client_UnitManager, Object);
+Type.registerClass(global, 'ZombieGame.Client.Waypoint', $ZombieGame_Client_Waypoint, Object);
+Type.registerClass(global, 'ZombieGame.Client.WaypointDeterminer', $ZombieGame_Client_WaypointDeterminer, Object);
 Type.registerClass(global, 'ZombieGame.Client.WindowManager', $ZombieGame_Client_WindowManager, Object);
 Type.registerClass(global, 'ZombieGame.Client.Person', $ZombieGame_Client_Person, $ZombieGame_Client_Unit);
 $ZombieGame_Client_Game.TILESIZE = 32;

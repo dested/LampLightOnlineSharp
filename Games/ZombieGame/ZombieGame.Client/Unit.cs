@@ -7,6 +7,7 @@ namespace ZombieGame.Client
 {
     public class Unit
     {
+        private readonly GameManager myGameManager;
         private Point movingTowards;
         [IntrinsicProperty]
         public int X { get; set; }
@@ -17,8 +18,9 @@ namespace ZombieGame.Client
         [IntrinsicProperty]
         public Action<int, int> UpdatePosition { get; set; }
 
-        public Unit()
+        public Unit(GameManager gameManager)
         {
+            myGameManager = gameManager;
             MoveRate = 2;
         }
 
@@ -35,6 +37,8 @@ namespace ZombieGame.Client
         public virtual void MoveTowards(int x, int y)
         {
             movingTowards = new Point(x, y);
+
+            new WaypointDeterminer(new Point(this.X, this.Y), new Point(x, y), MoveRate, myGameManager.MapManager.CollisionMap);
         }
 
         public virtual void Tick()
@@ -53,8 +57,27 @@ namespace ZombieGame.Client
     }
     public class WaypointDeterminer
     {
-        public WaypointDeterminer(Point start, Point end,int moveRate)
+        public WaypointDeterminer(Point start, Point end, int moveRate, CollisionType[][] collisionMap)
         {
+
+            //[x][y]
+            /*
+            switch (collisionMap[0][0]) {
+                case CollisionType.Empty:
+                    break;
+                case CollisionType.Full:
+                    break;
+                case CollisionType.RightHalf:
+                    break;
+                case CollisionType.TopHalf:
+                    break;
+                case CollisionType.LeftHalf:
+                    break;
+                case CollisionType.BottomHalf:
+                    break;
+            }*/
+
+            /*
             int _x=start.X, _y=start.Y;
 
             while (true) {
@@ -66,11 +89,51 @@ namespace ZombieGame.Client
                     _y += m.Y;
                     Points.Add(new Waypoint(){X=_x,Y=_y});
                 }
+            }*/
+
+            //If area mouse clicked is empty, attempt to calculate path to coordinate
+            if (collisionMap[end.X][end.Y] == CollisionType.Empty) {
+                var openList = new List<AStarNode>();
+                var closedList = new List<AStarNode>();
+
+                //Add start coord to openlist
+                openList.Add(new AStarNode(0, (Math.Abs(start.X - end.X) + Math.Abs(start.Y - end.Y))*AStarNode.LateralCost, null, new Point(start.X, start.Y)));
+
+                //While still nodes to search on frontier
+                while (openList.Count > 0) {
+                    int lowestCost = int.MaxValue;
+                    AStarNode currentNode = null;
+                    
+                    //Find lowest cost node and set it to current
+                    foreach (var node in openList) {
+                        if (node.TotalCost < lowestCost) {
+                            lowestCost = node.TotalCost;
+                            currentNode = node;
+                        }
+                    }
+
+                    //switch current node from open list to closed list
+                    openList.Remove(currentNode);
+                    closedList.Add(currentNode);
+
+                    //Build list of directly adjacent nodes that are walkable
+                    var eligibleAdjacent = new List<AStarNode>();
+                    int currentX = currentNode.Coordinate.X;
+                    int currentY = currentNode.Coordinate.Y;
+
+                    //Column left of current node
+                    if (currentX - 1 >= 0) {
+                        if (collisionMap[currentX - 1][currentY] == CollisionType.Empty) {
+                            
+                        }
+                    }
+
+                }
             }
         }
         public bool Tick()
         {
-            
+            return false;
         }
 
         [IntrinsicProperty]
@@ -84,4 +147,30 @@ namespace ZombieGame.Client
         public int Y { get; set; }
         
     }
+    public class AStarNode
+    {
+        public const int LateralCost = 10;
+        public const int DiagonalCost = 14;
+
+        [IntrinsicProperty]
+        public int TotalCost { get; set; }
+        [IntrinsicProperty]
+        public int MovementCost { get; set; }
+        [IntrinsicProperty]
+        public int HeuristicCost { get; set; }
+        [IntrinsicProperty]
+        public AStarNode Parent { get; set; }
+        [IntrinsicProperty]
+        public Point Coordinate { get; set; }
+
+        public AStarNode(int movementCost, int heuristicCost, AStarNode parent, Point coord)
+        {
+            TotalCost = movementCost + heuristicCost;
+            MovementCost = movementCost;
+            HeuristicCost = heuristicCost;
+            Parent = parent;
+            Coordinate = coord;
+        }
+    }
+    
 }

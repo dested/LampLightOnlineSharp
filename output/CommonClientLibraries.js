@@ -626,7 +626,7 @@ $CommonClientLibraries_UIManager_HScrollBox.prototype = {
 		if (!this.visible) {
 			return false;
 		}
-		if (e.delta > 0) {
+		if (e.wheelDelta > 0) {
 			if (this.scrollOffset > 0) {
 				this.scrollOffset--;
 			}
@@ -1132,17 +1132,17 @@ var $CommonClientLibraries_UIManager_Pointer = function() {
 };
 $CommonClientLibraries_UIManager_Pointer.$ctor1 = function(x, y, delta, right) {
 	var $this = CommonLibraries.Point.$ctor1(x, y);
-	$this.delta = 0;
+	$this.wheelDelta = 0;
 	$this.right = false;
-	$this.delta = delta;
+	$this.wheelDelta = delta;
 	$this.right = right;
 	return $this;
 };
 $CommonClientLibraries_UIManager_Pointer.$ctor = function(x, y, pointer) {
 	var $this = CommonLibraries.Point.$ctor1(x, y);
-	$this.delta = 0;
+	$this.wheelDelta = 0;
 	$this.right = false;
-	$this.delta = pointer.delta;
+	$this.wheelDelta = pointer.wheelDelta;
 	$this.right = pointer.right;
 	return $this;
 };
@@ -1260,7 +1260,7 @@ $CommonClientLibraries_UIManager_ScrollBox.prototype = {
 		if (!this.visible) {
 			return false;
 		}
-		if (e.delta > 0) {
+		if (e.wheelDelta > 0) {
 			if (this.scrollIndex > 0) {
 				this.scrollIndex--;
 			}
