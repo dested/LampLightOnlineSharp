@@ -70,7 +70,7 @@ var $Client_ClientManager = function() {
 	}));
 	var a = 0;
 	//Window.SetInterval(() => {},1000 / 60);
-	window.setInterval(Function.mkdel(this, this.$tick), 100);
+	window.setInterval(Function.mkdel(this, this.$tick), 16);
 	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);
 	this.$gameManager.$start(this.$gameCanvas.context);

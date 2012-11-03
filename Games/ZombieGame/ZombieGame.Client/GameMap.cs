@@ -49,7 +49,7 @@ namespace ZombieGame.Client
 
             for (int x = tileX; x < wWidth; x++) {
                 for (int y = tileY; y < wHeight; y++) {
-                    Tile tile = TileMap.GetSafe(x,y);
+                    Tile tile = TileMap.GetSafe(x, y);
                     if (tile == null)
                         continue;
                     tile.Draw(context, tileX, tileY, x, y);

@@ -29,10 +29,7 @@ namespace ZombieGame.Client
             UpdatePosition(X, Y);
         }
 
-        public virtual void Draw(CanvasContext2D context)
-        {
-            
-        }
+        public virtual void Draw(CanvasContext2D context) {}
 
         public virtual void MoveTowards(int x, int y)
         {
@@ -57,8 +54,13 @@ namespace ZombieGame.Client
     }
     public class WaypointDeterminer
     {
+        [IntrinsicProperty]
         public WaypointDeterminer(Point start, Point end, int moveRate, CollisionType[][] collisionMap)
+        public List<Waypoint> Points { get; set; }
+
+        public WaypointDeterminer(Point start, Point end, int moveRate)
         {
+            int _x = start.X, _y = start.Y;
 
             //[x][y]
             /*
@@ -87,7 +89,7 @@ namespace ZombieGame.Client
                     var m = end.Negate(_x, _y).Normalize(moveRate);
                     _x += m.X;
                     _y += m.Y;
-                    Points.Add(new Waypoint(){X=_x,Y=_y});
+                    Points.Add(new Waypoint() {X = _x, Y = _y});
                 }
             }*/
 
@@ -131,13 +133,11 @@ namespace ZombieGame.Client
                 }
             }
         }
+
         public bool Tick()
         {
             return false;
         }
-
-        [IntrinsicProperty]
-        public List<Waypoint> Points { get; set; }
     }
     public class Waypoint
     {
@@ -145,7 +145,6 @@ namespace ZombieGame.Client
         public int X { get; set; }
         [IntrinsicProperty]
         public int Y { get; set; }
-        
     }
     public class AStarNode
     {
