@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using CommonAPI;
 using MMServerAPI;
 namespace ZombieGame.Server
@@ -25,20 +26,20 @@ namespace ZombieGame.Server
 
             switch (zAction.ZombieActionType) {
                 case ZombieActionType.MovePlayer:
-                    zAction.Player.
+                    //zAction.Player
                     break;
             }
 
             base.ExecuteAction(action);
         }
     }
+    [Serializable]
     public class MovePlayerZombieLampAction : ZombieLampAction
     {
-        [IntrinsicProperty]
         public int X { get; set; }
-        [IntrinsicProperty]
         public int Y { get; set; }
     }
+    [Serializable]
     public class ZombieLampAction : LampAction
     {
         public ZombieActionType ZombieActionType { get; set; }

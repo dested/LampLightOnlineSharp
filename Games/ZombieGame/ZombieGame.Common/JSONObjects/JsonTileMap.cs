@@ -6,7 +6,7 @@ namespace ZombieGame.Common.JSONObjects
     [Imported]
     public class JsonTileMap
     {
-        public string TileMapFile { get; set; }
+        public string TileMapURL { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
         public string Name { get; set; }

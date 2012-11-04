@@ -61,7 +61,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\DebugZombie\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <NoStdLib>true</NoStdLib>
+    <NoStdLib>True</NoStdLib>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -86,21 +86,24 @@
     <Compile Include="SiteServer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.5.2\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Script.Linq">
-      <HintPath>..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
+    <Reference Include="Script.Linq, Version=1.5.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Saltarelle.Linq.1.5.2\lib\Script.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="Script.NodeJS">
-      <HintPath>..\..\packages\Saltarelle.NodeJS.1.4.0.12\lib\Script.NodeJS.dll</HintPath>
+    <Reference Include="Script.NodeJS, Version=1.5.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Saltarelle.NodeJS.1.5.2\lib\Script.NodeJS.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetDir)*.js" "$(SolutionDir)Output\"</PostBuildEvent>
   </PropertyGroup>

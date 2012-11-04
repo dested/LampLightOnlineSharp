@@ -39,8 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuClient", "Games\Sudok
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuServer", "Games\Sudoku\SudokuServer\SudokuServer.csproj", "{77454E48-A66C-4449-BB64-35A26752CC6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{A24B8529-20AE-4F4F-86F4-CE64DE577A10}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuCommon", "Games\Sudoku\SudokuCommon\SudokuCommon.csproj", "{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{B4F8D5FD-99DA-44E2-B49D-0294D198AA0C}"
@@ -491,32 +489,6 @@ Global
 		{77454E48-A66C-4449-BB64-35A26752CC6F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{77454E48-A66C-4449-BB64-35A26752CC6F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{77454E48-A66C-4449-BB64-35A26752CC6F}.Release|x86.ActiveCfg = Release|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debug all|Any CPU.ActiveCfg = debug all|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debug all|Any CPU.Build.0 = debug all|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debug all|Mixed Platforms.ActiveCfg = debug all|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debug all|Mixed Platforms.Build.0 = debug all|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debug all|x86.ActiveCfg = debug all|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debugall|Any CPU.ActiveCfg = debugall|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debugall|Any CPU.Build.0 = debugall|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debugall|Mixed Platforms.ActiveCfg = debugall|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debugall|Mixed Platforms.Build.0 = debugall|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.debugall|x86.ActiveCfg = debugall|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZak|Any CPU.ActiveCfg = DebugZak|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZak|Mixed Platforms.ActiveCfg = DebugZak|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A24B8529-20AE-4F4F-86F4-CE64DE577A10}.Release|x86.ActiveCfg = Release|Any CPU
 		{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}.debug all|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}.debug all|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{8C66DADB-B678-4FD8-A07D-1413D1DCC7BF}.debug all|x86.ActiveCfg = Debug|Any CPU

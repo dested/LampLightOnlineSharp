@@ -145,6 +145,33 @@ var $CommonLibraries_ExtraData$2 = function(T, T2) {
 };
 Type.registerGenericClass(global, 'CommonLibraries.ExtraData$2', $CommonLibraries_ExtraData$2, 2);
 ////////////////////////////////////////////////////////////////////////////////
+// CommonLibraries.GatewayLoginMessageModel
+var $CommonLibraries_GatewayLoginMessageModel = function() {
+};
+$CommonLibraries_GatewayLoginMessageModel.createInstance = function() {
+	return $CommonLibraries_GatewayLoginMessageModel.$ctor();
+};
+$CommonLibraries_GatewayLoginMessageModel.$ctor = function() {
+	var $this = {};
+	$this.userName = null;
+	$this.password = null;
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
+// CommonLibraries.GatewayMessageModel
+var $CommonLibraries_GatewayMessageModel = function() {
+};
+$CommonLibraries_GatewayMessageModel.$ctor = function(channel, content, gameServer) {
+	var $this = {};
+	$this.channel = null;
+	$this.content = null;
+	$this.gameServer = null;
+	$this.channel = channel;
+	$this.content = content;
+	$this.gameServer = gameServer;
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
 // CommonLibraries.Guid
 var $CommonLibraries_Guid = function() {
 };
@@ -289,11 +316,52 @@ $CommonLibraries_SizeNumber.op_Implicit$1 = function(d) {
 $CommonLibraries_SizeNumber.op_Implicit = function(d) {
 	return parseFloat(d.$value.replaceAll('%', ''));
 };
+////////////////////////////////////////////////////////////////////////////////
+// CommonLibraries.SocketClientMessageModel
+var $CommonLibraries_SocketClientMessageModel = function(user, channel, content) {
+	this.channel = null;
+	this.content = null;
+	this.user = null;
+	this.user = user;
+	this.channel = channel;
+	this.content = content;
+};
+////////////////////////////////////////////////////////////////////////////////
+// CommonLibraries.UserModel
+var $CommonLibraries_UserModel = function() {
+	this.$1$GatewayField = null;
+	this.$1$UserNameField = null;
+	this.$1$SocketField = null;
+};
+$CommonLibraries_UserModel.prototype = {
+	get_gateway: function() {
+		return this.$1$GatewayField;
+	},
+	set_gateway: function(value) {
+		this.$1$GatewayField = value;
+	},
+	get_userName: function() {
+		return this.$1$UserNameField;
+	},
+	set_userName: function(value) {
+		this.$1$UserNameField = value;
+	},
+	get_socket: function() {
+		return this.$1$SocketField;
+	},
+	set_socket: function(value) {
+		this.$1$SocketField = value;
+	}
+};
 Type.registerClass(global, 'CommonLibraries.DoublePoint', $CommonLibraries_DoublePoint, Object);
 Type.registerClass(global, 'CommonLibraries.Extensions', $CommonLibraries_Extensions, Object);
+Type.registerClass(global, 'CommonLibraries.GatewayLoginMessageModel', $CommonLibraries_GatewayLoginMessageModel, Object);
+Type.registerClass(global, 'CommonLibraries.GatewayMessageModel', $CommonLibraries_GatewayMessageModel, Object);
 Type.registerClass(global, 'CommonLibraries.Guid', $CommonLibraries_Guid, Object);
 Type.registerClass(global, 'CommonLibraries.Help', $CommonLibraries_Help, Object);
 Type.registerClass(global, 'CommonLibraries.IntersectingRectangle', $CommonLibraries_IntersectingRectangle, Object);
 Type.registerClass(global, 'CommonLibraries.Point', $CommonLibraries_Point, Object);
 Type.registerClass(global, 'CommonLibraries.Rectangle', $CommonLibraries_Rectangle);
 Type.registerClass(global, 'CommonLibraries.SizeNumber', $CommonLibraries_SizeNumber, Object);
+Type.registerClass(global, 'CommonLibraries.SocketClientMessageModel', $CommonLibraries_SocketClientMessageModel, Object);
+Type.registerClass(global, 'CommonLibraries.UserModel', $CommonLibraries_UserModel, Object);

@@ -18,7 +18,7 @@ var $GatewayServer_GatewayServer = function() {
 		socket.on('Gateway.Message', function(data) {
 		});
 		socket.on('Gateway.Login', Function.mkdel(this, function(data1) {
-			user = new CommonShuffleLibrary.UserModel();
+			user = new CommonLibraries.UserModel();
 			user.set_socket(socket);
 			user.set_userName(data1.userName);
 			this.users[data1.userName] = user;
@@ -32,7 +32,7 @@ $GatewayServer_GatewayServer.prototype = {
 	$messageReceived: function(gateway, user, eventChannel, content) {
 		if (Object.keyExists(this.users, user.get_userName())) {
 			var u = this.users[user.get_userName()];
-			u.get_socket().emit('Client.Message', new Models.SocketClientMessageModel(user, eventChannel, content));
+			u.get_socket().emit('Client.Message', new CommonLibraries.SocketClientMessageModel(user, eventChannel, content));
 		}
 	}
 };

@@ -1,4 +1,4 @@
-namespace CommonShuffleLibrary
+namespace CommonServerLibraries
 {
     public class IPs
     {

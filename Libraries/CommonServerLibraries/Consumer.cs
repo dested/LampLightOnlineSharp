@@ -1,5 +1,5 @@
 using System.Collections;
-namespace CommonShuffleLibrary
+namespace CommonServerLibraries
 {
     public class Consumer
     {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CommonLibraries;
-using CommonShuffleLibrary;
-using Models;
 using NodeJS.HttpModule;
 using SocketIOLibrary;
 namespace GatewayServer

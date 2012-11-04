@@ -54,7 +54,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\DebugZombie\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <NoStdLib>true</NoStdLib>
+    <NoStdLib>True</NoStdLib>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -69,29 +69,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.4.0.18\tools\Assemblies\mscorlib.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.jQuery">
-      <HintPath>..\..\..\packages\Saltarelle.jQuery.1.4.0\lib\Script.jQuery.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Script.jQuery.UI">
-      <HintPath>..\..\..\packages\Saltarelle.jQuery.UI.1.4.0\lib\Script.jQuery.UI.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Script.Linq">
-      <HintPath>..\..\..\packages\Saltarelle.Linq.1.4.0.1\lib\Script.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="Script.Web">
-      <HintPath>..\..\..\packages\Saltarelle.Web.1.4.0.1\lib\Script.Web.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\API\CommonAPI\CommonAPI.csproj">
       <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
@@ -117,28 +94,47 @@
       <Project>{095442DE-167D-4051-BEB5-B20890BD471C}</Project>
       <Name>ZombieGame.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ZombieGame.Server\ZombieGame.Server.csproj">
+      <Project>{B71B41A4-B437-48C4-9004-0A892E608761}</Project>
+      <Name>ZombieGame.Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CollisionType.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameManager.cs" />
-    <Compile Include="GameMap.cs" />
-    <Compile Include="MapManager.cs" />
-    <Compile Include="Person.cs" />
-    <Compile Include="Tile.cs" />
-    <Compile Include="TileManager.cs" />
-    <Compile Include="Unit.cs" />
-    <Compile Include="UnitManager.cs" />
+    <Compile Include="ClientGameManager.cs" />
     <Compile Include="WindowManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="thing to know.txt" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.4.0.28\tools\Saltarelle.Compiler.targets')" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.5.2\tools\Assemblies\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.jQuery">
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.1.5.2\lib\Script.jQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.jQuery.UI">
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.UI.1.5.2\lib\Script.jQuery.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.Linq">
+      <HintPath>..\..\..\packages\Saltarelle.Linq.1.5.2\lib\Script.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.NodeJS">
+      <HintPath>..\..\..\packages\Saltarelle.NodeJS.1.5.2\lib\Script.NodeJS.dll</HintPath>
+    </Reference>
+    <Reference Include="Script.Web">
+      <HintPath>..\..\..\packages\Saltarelle.Web.1.5.2\lib\Script.Web.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetDir)*.js" "$(SolutionDir)Output\Games\ZombieGame"</PostBuildEvent>
   </PropertyGroup>

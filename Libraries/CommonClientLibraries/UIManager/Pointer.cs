@@ -19,5 +19,11 @@ namespace CommonClientLibraries.UIManager
             WheelDelta = pointer.WheelDelta;
             Right = pointer.Right;
         }
+
+        public Pointer ClonePointer()
+        { 
+            return new Pointer(X, Y,WheelDelta,Right);
+      
+        }
     }
 }

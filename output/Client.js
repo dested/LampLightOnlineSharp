@@ -41,7 +41,7 @@ $Client_$GameManager.prototype = {
 };
 ////////////////////////////////////////////////////////////////////////////////
 // Client.ClientManager
-var $Client_ClientManager = function() {
+var $Client_ClientManager = function(gatewayServerAddress) {
 	this.$canvasHeight = 0;
 	this.$canvasWidth = 0;
 	this.$gameCanvas = null;
@@ -53,6 +53,7 @@ var $Client_ClientManager = function() {
 	this.$uiCanvasName = 'uiLayer';
 	this.$uiGoodSize = null;
 	this.uiManager = null;
+	this.gateway = null;
 	var elem = document.getElementById('loading');
 	elem.parentNode.removeChild(elem);
 	var stats = new xStats();
@@ -61,6 +62,11 @@ var $Client_ClientManager = function() {
 	this.$uiCanvas = CommonClientLibraries.CanvasInformation.create$3(document.getElementById(this.$uiCanvasName), 0, 0);
 	this.uiManager = new CommonClientLibraries.UIManager.UIManager();
 	this.$gameManager = new $Client_$GameManager();
+	this.gateway = new $Client_Gateway(gatewayServerAddress);
+	this.gateway.on('Area.Main.Login.Response', function(data) {
+		window.alert(JSON.stringify(data));
+	});
+	this.gateway.login($Client_ClientManager.$randomName());
 	this.$bindInput();
 	window.addEventListener('resize', Function.mkdel(this, function(e) {
 		this.resizeCanvas();
@@ -74,8 +80,8 @@ var $Client_ClientManager = function() {
 	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);
 	this.$gameManager.$start(this.$gameCanvas.context);
-	this.$gameManager.$buildUI(this.uiManager);
 	this.resizeCanvas();
+	this.$gameManager.$buildUI(this.uiManager);
 };
 $Client_ClientManager.prototype = {
 	$tick: function() {
@@ -169,11 +175,46 @@ $Client_ClientManager.prototype = {
 		this.uiManager.draw(this.$uiCanvas.context);
 	}
 };
+$Client_ClientManager.$randomName = function() {
+	var randomName = '';
+	var ra = Math.random() * 10;
+	for (var i = 0; i < ra; i++) {
+		randomName += String.fromCharCode(ss.Int32.trunc(65 + Math.random() * 26));
+	}
+	return randomName;
+};
 $Client_ClientManager.$main = function() {
 	$(function() {
-		new $Client_ClientManager();
+		new $Client_ClientManager(document.getElementById('gatewayServer').value);
 	});
+};
+////////////////////////////////////////////////////////////////////////////////
+// Client.Gateway
+var $Client_Gateway = function(gatewayServer) {
+	this.$channels = null;
+	this.gatewaySocket = null;
+	this.$channels = new Object();
+	var someChannels = this.$channels;
+	this.gatewaySocket = io.connect(gatewayServer);
+	this.gatewaySocket.on('Client.Message', function(data) {
+		someChannels[data.channel](data.content);
+	});
+};
+$Client_Gateway.prototype = {
+	emit: function(channel, content, gameServer) {
+		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(channel, content, gameServer));
+	},
+	on: function(channel, callback) {
+		this.$channels[channel] = callback;
+	},
+	login: function(userName) {
+		var $t2 = this.gatewaySocket;
+		var $t1 = new CommonLibraries.UserModel();
+		$t1.set_userName(userName);
+		$t2.emit('Gateway.Login', $t1);
+	}
 };
 Type.registerClass(null, 'Client.$GameManager', $Client_$GameManager, Object);
 Type.registerClass(global, 'Client.ClientManager', $Client_ClientManager, Object);
+Type.registerClass(global, 'Client.Gateway', $Client_Gateway, Object);
 $Client_ClientManager.$main();

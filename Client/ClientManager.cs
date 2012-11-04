@@ -1,5 +1,7 @@
-﻿using System.Html;
+﻿using System;
+using System.Html;
 using System.Runtime.CompilerServices;
+using System.Serialization;
 using CommonClientLibraries;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
@@ -22,8 +24,10 @@ namespace Client
         private Point uiGoodSize;
         [IntrinsicProperty]
         public UIManager UIManager { get; set; }
+        public Gateway gateway;
 
-        public ClientManager()
+
+        public ClientManager(string gatewayServerAddress)
         {
             var elem = Document.GetElementById("loading");
             elem.ParentNode.RemoveChild(elem);
@@ -36,6 +40,10 @@ namespace Client
             UIManager = new UIManager();
 
             gameManager = new GameManager();
+            gateway = new Gateway(gatewayServerAddress);
+            gateway.On<object>("Area.Main.Login.Response", (data) => { Window.Alert(Json.Stringify(data)); });
+            gateway.Login(ClientManager.randomName());
+
 
             bindInput();
             Window.AddEventListener("resize", e => resizeCanvas());
@@ -47,13 +55,23 @@ namespace Client
             Window.SetInterval(UIDraw, 1000 / 10);
 
             gameManager.Start(gameCanvas.Context);
+            resizeCanvas(); 
             gameManager.BuildUI(UIManager);
-            resizeCanvas();
+        }
+
+        private static string randomName()
+        {
+            var randomName = "";
+            var ra = Math.Random() * 10;
+            for (var i = 0; i < ra; i++) {
+                randomName += String.FromCharCode((char) ( 65 + ( Math.Random() * 26 ) ));
+            }
+            return randomName;
         }
 
         private static void Main()
         {
-            jQuery.OnDocumentReady(() => { new ClientManager(); });
+            jQuery.OnDocumentReady(() => { new ClientManager(((InputElement)Document.GetElementById("gatewayServer")).Value); });
         }
 
         private void Tick()

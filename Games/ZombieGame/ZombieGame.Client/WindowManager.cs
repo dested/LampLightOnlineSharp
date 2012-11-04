@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using CommonClientLibraries.UIManager;
+using CommonLibraries;
 namespace ZombieGame.Client
 {
     public class WindowManager
     {
-        private readonly GameManager myGameManager;
+        private readonly ClientGameManager myGameManager;
         [IntrinsicProperty]
         public int X { get; set; }
         [IntrinsicProperty]
@@ -15,7 +16,7 @@ namespace ZombieGame.Client
         [IntrinsicProperty]
         public int Height { get; set; }
 
-        public WindowManager(GameManager gameManager, int x, int y, int width, int height)
+        public WindowManager(ClientGameManager gameManager, int x, int y, int width, int height)
         {
             myGameManager = gameManager;
             X = x;
@@ -30,9 +31,15 @@ namespace ZombieGame.Client
             Y = Math.Max(y - Height / 2, 0);
         }
 
-        public Pointer OffsetPointer(Pointer pointer)
+        public void OffsetPointer(Pointer pointer)
         {
-            return new Pointer(X + pointer.X, Y + pointer.Y, pointer);
+            pointer.X += X;
+            pointer.Y += Y;
+        }
+
+        public bool Collides(Point point)
+        {
+            return point.X > X && point.X < X + Width && point.Y > Y && point.Y < Y + Height;
         }
     }
 }

@@ -48,8 +48,7 @@ namespace MMServerAPI
     [Serializable]
     public class LampAction : LampPlayerMessage
     {
-        public int TickToInitiate { get; set; }
-        public ActionType ActionType { get; set; }
+        public int TickToInitiate { get; set; } 
     }
     [Serializable]
     public class LampPlayerMessage

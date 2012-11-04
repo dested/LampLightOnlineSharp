@@ -203,7 +203,7 @@ $CommonClientLibraries_UIManager_CHelp.getCursorPosition = function(ev) {
 	//if (ev.x != null && ev.y != null) return new { x: ev.x, y: ev.y };
 	return $CommonClientLibraries_UIManager_Pointer.$ctor1(ev.clientX, ev.clientY, 0, ev.which === 3);
 };
-$CommonClientLibraries_UIManager_CHelp.loadImageFromFile = function(tileMapFile, loaded) {
+$CommonClientLibraries_UIManager_CHelp.loadImageFromUrl = function(tileMapFile, loaded) {
 	var element = new Image();
 	element.addEventListener('load', function(e) {
 		loaded(element);
@@ -1129,6 +1129,9 @@ Type.registerGenericClass(global, 'CommonClientLibraries.UIManager.Panel$1', $Co
 ////////////////////////////////////////////////////////////////////////////////
 // CommonClientLibraries.UIManager.Pointer
 var $CommonClientLibraries_UIManager_Pointer = function() {
+};
+$CommonClientLibraries_UIManager_Pointer.clonePointer = function($this) {
+	return $CommonClientLibraries_UIManager_Pointer.$ctor1($this.x, $this.y, $this.wheelDelta, $this.right);
 };
 $CommonClientLibraries_UIManager_Pointer.$ctor1 = function(x, y, delta, right) {
 	var $this = CommonLibraries.Point.$ctor1(x, y);

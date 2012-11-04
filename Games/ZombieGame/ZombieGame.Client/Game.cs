@@ -6,14 +6,14 @@ using CommonAPI;
 using CommonClientLibraries.UIManager;
 using CommonLibraries;
 using WebLibraries;
+using ZombieGame.Common;
 using ZombieGame.Common.JSONObjects;
 namespace ZombieGame.Client
 {
     public class Game : LampClient
-    {
-        public const int TILESIZE = 32;
+    { 
         private bool clicking = false;
-        private GameManager gameManager;
+        private ClientGameManager gameManager;
         private Button<bool> myClickState;
         private LampPlayer[] myPlayers;
         [IntrinsicProperty]
@@ -21,7 +21,7 @@ namespace ZombieGame.Client
 
         public Game()
         {
-            gameManager = new GameManager(this);
+            gameManager = new ClientGameManager(this);
 
             DebugText = new object[0];
         }
@@ -106,32 +106,58 @@ namespace ZombieGame.Client
             manageData.AddControl(new Button(20, 80, 100, 25, "Send Wave") {Click = (p) => { }});
         }
 
-        public override bool MouseMove(Pointer pointer)
+        public override bool MouseMove(Pointer screenPointer)
         {
             if (!clicking) return false;
-            if (gameManager.ClickMode == ClickMode.DragMap)
-                gameManager.WindowManager.CenterAround(pointer.X, pointer.Y);
-            return false;
-        }
+            var gamePointer = getGamePointer(screenPointer);
+            var tilePointer = getTilePointer(gamePointer); 
 
-        public override bool OnClick(Pointer pointer)
-        {
-            clicking = true;
-
-            if (gameManager.ClickMode == ClickMode.MoveCharacter) {
-                pointer = offsetPointer(pointer);
-                gameManager.UnitManager.MainCharacter.MoveTowards(pointer.X, pointer.Y);
+            switch (gameManager.ClickMode) {
+                case ClickMode.MoveCharacter:
+                    if (gameManager.WindowManager.Collides(gamePointer)) {
+                        gameManager.UnitManager.MainCharacter.MoveTowards(gamePointer.X, gamePointer.Y);
+                    }
+                    break;
+                case ClickMode.DragMap:
+                    gameManager.WindowManager.CenterAround(screenPointer.X, screenPointer.Y);
+                    break;
             }
             return false;
         }
 
-        private Pointer offsetPointer(Pointer pointer)
+        public override bool OnClick(Pointer screenPointer)
         {
-            pointer = gameManager.OffsetPointer(pointer); //the screen offset
-            pointer.X /= gameManager.Scale.X;
-            pointer.Y /= gameManager.Scale.Y; //the scale "offset"
-            pointer = gameManager.WindowManager.OffsetPointer(pointer); //the window offset
-            return pointer;
+            clicking = true;
+            var gamePointer = getGamePointer(screenPointer);
+            var tilePointer = getTilePointer(gamePointer);
+
+            switch (gameManager.ClickMode) {
+                case ClickMode.MoveCharacter:
+                    if (gameManager.WindowManager.Collides(gamePointer))
+                    {
+                        gameManager.UnitManager.MainCharacter.MoveTowards(gamePointer.X, gamePointer.Y);
+                    }
+                    break;
+            }
+            return false;
+        }
+
+        private Pointer getGamePointer(Pointer screenPointer)
+        {
+            var gamePointer = screenPointer.ClonePointer();
+            gameManager.OffsetPointer(gamePointer);
+            gamePointer.X /= gameManager.Scale.X;
+            gamePointer.Y /= gameManager.Scale.Y; //the scale "offset"
+            gameManager.WindowManager.OffsetPointer(gamePointer); //the window offset
+            return gamePointer;
+        }
+        private Pointer getTilePointer(Pointer gamePointer)
+        {
+            var tilePointer = gamePointer.ClonePointer();
+
+            tilePointer.X /= gameManager.Scale.X;
+            tilePointer.Y /= ZombieGameConfig.TileSize; //the scale "offset" 
+            return tilePointer;
         }
 
         public override bool MouseUp(Pointer pointer)
@@ -164,9 +190,9 @@ namespace ZombieGame.Client
         {
             return new JsonTileMap() {
                                              Name = "Pretty",
-                                             TileWidth = TILESIZE,
-                                             TileHeight = TILESIZE,
-                                             TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/top.png"
+                                             TileWidth = ZombieGameConfig.TileSize,
+                                             TileHeight = ZombieGameConfig.TileSize,
+                                             TileMapURL = "http://dested.com/lamp/Games/ZombieGame/assets/top.png"
                                      };
         }
 
@@ -174,9 +200,9 @@ namespace ZombieGame.Client
         {
             return new JsonTileMap() {
                                              Name = "Pretty2",
-                                             TileWidth = TILESIZE,
-                                             TileHeight = TILESIZE,
-                                             TileMapFile = "http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png"
+                                             TileWidth = ZombieGameConfig.TileSize,
+                                             TileHeight = ZombieGameConfig.TileSize,
+                                             TileMapURL = "http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png"
                                      };
         }
 
