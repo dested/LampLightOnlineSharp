@@ -39,6 +39,7 @@ $MMServerAPI_LampPlayerMessage.$ctor = function() {
 var $MMServerAPI_LampServer = function() {
 	this.$1$ActionsField = null;
 	this.$1$TickIndexField = 0;
+	this.$1$PlayersField = null;
 };
 $MMServerAPI_LampServer.prototype = {
 	get_actions: function() {
@@ -53,7 +54,14 @@ $MMServerAPI_LampServer.prototype = {
 	set_tickIndex: function(value) {
 		this.$1$TickIndexField = value;
 	},
+	get_players: function() {
+		return this.$1$PlayersField;
+	},
+	set_players: function(value) {
+		this.$1$PlayersField = value;
+	},
 	init: function(players) {
+		this.set_players(players);
 	},
 	sendMessageToPlayer: function(player) {
 	},

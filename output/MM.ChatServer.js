@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');
 // MM.ChatServer.ChatServer
 var $MM_ChatServer_$ChatServer = function() {
 };

@@ -1,4 +1,4 @@
-﻿require('mscorlib');
+require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');
 var http = require('http');
 var socketio = require('socket.io');
 ////////////////////////////////////////////////////////////////////////////////

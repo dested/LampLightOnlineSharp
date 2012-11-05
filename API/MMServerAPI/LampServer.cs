@@ -5,9 +5,15 @@ namespace MMServerAPI
 {
     public class LampServer
     {
+        
+            
         public JsDictionary<int, List<LampAction>> Actions { get; set; }
         public int TickIndex { get; set; }
-        public virtual void Init(LampPlayer[] players) {}
+        public LampPlayer[] Players { get; set; }
+        public virtual void Init(LampPlayer[] players)
+        {
+            Players = players;
+        }
         public void SendMessageToPlayer(LampPlayer player) {}
         public void SendMessageToPlayers(params LampPlayer[] player) {}
 

@@ -74,7 +74,6 @@ var $ZombieGame_Client_Game = function() {
 	this.$clicking = false;
 	this.$gameManager = null;
 	this.$myClickState = null;
-	this.$myPlayers = null;
 	ClientAPI.LampClient.call(this);
 	this.$gameManager = new $ZombieGame_Client_ClientGameManager(this);
 	$ZombieGame_Client_Game.debugText = [];
@@ -97,7 +96,7 @@ $ZombieGame_Client_Game.prototype = {
 		});
 	},
 	init: function(players, context) {
-		this.$myPlayers = players;
+		ClientAPI.LampClient.prototype.init.call(this, players, context);
 		this.$gameManager.gameMode = 1;
 		CommonAPI.TaskHandler.start(Function.mkdel(this, function(completed) {
 			this.$gameManager.loadTiles($ZombieGame_Client_Game.$fakeJsonTileMap2(), completed);
@@ -224,10 +223,10 @@ $ZombieGame_Client_Game.$makeFakeMap = function(name, w, h) {
 	return keys;
 };
 $ZombieGame_Client_Game.$fakeJsonTileMap2 = function() {
-	return { name: 'Pretty', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://dested.com/lamp/Games/ZombieGame/assets/top.png' };
+	return { name: 'Pretty', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/top.png' };
 };
 $ZombieGame_Client_Game.$fakeJsonTileMap = function() {
-	return { name: 'Pretty2', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png' };
+	return { name: 'Pretty2', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png' };
 };
 $ZombieGame_Client_Game.$fakeJsonMap2 = function() {
 	return { mapWidth: 20, mapHeight: 16, name: 'Pretties', tileMap: $ZombieGame_Client_Game.$makeFakeMap('Pretty', 20, 16) };

@@ -42,6 +42,7 @@ namespace CommonClientLibraries.UIManager
         public static void LoadImageFromUrl(string tileMapFile, Action<ImageElement> loaded)
         {
             ImageElement element = new ImageElement();
+            element.Me().crossOrigin = "anonymous";//FFFFUUUUU CORS!
             element.AddEventListener("load", e => { loaded(element); }, false);
             element.Src = tileMapFile;
         }

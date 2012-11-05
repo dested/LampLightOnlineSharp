@@ -110,25 +110,25 @@
       <Project>{70874705-C97C-40D3-B303-3F9F1A635C51}</Project>
       <Name>MMServerAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\API\ServerAPI\ServerAPI.csproj">
+    <ProjectReference Include="..\API\ClientAPI\ClientAPI.csproj">
       <Project>{1A35F8BB-B5A5-429F-B693-4F2728488249}</Project>
-      <Name>ServerAPI</Name>
+      <Name>ClientAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\API\CommonAPI\CommonAPI.csproj">
       <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
       <Name>CommonAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Games\TowerD\TowerD.Server\TowerD.Server.csproj">
+    <ProjectReference Include="..\Games\TowerD\TowerD.Client\TowerD.Client.csproj">
       <Project>{D04F57BB-D3E7-4617-8A27-1E5FA707780B}</Project>
-      <Name>TowerD.Server</Name>
+      <Name>TowerD.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Games\TowerD\TowerD.Common\TowerD.Common.csproj">
       <Project>{C867C57E-BACE-4BDA-869D-AB34B8C32315}</Project>
       <Name>TowerD.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Games\ZakGame\ZakGame.Server\ZakGame.Server.csproj">
+    <ProjectReference Include="..\Games\ZakGame\ZakGame.Client\ZakGame.Client.csproj">
       <Project>{413F96FC-EEE5-47E2-BC33-E70BF095B3FC}</Project>
-      <Name>ZakGame.Server</Name>
+      <Name>ZakGame.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Games\ZakGame\ZakGame.Common\ZakGame.Common.csproj">
       <Project>{29A5FC20-B2A6-43B8-B5D2-C481430A40EB}</Project>

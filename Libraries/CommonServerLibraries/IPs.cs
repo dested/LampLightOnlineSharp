@@ -4,7 +4,7 @@ namespace CommonServerLibraries
     {
         public static string GatewayIP
         {
-            get { return "50.116.28.16"; }
+            get { return "50.116.22.241"; }
         }
         public static string RedisIP
         {

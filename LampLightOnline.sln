@@ -103,6 +103,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMServerAPI", "API\MMServerAPI\MMServerAPI.csproj", "{70874705-C97C-40D3-B303-3F9F1A635C51}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FCE3E8FD-DAB1-4B1F-9980-C6DA6DE77D04}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		debug all|Any CPU = debug all|Any CPU
@@ -174,6 +179,7 @@ Global
 		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.DebugZak|Mixed Platforms.Build.0 = DebugZak|x86
 		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.DebugZak|x86.ActiveCfg = DebugZak|x86
 		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|x86
+		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.DebugZombie|Any CPU.Build.0 = DebugZombie|x86
 		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|x86
 		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|x86
 		{04C9E796-C4AE-44C0-888B-C72A68F147B0}.DebugZombie|x86.ActiveCfg = DebugZombie|x86

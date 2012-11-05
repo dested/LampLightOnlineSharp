@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using Build;
 using Limilabs.FTP.Client;
+using Renci.SshNet;
 namespace LampLightOnlineBuild
 {
     internal class Program
@@ -47,16 +49,14 @@ namespace LampLightOnlineBuild
                             })
                     }*/
                                                                       {
-                                                                              "ChatServer", new Application(true,
-                                                                                                            "new ChatServer.ChatServer();",
+                                                                              "MM.ChatServer", new Application(true,
                                                                                                             new List<string> {
                                                                                                                                      @"./CommonLibraries.js",
                                                                                                                                      @"./CommonServerLibraries.js",
                                                                                                                                      @"./Models.js",
                                                                                                                              })
                                                                       }, {
-                                                                                 "GameServer", new Application(true,
-                                                                                                               "new GameServer.GameServer();",
+                                                                                 "MM.GameServer", new Application(true,
                                                                                                                new List<string> {
                                                                                                                                         @"./CommonLibraries.js",
                                                                                                                                         @"./CommonServerLibraries.js",
@@ -64,16 +64,13 @@ namespace LampLightOnlineBuild
                                                                                                                                         @"./RawDeflate.js",
                                                                                                                                 })
                                                                          }, {
-                                                                                    "GatewayServer", new Application(true,
-                                                                                                                     "new GatewayServer.GatewayServer();",
+                                                                                    "MM.GatewayServer", new Application(true,
                                                                                                                      new List<string> {
                                                                                                                                               @"./CommonLibraries.js",
                                                                                                                                               @"./CommonServerLibraries.js",
                                                                                                                                               @"./Models.js",
                                                                                                                                       })
-                                                                            }, {
-                                                                                       "HeadServer", new Application(true,
-                                                                                                                     "new HeadServer.HeadServer();",
+                                                                            }, { "MM.HeadServer", new Application(true,
                                                                                                                      new List<string> {
                                                                                                                                               @"./CommonLibraries.js",
                                                                                                                                               @"./CommonServerLibraries.js",
@@ -81,28 +78,30 @@ namespace LampLightOnlineBuild
                                                                                                                                       })
                                                                                }, {
                                                                                           "SiteServer", new Application(true,
-                                                                                                                        "",
+
                                                                                                                         new List<string> {
                                                                                                                                                  @"./CommonLibraries.js",
                                                                                                                                                  @"./CommonServerLibraries.js",
                                                                                                                                                  @"./Models.js",
                                                                                                                                          })
                                                                                   },
-                                                                      {"Client", new Application(false, "", new List<string> {})},
-                                                                      {"CommonWebLibraries", new Application(false, "", new List<string> {})},
-                                                                      {"CommonLibraries", new Application(false, "", new List<string> {})},
-                                                                      {"CommonClientLibraries", new Application(false, "", new List<string> {})},
-                                                                      {"ClientAPI", new Application(false, "", new List<string> {})},
-                                                                      {"ServerAPI", new Application(false, "", new List<string> {})},
-                                                                      {"CommonAPI", new Application(false, "", new List<string> {})},
+                                                                      {"Client", new Application(false,  new List<string> {})},
+                                                                      {"CommonWebLibraries", new Application(false,  new List<string> {})},
+                                                                      {"CommonLibraries", new Application(false, new List<string> {})},
+                                                                      {"CommonClientLibraries", new Application(false,  new List<string> {})},
+                                                                      {"ClientAPI", new Application(false,  new List<string> {})},
+                                                                      {"ServerAPI", new Application(false,  new List<string> {})},
+                                                                      {"CommonAPI", new Application(false,  new List<string> {})},
                                                               };
 
-            string loc = ConfigurationSettings.AppSettings["ftpdir"];
+
+
 #if FTP
+            string loc = ConfigurationSettings.AppSettings["web-ftpdir"];
             Console.WriteLine("connecting ftp");
             Ftp webftp = new Ftp();
-            webftp.Connect(ConfigurationSettings.AppSettings["ftpurl"]);
-            webftp.Login(ConfigurationSettings.AppSettings["ftpusername"], ConfigurationSettings.AppSettings["ftppassword"]);
+            webftp.Connect(ConfigurationSettings.AppSettings["web-ftpurl"]);
+            webftp.Login(ConfigurationSettings.AppSettings["web-ftpusername"], ConfigurationSettings.AppSettings["web-ftppassword"]);
 
             Console.WriteLine("connected");
 
@@ -122,10 +121,28 @@ namespace LampLightOnlineBuild
                                    Console.WriteLine();
                                };
 
+
+
+
+
+
+
+            string serverloc = ConfigurationSettings.AppSettings["server-ftpdir"];
+            string serverloc2 = ConfigurationSettings.AppSettings["server-web-ftpdir"];
+            Console.WriteLine("connecting server ftp");
+            SftpClient client = new SftpClient(ConfigurationSettings.AppSettings["server-ftpurl"], ConfigurationSettings.AppSettings["server-ftpusername"], ConfigurationSettings.AppSettings["server-ftppassword"]);
+            client.Connect();
+
+            
+
+            Console.WriteLine("server connected");
+             
+
+
 #endif
 
             foreach (var depend in depends) {
-                var to = pre + "\\" + llo + @"\output\" + depend.Key + ".js"; /*
+                var to = pre + "\\" + llo + @"\output\" + depend.Key + ".js"; 
                 var output = "";
 
                 if (depend.Value.Node)
@@ -140,11 +157,12 @@ namespace LampLightOnlineBuild
 
                 var lines = new List<string>();
                 lines.Add(output);
-                lines.AddRange(File.ReadAllLines(to));
+                lines.AddRange(File.ReadAllLines(to).After(1));//mscorlib
 
                 string text = lines.Aggregate("", (a, b) => a + b + "\n");
+                File.WriteAllText(to, text);
 
-                //     lines.Add(depend.Value.After);*/
+                //     lines.Add(depend.Value.After); 
 
                 var name = to.Split(new char[] {'\\'}, StringSplitOptions.RemoveEmptyEntries).Last();
                 //   File.WriteAllText(to, text);
@@ -152,20 +170,38 @@ namespace LampLightOnlineBuild
 #if FTP
 
                 long length = new FileInfo(to).Length;
-                if (webftp.GetFileSize(loc + name) != length) {
+                if (webftp.GetFileSize(loc + name) != length)
+                {
                     Console.WriteLine("ftp start " + length.ToString("N0"));
                     webftp.Upload(loc + name, to);
                     Console.WriteLine("ftp complete " + to);
                 }
+
+                if (client.GetAttributes(serverloc + name).Size != length)
+                {
+                    Console.WriteLine("server ftp start " + length.ToString("N0"));
+                    var fileStream = new FileInfo(to).OpenRead();
+                    client.UploadFile(fileStream, serverloc + name, true);
+                    fileStream.Close();
+                    Console.WriteLine("server ftp complete " + to);
+                }
+                if (client.GetAttributes(serverloc2 + name).Size != length)
+                {
+                    Console.WriteLine("server ftp start " + length.ToString("N0"));
+                    var fileStream = new FileInfo(to).OpenRead();
+                    client.UploadFile(fileStream, serverloc2 + name, true);
+                    fileStream.Close();
+                    Console.WriteLine("server ftp complete " + to);
+                }
 #endif
-            }
+             }
 
             string[] games = {"ZombieGame" /*, "TowerD", "ZakGame" */};
 
             foreach (var depend in games) {
                 var to = pre + llo + @"\output\Games\" + depend + @"\";
 
-                string[] exts = {"client", "common", "server"};
+                string[] exts = {"Client", "Common", "Server"};
 
                 foreach (var ext in exts) {
                     //     lines.Add(depend.Value.After); 
@@ -178,6 +214,17 @@ namespace LampLightOnlineBuild
                     Console.WriteLine("ftp start " + text.Length.ToString("N0"));
                     webftp.Upload(loc + "Games/" + depend + "/" + depend + "." + ext + ".js", fm);
                     Console.WriteLine("ftp complete " + fm);
+
+                    Console.WriteLine("server ftp start " + text.Length.ToString("N0"));
+
+                    var fileStream = new FileInfo(fm).OpenRead();
+                    client.UploadFile(fileStream, serverloc + "Games/" + depend + "/" + depend + "." + ext + ".js", true);
+                    fileStream.Close(); 
+                    fileStream = new FileInfo(fm).OpenRead();
+                    client.UploadFile(fileStream, serverloc2 + "Games/" + depend + "/" + depend + "." + ext + ".js", true);
+                    fileStream.Close();
+                     
+                    Console.WriteLine("server ftp complete " + fm);
 #endif
                 }
             }
@@ -186,14 +233,12 @@ namespace LampLightOnlineBuild
         #region Nested type: Application
 
         public class Application
-        {
-            private string After { get; set; }
+        { 
             public bool Node { get; set; }
             public List<string> IncludesAfter { get; set; }
 
-            public Application(bool node, string prepend, List<string> includesAfter)
-            {
-                After = prepend;
+            public Application(bool node,  List<string> includesAfter)
+            { 
                 Node = node;
                 IncludesAfter = includesAfter;
             }

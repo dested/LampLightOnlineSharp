@@ -18,7 +18,7 @@ var $CommonServerLibraries_Consumer = function(obj) {
 var $CommonServerLibraries_IPs = function() {
 };
 $CommonServerLibraries_IPs.get_gatewayIP = function() {
-	return '50.116.28.16';
+	return '50.116.22.241';
 };
 $CommonServerLibraries_IPs.get_redisIP = function() {
 	return '50.116.28.16';

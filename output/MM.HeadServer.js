@@ -1,4 +1,4 @@
-﻿require('mscorlib');
+require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');
 var fs = require('fs');
 var http = require('http');
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,6 +49,7 @@ $MM_HeadServer_HeadServer.prototype = {
 	$handler: function(request, response) {
 		var dict = {};
 		dict['Content-Type'] = 'text/html';
+		dict['Access-Control-Allow-Origin'] = '*';
 		if (this.$oldIndex.length > 0) {
 			response.writeHead(200, dict);
 			var inj = this.$siteIndex++ % this.$oldIndex.length;

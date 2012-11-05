@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+
 // ServerAPI.LampServer
 var $ServerAPI_LampServer = function() {
 	this.$1$ReceiveMessageField = null;

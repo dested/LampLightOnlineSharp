@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');require('./RawDeflate.js');
 // MM.GameServer.DataManager
 var $MM_GameServer_DataManager = function() {
 	this.$connection = null;
@@ -42,11 +42,18 @@ var $MM_GameServer_GameInfoObject = function() {
 var $MM_GameServer_GameServer = function() {
 	this.$dataManager = null;
 	this.$gameServerIndex = null;
+	this.$qManager = null;
 	this.$dataManager = new $MM_GameServer_DataManager();
 	this.$gameServerIndex = 'GameServer' + CommonLibraries.Guid.newGuid();
-	process.on('exit', function() {
-		console.log('exi');
-	});
+	process.on('exit', Function.mkdel(this, function() {
+		console.log('exiting game server ' + this.$gameServerIndex);
+	}));
+	this.$qManager = new CommonServerLibraries.Queue.QueueManager(this.$gameServerIndex, new CommonServerLibraries.Queue.QueueManagerOptions([new CommonServerLibraries.Queue.QueueWatcher('GameServer', null), new CommonServerLibraries.Queue.QueueWatcher(this.$gameServerIndex, null)], ['GameServer', 'GatewayServer', 'Gateway*']));
+	//        qManager.AddChannel<JoinGameRequestModel>("Area.Game.Join",
+	//        (user, data) =>
+	//        {
+	//        EmitAll(room, "Area.Game.RoomInfo", room.CleanUp());
+	//        });
 };
 $MM_GameServer_GameServer.$main = function() {
 	new $MM_GameServer_GameServer();

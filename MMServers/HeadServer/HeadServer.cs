@@ -79,6 +79,7 @@ namespace MM.HeadServer
         {
             var dict = new JsDictionary<string,string>();
             dict["Content-Type"] = "text/html";
+            dict["Access-Control-Allow-Origin"] = "*";
             if (oldIndex.Count > 0)
             {
                 response.WriteHead(200, dict);

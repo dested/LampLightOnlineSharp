@@ -9,6 +9,7 @@ $Server_$GameManager.prototype = {
 		this.$game.tick();
 	},
 	$start: function() {
+		this.$game.init([]);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////

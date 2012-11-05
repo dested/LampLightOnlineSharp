@@ -23,7 +23,8 @@ namespace Server
         }
 
         public void Start( )
-        { 
+        {
+            game.Init(new LampPlayer[0]);
         }
     }
 }

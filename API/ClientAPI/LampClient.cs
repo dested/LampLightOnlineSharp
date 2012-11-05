@@ -9,8 +9,11 @@ namespace ClientAPI
     public class LampClient
     {
         [IntrinsicProperty]
-        public Rectangle Screen { get; set; }
-        public virtual void Init(LampPlayer[] players, CanvasContext2D context) {}
+        public Rectangle Screen { get; set; }   public LampPlayer[] Players { get; set; }
+        public virtual void Init(LampPlayer[] players,CanvasContext2D context)
+        {
+            Players = players;
+        }
 
         public virtual bool MouseMove(Pointer pointer)
         {

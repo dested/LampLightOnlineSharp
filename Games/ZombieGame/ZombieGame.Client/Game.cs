@@ -15,7 +15,6 @@ namespace ZombieGame.Client
         private bool clicking = false;
         private ClientGameManager gameManager;
         private Button<bool> myClickState;
-        private LampPlayer[] myPlayers;
         [IntrinsicProperty]
         public static object[] DebugText { get; set; }
 
@@ -51,7 +50,7 @@ namespace ZombieGame.Client
 
         public override void Init(LampPlayer[] players, CanvasContext2D context)
         {
-            myPlayers = players;
+            base.Init(players,context);
             gameManager.GameMode = GameMode.Play;
 
             TaskHandler.Start(
@@ -65,18 +64,6 @@ namespace ZombieGame.Client
             gameManager.Init();
         }
 
-        private static string[][] makeFakeMap(string name, int w, int h)
-        {
-            string[][] keys = new string[w][];
-            for (int x = 0; x < w; x++) {
-                keys[x] = new string[h];
-                for (int y = 0; y < h; y++) {
-                    keys[x][y] = Tile.MakeKey(name, x, y);
-                }
-            }
-
-            return keys;
-        }
 
         public override void Tick()
         {
@@ -186,13 +173,27 @@ namespace ZombieGame.Client
 
         #region fakejson
 
+        private static string[][] makeFakeMap(string name, int w, int h)
+        {
+            string[][] keys = new string[w][];
+            for (int x = 0; x < w; x++)
+            {
+                keys[x] = new string[h];
+                for (int y = 0; y < h; y++)
+                {
+                    keys[x][y] = Tile.MakeKey(name, x, y);
+                }
+            }
+
+            return keys;
+        }
         private static JsonTileMap fakeJsonTileMap2()
         {
             return new JsonTileMap() {
                                              Name = "Pretty",
                                              TileWidth = ZombieGameConfig.TileSize,
                                              TileHeight = ZombieGameConfig.TileSize,
-                                             TileMapURL = "http://dested.com/lamp/Games/ZombieGame/assets/top.png"
+                                             TileMapURL = "http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/top.png"
                                      };
         }
 
@@ -202,7 +203,7 @@ namespace ZombieGame.Client
                                              Name = "Pretty2",
                                              TileWidth = ZombieGameConfig.TileSize,
                                              TileHeight = ZombieGameConfig.TileSize,
-                                             TileMapURL = "http://dested.com/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png"
+                                             TileMapURL = "http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png"
                                      };
         }
 

@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+
 // CommonClientLibraries.CanvasInformation
 var $CommonClientLibraries_CanvasInformation = function(context, domCanvas) {
 	this.context = null;
@@ -205,6 +205,7 @@ $CommonClientLibraries_UIManager_CHelp.getCursorPosition = function(ev) {
 };
 $CommonClientLibraries_UIManager_CHelp.loadImageFromUrl = function(tileMapFile, loaded) {
 	var element = new Image();
+	element.crossOrigin = 'anonymous';
 	element.addEventListener('load', function(e) {
 		loaded(element);
 	}, false);

@@ -25,7 +25,7 @@ namespace MM.GameServer
                         });
         }
 
-        [InlineCode("new Db('test', new server('50.116.28.16', 27017, {}))")]
+        [InlineCode("new Db('test', new server('50.116.28.16', 27017, {}) )")]
         private MongoDB.MongoDB getMongo()
         {
             return null;

@@ -7,13 +7,10 @@ namespace ZombieGame.Server
 {
     public class ServerGameManager:GameManager
     {
-        public ServerGameManager()
+        public ServerGameManager(Game game)
         {
 
-        }
-
-
-
+        } 
 
     }
 }
