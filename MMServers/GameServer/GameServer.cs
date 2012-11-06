@@ -36,11 +36,11 @@ namespace MM.GameServer
                     }));
 
 
-    /*        qManager.AddChannel<JoinGameRequestModel>("Area.Game.Join",
+            qManager.AddChannel<JoinGameRequestModel>("Area.Game.Join",
                                                       (user, data) =>
                                                       { 
                                                           EmitAll(room, "Area.Game.RoomInfo", room.CleanUp());
-                                                      });*/
+                                                      });
               
         }
  

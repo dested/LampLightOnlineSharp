@@ -8,8 +8,8 @@
     <ProjectGuid>{F1CDE005-F1F7-4FA7-B1CD-9BF45437ADBA}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Server</RootNamespace>
-    <AssemblyName>Server</AssemblyName>
+    <RootNamespace>MMServer</RootNamespace>
+    <AssemblyName>MMServer</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NoStdLib>True</NoStdLib>

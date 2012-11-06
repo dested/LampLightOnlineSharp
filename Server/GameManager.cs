@@ -1,11 +1,6 @@
-﻿using System.Html.Media.Graphics;
-using CommonAPI;
-using CommonClientLibraries.UIManager;
-using CommonLibraries;
+﻿using CommonAPI;
 using MMServerAPI;
-using WebLibraries;
-
-namespace Server
+namespace MMServer
 {
     internal class GameManager
     {

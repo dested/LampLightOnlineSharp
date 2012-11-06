@@ -2,4 +2,73 @@
 JsDictionary<T,T2> is just a normal Dictionary 
 	JsDictionary<string,SomeObject> someHash;
 
-the client is always shown two ticks in the future. His actions 
+the client is always shown four ticks in the future.
+
+
+redis commands to rememeber
+	redis-cli
+	redis-benchmark
+
+	http://redis.io/commands#
+	expire
+	blpop
+	dbsize
+	incr/decr
+	info
+	monitor
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+	var microtime = require('timekit');
+
+	var someOther = [];
+
+	for (var ll = 0; ll < 30; ll++) {
+
+		var mf = [];
+		var len = 100000 * ll;
+		var start = microtime.time();
+
+
+		someOther = [];
+		for (var i = 0; i < len; i++) {
+			mf.push({ name: 'mike' + i, ind: i, joe: 265, mike: true, chris: '' });
+		}
+
+		var end = microtime.time() - start;
+		console.log(ll + "start : " + len + " Taken " + (end / 1000));
+
+		var start = microtime.time();
+
+		for (var i = 0, df = mf.length; i < df; i++) {
+			doSomething(mf[i]);
+		}
+		mf.length = 0;
+		var end = microtime.time() - start;
+		console.log(ll + " : " + len + " Taken " + (end / 1000));
+
+
+	}
+
+	function doSomething(mj) {
+		var dl = mj.ind;
+		dl += 20;
+		mj.ind = dl;
+		var ma = mj.name + mj.joe;
+		mj.chris = ma;
+		someOther.push(mj);
+	} 
+}

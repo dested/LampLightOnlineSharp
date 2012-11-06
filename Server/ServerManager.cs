@@ -1,12 +1,5 @@
 ﻿using System.Html;
-using System.Runtime.CompilerServices;
-using CommonClientLibraries;
-using CommonClientLibraries.UIManager;
-using CommonLibraries;
-using CommonWebLibraries;
-using WebLibraries;
-using jQueryApi;
-namespace Server
+namespace MMServer
 {
     public class ServerManager
     {  

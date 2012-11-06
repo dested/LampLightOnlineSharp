@@ -99,7 +99,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "MMServers\Cha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayServer", "MMServers\GatewayServer\GatewayServer.csproj", "{C8F7A129-DF68-4866-B311-B9D29D1010B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{F1CDE005-F1F7-4FA7-B1CD-9BF45437ADBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMServer", "Server\MMServer.csproj", "{F1CDE005-F1F7-4FA7-B1CD-9BF45437ADBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMServerAPI", "API\MMServerAPI\MMServerAPI.csproj", "{70874705-C97C-40D3-B303-3F9F1A635C51}"
 EndProject
