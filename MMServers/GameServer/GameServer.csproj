@@ -90,9 +90,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataManager.cs" />
+    <Compile Include="DataManagerGameData.cs" />
+    <Compile Include="GameInfoObject.cs" />
     <Compile Include="GameServer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
       <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>
       <Name>CommonClientLibraries</Name>
@@ -112,6 +118,10 @@
     <ProjectReference Include="..\..\Libraries\NodeLibraries\NodeJS\NodeJS.csproj">
       <Project>{79800429-B885-4F5E-9A3B-48E50390214A}</Project>
       <Name>NodeJS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MMServer.csproj">
+      <Project>{F1CDE005-F1F7-4FA7-B1CD-9BF45437ADBA}</Project>
+      <Name>MMServer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

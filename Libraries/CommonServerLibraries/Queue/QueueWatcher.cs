@@ -1,4 +1,5 @@
 using System.Serialization;
+using CommonAPI;
 using NodeJSLibrary;
 using Redis;
 namespace CommonServerLibraries.Queue
@@ -6,7 +7,7 @@ namespace CommonServerLibraries.Queue
     public class QueueWatcher : QueueItem //todo generisize
     {
         private RedisClient client1;
-
+        public QueueCallback Callback { get; set; }
 
         public QueueWatcher(string queue, QueueCallback callback)
         {
@@ -20,22 +21,18 @@ namespace CommonServerLibraries.Queue
             Cycle(queue);
         }
 
-        public QueueCallback Callback { get; set; }
-
         public void Cycle(string channel)
         {
-            client1.BLPop(new object[] { channel, 0 }, (caller, dtj) =>
-                                                       {
-                                                           var data = (string[])dtj;
-                                                           if (dtj != null)
-                                                           {
-                                                               var dt = Json.Parse<QueueMessage<object>>(data[1]);
-                                                               Callback(dt.Name, dt.User, dt.EventChannel, dt.Content);
-                                                           }
-                                                           Cycle(channel);
-                                                       });
+            client1.BLPop(new object[] {channel, 0},
+                          (caller, dtj) => {
+                              var data = (string[]) dtj;
+                              if (dtj != null) {
+                                  var dt = Json.Parse<QueueMessage<ChannelListenTriggerMessage>>(data[1]);
+                                  Callback(dt.Name, dt.User, dt.EventChannel, dt.Content);
+                              }
+                              Cycle(channel);
+                          });
         }
-
     }
     //http://www.youtube.com/watch?v=tOu-LTsk1WI*/
 }

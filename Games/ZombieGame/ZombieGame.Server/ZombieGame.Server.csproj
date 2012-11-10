@@ -91,7 +91,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
-    <Compile Include="ServerGameManager.cs" />
+    <Compile Include="MovePlayerZombieLampAction.cs" />
+    <Compile Include="ZombieServerGameManager.cs" />
+    <Compile Include="ZombieActionType.cs" />
+    <Compile Include="ZombieLampAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

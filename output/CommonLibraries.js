@@ -101,6 +101,9 @@ $CommonLibraries_DoublePoint.$ctor = function(pos) {
 // CommonLibraries.Extensions
 var $CommonLibraries_Extensions = function() {
 };
+$CommonLibraries_Extensions.stringify = function(m) {
+	return JSON.stringify(m);
+};
 $CommonLibraries_Extensions.getSafe = function(T) {
 	return function(o, x, y) {
 		var m = o[x];
@@ -161,15 +164,21 @@ $CommonLibraries_GatewayLoginMessageModel.$ctor = function() {
 // CommonLibraries.GatewayMessageModel
 var $CommonLibraries_GatewayMessageModel = function() {
 };
-$CommonLibraries_GatewayMessageModel.$ctor = function(channel, content, gameServer) {
+$CommonLibraries_GatewayMessageModel.$ctor = function(channel, content) {
 	var $this = {};
 	$this.channel = null;
 	$this.content = null;
-	$this.gameServer = null;
 	$this.channel = channel;
 	$this.content = content;
-	$this.gameServer = gameServer;
 	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
+// CommonLibraries.GatewayUserModel
+var $CommonLibraries_GatewayUserModel = function() {
+	this.socket = null;
+	this.gameServer = null;
+	this.chatServer = null;
+	CommonAPI.UserModel.call(this);
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonLibraries.Guid
@@ -326,37 +335,11 @@ var $CommonLibraries_SocketClientMessageModel = function(user, channel, content)
 	this.channel = channel;
 	this.content = content;
 };
-////////////////////////////////////////////////////////////////////////////////
-// CommonLibraries.UserModel
-var $CommonLibraries_UserModel = function() {
-	this.$1$GatewayField = null;
-	this.$1$UserNameField = null;
-	this.$1$SocketField = null;
-};
-$CommonLibraries_UserModel.prototype = {
-	get_gateway: function() {
-		return this.$1$GatewayField;
-	},
-	set_gateway: function(value) {
-		this.$1$GatewayField = value;
-	},
-	get_userName: function() {
-		return this.$1$UserNameField;
-	},
-	set_userName: function(value) {
-		this.$1$UserNameField = value;
-	},
-	get_socket: function() {
-		return this.$1$SocketField;
-	},
-	set_socket: function(value) {
-		this.$1$SocketField = value;
-	}
-};
 Type.registerClass(global, 'CommonLibraries.DoublePoint', $CommonLibraries_DoublePoint, Object);
 Type.registerClass(global, 'CommonLibraries.Extensions', $CommonLibraries_Extensions, Object);
 Type.registerClass(global, 'CommonLibraries.GatewayLoginMessageModel', $CommonLibraries_GatewayLoginMessageModel, Object);
 Type.registerClass(global, 'CommonLibraries.GatewayMessageModel', $CommonLibraries_GatewayMessageModel, Object);
+Type.registerClass(global, 'CommonLibraries.GatewayUserModel', $CommonLibraries_GatewayUserModel, CommonAPI.UserModel);
 Type.registerClass(global, 'CommonLibraries.Guid', $CommonLibraries_Guid, Object);
 Type.registerClass(global, 'CommonLibraries.Help', $CommonLibraries_Help, Object);
 Type.registerClass(global, 'CommonLibraries.IntersectingRectangle', $CommonLibraries_IntersectingRectangle, Object);
@@ -364,4 +347,3 @@ Type.registerClass(global, 'CommonLibraries.Point', $CommonLibraries_Point, Obje
 Type.registerClass(global, 'CommonLibraries.Rectangle', $CommonLibraries_Rectangle);
 Type.registerClass(global, 'CommonLibraries.SizeNumber', $CommonLibraries_SizeNumber, Object);
 Type.registerClass(global, 'CommonLibraries.SocketClientMessageModel', $CommonLibraries_SocketClientMessageModel, Object);
-Type.registerClass(global, 'CommonLibraries.UserModel', $CommonLibraries_UserModel, Object);

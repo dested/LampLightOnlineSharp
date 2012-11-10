@@ -1,14 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Html.Media.Graphics;
 using ZombieGame.Common.JSONObjects;
 namespace ZombieGame.Common
 {
     public class MapManager
     {
-        internal readonly GameManager myGameManager;
-        private readonly int myTotalRegionHeight;
-        private readonly int myTotalRegionWidth;
+        protected internal readonly GameManager myGameManager;
+        protected readonly int myTotalRegionHeight;
+        protected readonly int myTotalRegionWidth;
         public JsDictionary<string, GameMap> GameMaps { get; set; }
         public CollisionType[][] CollisionMap { get; private set; }
         public List<GameMapLayout> GameMapLayouts { get; set; }
@@ -30,7 +28,7 @@ namespace ZombieGame.Common
             }
         }
 
-        public GameMap LoadMap(JsonMap jsonMap)
+        public virtual GameMap LoadMap(JsonMap jsonMap)
         {
             GameMap gameMap = new GameMap(this, jsonMap);
             GameMaps[gameMap.Name] = gameMap;
@@ -52,25 +50,5 @@ namespace ZombieGame.Common
                 }
             }
         }
-
-        public void Draw(CanvasContext2D context, int wX, int wY, int wWidth, int wHeight)
-        {
-            context.Save();
-
-            wWidth = Math.Min(wWidth, myTotalRegionWidth);
-            wHeight = Math.Min(wHeight, myTotalRegionHeight);
-
-            foreach (var gameMapLayout in GameMapLayouts) {
-                gameMapLayout.GameMap.Draw(context, gameMapLayout.X + wX, gameMapLayout.Y + wY, wWidth, wHeight);
-            }
-
-            context.Restore();
-        }
-    }
-    public class GameMapLayout
-    {
-        public GameMap GameMap { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
     }
 }

@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1CDE005-F1F7-4FA7-B1CD-9BF45437ADBA}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MMServer</RootNamespace>
     <AssemblyName>MMServer</AssemblyName>
@@ -103,7 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ServerManager.cs" />
-    <Compile Include="GameManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\API\MMServerAPI\MMServerAPI.csproj">
@@ -118,26 +117,6 @@
       <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
       <Name>CommonAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Games\TowerD\TowerD.Client\TowerD.Client.csproj">
-      <Project>{D04F57BB-D3E7-4617-8A27-1E5FA707780B}</Project>
-      <Name>TowerD.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Games\TowerD\TowerD.Common\TowerD.Common.csproj">
-      <Project>{C867C57E-BACE-4BDA-869D-AB34B8C32315}</Project>
-      <Name>TowerD.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Games\ZakGame\ZakGame.Client\ZakGame.Client.csproj">
-      <Project>{413F96FC-EEE5-47E2-BC33-E70BF095B3FC}</Project>
-      <Name>ZakGame.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Games\ZakGame\ZakGame.Common\ZakGame.Common.csproj">
-      <Project>{29A5FC20-B2A6-43B8-B5D2-C481430A40EB}</Project>
-      <Name>ZakGame.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Games\ZombieGame\ZombieGame.Common\ZombieGame.Common.csproj">
-      <Project>{095442DE-167D-4051-BEB5-B20890BD471C}</Project>
-      <Name>ZombieGame.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Games\ZombieGame\ZombieGame.Server\ZombieGame.Server.csproj">
       <Project>{B71B41A4-B437-48C4-9004-0A892E608761}</Project>
       <Name>ZombieGame.Server</Name>
@@ -149,6 +128,10 @@
     <ProjectReference Include="..\Libraries\CommonLibraries\CommonLibraries.csproj">
       <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
       <Name>CommonLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\NodeLibraries\NodeJS\NodeJS.csproj">
+      <Project>{79800429-B885-4F5E-9A3B-48E50390214A}</Project>
+      <Name>NodeJS</Name>
     </ProjectReference>
     <ProjectReference Include="..\Libraries\WebLibraries\CommonWebLibraries\CommonWebLibraries.csproj">
       <Project>{6DA30112-FDBD-4E48-9F52-7268FCE19D25}</Project>

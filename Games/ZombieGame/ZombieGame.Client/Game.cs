@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Html;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using ClientAPI;
@@ -11,7 +12,7 @@ using ZombieGame.Common.JSONObjects;
 namespace ZombieGame.Client
 {
     public class Game : LampClient
-    { 
+    {
         private bool clicking = false;
         private ClientGameManager gameManager;
         private Button<bool> myClickState;
@@ -50,7 +51,7 @@ namespace ZombieGame.Client
 
         public override void Init(LampPlayer[] players, CanvasContext2D context)
         {
-            base.Init(players,context);
+            base.Init(players, context);
             gameManager.GameMode = GameMode.Play;
 
             TaskHandler.Start(
@@ -62,8 +63,10 @@ namespace ZombieGame.Client
                                                                                                                                                                                        }).Do();
 
             gameManager.Init();
-        }
 
+            ReceiveChannelMessage("GameServer.Joined",
+                                  (message) => { Window.Alert("Wooo joined!"); });
+        }
 
         public override void Tick()
         {
@@ -97,12 +100,13 @@ namespace ZombieGame.Client
         {
             if (!clicking) return false;
             var gamePointer = getGamePointer(screenPointer);
-            var tilePointer = getTilePointer(gamePointer); 
+            var tilePointer = getTilePointer(gamePointer);
 
             switch (gameManager.ClickMode) {
                 case ClickMode.MoveCharacter:
                     if (gameManager.WindowManager.Collides(gamePointer)) {
                         gameManager.UnitManager.MainCharacter.MoveTowards(gamePointer.X, gamePointer.Y);
+                        SendChannelMessage("player.move", new PlayerMoveMessage() {X = gamePointer.X, Y = gamePointer.Y});
                     }
                     break;
                 case ClickMode.DragMap:
@@ -121,9 +125,7 @@ namespace ZombieGame.Client
             switch (gameManager.ClickMode) {
                 case ClickMode.MoveCharacter:
                     if (gameManager.WindowManager.Collides(gamePointer))
-                    {
                         gameManager.UnitManager.MainCharacter.MoveTowards(gamePointer.X, gamePointer.Y);
-                    }
                     break;
             }
             return false;
@@ -138,6 +140,7 @@ namespace ZombieGame.Client
             gameManager.WindowManager.OffsetPointer(gamePointer); //the window offset
             return gamePointer;
         }
+
         private Pointer getTilePointer(Pointer gamePointer)
         {
             var tilePointer = gamePointer.ClonePointer();
@@ -176,17 +179,16 @@ namespace ZombieGame.Client
         private static string[][] makeFakeMap(string name, int w, int h)
         {
             string[][] keys = new string[w][];
-            for (int x = 0; x < w; x++)
-            {
+            for (int x = 0; x < w; x++) {
                 keys[x] = new string[h];
-                for (int y = 0; y < h; y++)
-                {
+                for (int y = 0; y < h; y++) {
                     keys[x][y] = Tile.MakeKey(name, x, y);
                 }
             }
 
             return keys;
         }
+
         private static JsonTileMap fakeJsonTileMap2()
         {
             return new JsonTileMap() {

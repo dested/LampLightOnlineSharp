@@ -1,22 +1,21 @@
 using System.Runtime.CompilerServices;
+using CommonAPI;
 namespace CommonLibraries
 {
     public class SocketClientMessageModel
     {
-        public SocketClientMessageModel(UserModel user, string channel, object content)
+        [IntrinsicProperty]
+        public string Channel { get; set; }
+        [IntrinsicProperty]
+        public ChannelListenTriggerMessage Content { get; set; }
+        [IntrinsicProperty]
+        public UserModel User { get; set; }
+
+        public SocketClientMessageModel(UserModel user, string channel, ChannelListenTriggerMessage content)
         {
             User = user;
             Channel = channel;
             Content = content;
         }
-
-        [IntrinsicProperty]
-        public string Channel { get; set; }
-
-        [IntrinsicProperty]
-        public object Content { get; set; }
-
-        [IntrinsicProperty]
-        public UserModel User { get; set; }
     }
 }

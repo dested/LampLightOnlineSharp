@@ -76,6 +76,11 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LampAction.cs" />
+    <Compile Include="LampMessage.cs" />
+    <Compile Include="LampMessageType.cs" />
+    <Compile Include="LampPlayerMessage.cs" />
+    <Compile Include="ServerGameManager.cs" />
     <Compile Include="LampServer.cs" />
   </ItemGroup>
   <ItemGroup>

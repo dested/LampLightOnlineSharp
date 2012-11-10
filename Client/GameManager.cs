@@ -1,4 +1,6 @@
-﻿using System.Html.Media.Graphics;
+﻿using System;
+using System.Html.Media.Graphics;
+using System.Runtime.CompilerServices;
 using ClientAPI;
 using CommonAPI;
 using CommonClientLibraries.UIManager;
@@ -7,15 +9,24 @@ using WebLibraries;
 using ZombieGame.Client;
 namespace Client
 {
-    internal class GameManager
+    public class GameManager
     {
         private LampClient game;
+        [IntrinsicProperty]
+        public Action<string, Action<ChannelListenTriggerMessage>> ReceiveChannelMessage { get; set; }
+        [IntrinsicProperty]
+        public Action<string, ChannelListenTriggerMessage> SendChannelMessage { get; set; }
+        [IntrinsicProperty]
         public Rectangle Screen { get; set; }
 
-        public GameManager()
+        public GameManager(Action<string, Action<ChannelListenTriggerMessage>> receiveChannelMessage, Action<string, ChannelListenTriggerMessage> sendChannelMessage)
         {
+            ReceiveChannelMessage = receiveChannelMessage;
+            SendChannelMessage = sendChannelMessage;
             //  game = new TowerD.Client.Game();
             game = new Game();
+            game.ReceiveChannelMessage = ReceiveChannelMessage;
+            game.SendChannelMessage = SendChannelMessage;
             // game = new ZakGame.Client.Game();
             Screen = new Rectangle(0, 0, 0, 0);
         }

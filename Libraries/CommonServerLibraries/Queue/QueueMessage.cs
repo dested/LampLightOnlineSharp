@@ -1,4 +1,4 @@
-using CommonLibraries;
+using CommonAPI;
 namespace CommonServerLibraries.Queue
 {
     public class QueueMessage<T>
@@ -7,7 +7,6 @@ namespace CommonServerLibraries.Queue
         public string EventChannel;
         public string Name;
         public UserModel User;
-
 
         public QueueMessage(string name, UserModel user, string eventChannel, T content)
         {

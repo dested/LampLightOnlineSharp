@@ -20,20 +20,27 @@ namespace ZombieGame.Client
         [IntrinsicProperty]
         public Point Scale { get; set; }
 
-        public ClientGameManager(Game game):base()
+        public ClientGameManager(Game game)
         {
+            TileManager = new DrawTileManager(this);
+            MapManager = new DrawMapManager(this, 400, 400);
+            UnitManager = new DrawUnitManager(this);
+
             myGame = game;
             WindowManager = new WindowManager(this, 0, 0, 400, 225);
             screenOffset = new Point(0, 0);
             Scale = new Point(2, 2);
             ClickMode = ClickMode.MoveCharacter;
 
-            this.UnitManager.MainCharacterUpdate += (x, y) => {
-                                                        WindowManager.CenterAround(x, y);
-                                                    };
+            UnitManager.MainCharacterUpdate += (x, y) => { WindowManager.CenterAround(x, y); };
         }
 
- 
+        public void LoadTiles(JsonTileMap jsonTileMap, Completed completed)
+        {
+            CHelp.LoadImageFromUrl(jsonTileMap.TileMapURL,
+                                   (image) => { ( (DrawTileManager) TileManager ).LoadTiles(jsonTileMap, image, completed); });
+        }
+
         public void Draw(CanvasContext2D context)
         {
             context.Save();
@@ -74,8 +81,8 @@ namespace ZombieGame.Client
 
             context.Translate(-wm.X, -wm.Y);
 
-            MapManager.Draw(context, wX, wY, wWidth, wHeight);
-            UnitManager.Draw(context);
+            ( (DrawMapManager) MapManager ).Draw(context, wX, wY, wWidth, wHeight);
+            ( (DrawUnitManager) UnitManager ).Draw(context);
 
             context.Restore();
         }
@@ -84,16 +91,6 @@ namespace ZombieGame.Client
         {
             pointer.X -= screenOffset.X;
             pointer.Y -= screenOffset.Y;
-        } 
-    }
-    public enum ClickMode
-    {
-        MoveCharacter,
-        DragMap
-    }
-    public enum GameMode
-    {
-        TileEdit,
-        Play
+        }
     }
 }

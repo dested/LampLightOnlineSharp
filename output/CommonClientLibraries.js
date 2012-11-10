@@ -206,6 +206,7 @@ $CommonClientLibraries_UIManager_CHelp.getCursorPosition = function(ev) {
 $CommonClientLibraries_UIManager_CHelp.loadImageFromUrl = function(tileMapFile, loaded) {
 	var element = new Image();
 	element.crossOrigin = 'anonymous';
+	//FFFFUUUUU CORS!
 	element.addEventListener('load', function(e) {
 		loaded(element);
 	}, false);
@@ -417,7 +418,7 @@ $CommonClientLibraries_UIManager_EditorEnginePoint.$ctor = function(x, y, size, 
 ////////////////////////////////////////////////////////////////////////////////
 // CommonClientLibraries.UIManager.Element
 var $CommonClientLibraries_UIManager_Element = function(x, y) {
-	this.$cachedForceRedrawing = $CommonClientLibraries_UIManager_Element$ForceRedrawing.$ctor();
+	this.cachedForceRedrawing = $CommonClientLibraries_UIManager_Element$ForceRedrawing.$ctor();
 	this.$myDepth = 0;
 	this.x = 0;
 	this.y = 0;
@@ -465,7 +466,7 @@ $CommonClientLibraries_UIManager_Element.prototype = {
 		return this.editMode || ss.isValue(this.parent) && this.parent.isEditMode();
 	},
 	forceDrawing: function() {
-		return this.$cachedForceRedrawing;
+		return this.cachedForceRedrawing;
 		//redraw=false,cache=false
 	},
 	onKeyDown: function(e) {
@@ -1643,17 +1644,17 @@ $CommonClientLibraries_UIManager_TextArea.prototype = {
 	},
 	forceDrawing: function() {
 		var txt = Type.makeGenericType(CommonLibraries.DelegateOrValue$1, [String]).op_Implicit(this.text);
-		this.$cachedForceRedrawing.redraw = false;
-		this.$cachedForceRedrawing.clearCache = false;
+		this.cachedForceRedrawing.redraw = false;
+		this.cachedForceRedrawing.clearCache = false;
 		if (ss.referenceEquals(txt, this.$oldText)) {
-			this.$cachedForceRedrawing.redraw = true;
+			this.cachedForceRedrawing.redraw = true;
 		}
 		else {
 			this.$oldText = txt;
-			this.$cachedForceRedrawing.redraw = true;
-			this.$cachedForceRedrawing.clearCache = true;
+			this.cachedForceRedrawing.redraw = true;
+			this.cachedForceRedrawing.clearCache = true;
 		}
-		return this.$cachedForceRedrawing;
+		return this.cachedForceRedrawing;
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -1805,8 +1806,8 @@ $CommonClientLibraries_UIManager_TextBox.prototype = {
 			this.$oldText = this.text;
 			redraw = true;
 		}
-		this.$cachedForceRedrawing.redraw = redraw;
-		return this.$cachedForceRedrawing;
+		this.cachedForceRedrawing.redraw = redraw;
+		return this.cachedForceRedrawing;
 	},
 	onClick: function(e) {
 		if (!this.visible) {

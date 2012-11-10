@@ -1,6 +1,4 @@
-using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
-using CommonLibraries;
 using ZombieGame.Common.JSONObjects;
 namespace ZombieGame.Common
 {
@@ -41,21 +39,6 @@ namespace ZombieGame.Common
         public Tile GetTileAt(int x, int y)
         {
             return TileMap[x][y];
-        }
-
-        public void Draw(CanvasContext2D context, int tileX, int tileY, int wWidth, int wHeight)
-        {
-            context.Save();
-
-            for (int x = tileX; x < wWidth; x++) {
-                for (int y = tileY; y < wHeight; y++) {
-                    Tile tile = TileMap.GetSafe(x, y);
-                    if (tile == null)
-                        continue;
-                    tile.Draw(context, tileX, tileY, x, y);
-                }
-            }
-            context.Restore();
         }
     }
 }

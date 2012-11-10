@@ -1,25 +1,6 @@
 using System.Html.Media.Graphics;
 namespace TowerD.Client.Drawers
 {
-    public interface UnitDrawer : Drawer
-    {
-        bool Destroy();
-        void ResetSpeed();
-        void MagnifySpeed(double rate);
-    }
-    public interface WeaponDrawer : Drawer
-    {
-        void AddProjectile(int x, int y);
-    }
-    public interface ShieldDrawer : Drawer {}
-    public interface TowerDrawer : Drawer {}
-    public interface WaypointDrawer : Drawer
-    {
-        Color StartColor { get; set; }
-        Color EndColor { get; set; }
-        WaypointMap Map { get; set; }
-        void Reoganize();
-    }
     public interface Drawer
     {
         void Init();

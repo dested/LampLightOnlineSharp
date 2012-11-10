@@ -75,12 +75,17 @@
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ChannelListener.cs" />
+    <Compile Include="ChannelListenTrigger.cs" />
+    <Compile Include="ChannelListenTriggerMessage.cs" />
     <Compile Include="Completed.cs" />
+    <Compile Include="IServerManager.cs" />
     <Compile Include="DataObject.cs" />
     <Compile Include="LampPlayer.cs" />
     <Compile Include="LampPlayerMessage.cs" />
     <Compile Include="LampEvent.cs" />
     <Compile Include="TaskHandler.cs" />
+    <Compile Include="UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

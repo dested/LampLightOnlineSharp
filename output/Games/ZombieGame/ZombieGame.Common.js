@@ -24,17 +24,11 @@ var $ZombieGame_Common_GameManager = function() {
 	this.tileManager = null;
 	this.mapManager = null;
 	this.unitManager = null;
-	this.instanceType = 0;
 	this.tileManager = new $ZombieGame_Common_TileManager(this);
 	this.mapManager = new $ZombieGame_Common_MapManager(this, 400, 400);
 	this.unitManager = new $ZombieGame_Common_UnitManager(this);
 };
 $ZombieGame_Common_GameManager.prototype = {
-	loadTiles: function(jsonTileMap, completed) {
-		CommonClientLibraries.UIManager.CHelp.loadImageFromUrl(jsonTileMap.tileMapURL, Function.mkdel(this, function(image) {
-			this.tileManager.loadTiles(jsonTileMap, image, completed);
-		}));
-	},
 	init: function() {
 		this.unitManager.init();
 	},
@@ -62,7 +56,7 @@ var $ZombieGame_Common_GameMap = function(mapManager, jsonMap) {
 		this.collisionMap[x] = new Array(this.mapHeight);
 		for (var y = 0; y < this.mapHeight; y++) {
 			var key = jsonMap.tileMap[x][y];
-			var tile = this.$myMapManager.$myGameManager.tileManager.getTileByKey(key);
+			var tile = this.$myMapManager.myGameManager.tileManager.getTileByKey(key);
 			this.tileMap[x][y] = tile;
 			this.collisionMap[x][y] = tile.get_collision();
 		}
@@ -71,19 +65,6 @@ var $ZombieGame_Common_GameMap = function(mapManager, jsonMap) {
 $ZombieGame_Common_GameMap.prototype = {
 	getTileAt: function(x, y) {
 		return this.tileMap[x][y];
-	},
-	draw: function(context, tileX, tileY, wWidth, wHeight) {
-		context.save();
-		for (var x = tileX; x < wWidth; x++) {
-			for (var y = tileY; y < wHeight; y++) {
-				var tile = CommonLibraries.Extensions.getSafe($ZombieGame_Common_Tile).call(null, this.tileMap, x, y);
-				if (ss.isNullOrUndefined(tile)) {
-					continue;
-				}
-				tile.draw(context, tileX, tileY, x, y);
-			}
-		}
-		context.restore();
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -114,29 +95,35 @@ $ZombieGame_Common_GameMapLayout.prototype = {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
-// ZombieGame.Common.InstanceType
-var $ZombieGame_Common_InstanceType = function() {
+// ZombieGame.Common.GameServerAcceptMessage
+var $ZombieGame_Common_GameServerAcceptMessage = function() {
 };
-$ZombieGame_Common_InstanceType.prototype = { server: 0, client: 1 };
-Type.registerEnum(global, 'ZombieGame.Common.InstanceType', $ZombieGame_Common_InstanceType, false);
+$ZombieGame_Common_GameServerAcceptMessage.createInstance = function() {
+	return $ZombieGame_Common_GameServerAcceptMessage.$ctor();
+};
+$ZombieGame_Common_GameServerAcceptMessage.$ctor = function() {
+	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
+	$this.gameServer = null;
+	return $this;
+};
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.MapManager
 var $ZombieGame_Common_MapManager = function(gameManager, totalRegionWidth, totalRegionHeight) {
-	this.$myGameManager = null;
-	this.$myTotalRegionHeight = 0;
-	this.$myTotalRegionWidth = 0;
+	this.myGameManager = null;
+	this.myTotalRegionHeight = 0;
+	this.myTotalRegionWidth = 0;
 	this.$1$GameMapsField = null;
 	this.$1$CollisionMapField = null;
 	this.$1$GameMapLayoutsField = null;
-	this.$myGameManager = gameManager;
-	this.$myTotalRegionWidth = totalRegionWidth;
-	this.$myTotalRegionHeight = totalRegionHeight;
+	this.myGameManager = gameManager;
+	this.myTotalRegionWidth = totalRegionWidth;
+	this.myTotalRegionHeight = totalRegionHeight;
 	this.set_gameMaps({});
 	this.set_gameMapLayouts([]);
-	this.set_collisionMap(new Array(this.$myTotalRegionWidth));
-	for (var x = 0; x < this.$myTotalRegionWidth; x++) {
-		this.get_collisionMap()[x] = new Array(this.$myTotalRegionHeight);
-		for (var y = 0; y < this.$myTotalRegionHeight; y++) {
+	this.set_collisionMap(new Array(this.myTotalRegionWidth));
+	for (var x = 0; x < this.myTotalRegionWidth; x++) {
+		this.get_collisionMap()[x] = new Array(this.myTotalRegionHeight);
+		for (var y = 0; y < this.myTotalRegionHeight; y++) {
 			this.get_collisionMap()[x][y] = 0;
 		}
 	}
@@ -180,17 +167,6 @@ $ZombieGame_Common_MapManager.prototype = {
 				this.get_collisionMap()[_x + x][_y + y] = gameMap.collisionMap[_x][_y];
 			}
 		}
-	},
-	draw: function(context, wX, wY, wWidth, wHeight) {
-		context.save();
-		wWidth = Math.min(wWidth, this.$myTotalRegionWidth);
-		wHeight = Math.min(wHeight, this.$myTotalRegionHeight);
-		var $t1 = this.get_gameMapLayouts();
-		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
-			var gameMapLayout = $t1[$t2];
-			gameMapLayout.get_gameMap().draw(context, gameMapLayout.get_x() + wX, gameMapLayout.get_y() + wY, wWidth, wHeight);
-		}
-		context.restore();
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -211,20 +187,40 @@ $ZombieGame_Common_Person.prototype = {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.PlayerJoinMessage
+var $ZombieGame_Common_PlayerJoinMessage = function() {
+};
+$ZombieGame_Common_PlayerJoinMessage.createInstance = function() {
+	return $ZombieGame_Common_PlayerJoinMessage.$ctor();
+};
+$ZombieGame_Common_PlayerJoinMessage.$ctor = function() {
+	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.PlayerMoveMessage
+var $ZombieGame_Common_PlayerMoveMessage = function() {
+};
+$ZombieGame_Common_PlayerMoveMessage.createInstance = function() {
+	return $ZombieGame_Common_PlayerMoveMessage.$ctor();
+};
+$ZombieGame_Common_PlayerMoveMessage.$ctor = function() {
+	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
+	$this.x = 0;
+	$this.y = 0;
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.Tile
-var $ZombieGame_Common_Tile = function(canvas, x, y, jsonMap) {
+var $ZombieGame_Common_Tile = function(x, y, jsonMap) {
 	this.$jsonMap = null;
 	this.tileMapY = 0;
 	this.tileMapX = 0;
-	this.image = null;
 	this.$1$CollisionField = 0;
 	this.$jsonMap = jsonMap;
 	this.tileMapX = x;
 	this.tileMapY = y;
-	var imageData = canvas.context.getImageData(x, y, jsonMap.tileWidth, jsonMap.tileHeight);
-	var data = CommonClientLibraries.CanvasInformation.create$1(imageData);
 	this.set_collision(this.$randomCollision());
-	this.image = data;
 };
 $ZombieGame_Common_Tile.prototype = {
 	get_key: function() {
@@ -241,69 +237,6 @@ $ZombieGame_Common_Tile.prototype = {
 			return ss.Int32.trunc(Math.random() * 4 + 1);
 		}
 		return 0;
-	},
-	draw: function(context, _x, _y, mapX, mapY) {
-		context.save();
-		context.translate(_x + mapX * $ZombieGame_Common_ZombieGameConfig.tileSize, _y + mapY * $ZombieGame_Common_ZombieGameConfig.tileSize);
-		//
-		//            context.Translate(ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize / 2);
-		//
-		//            //context.Rotate(fm);
-		//
-		//            context.Translate(-ZombieGameConfig.TileSize / 2, -ZombieGameConfig.TileSize / 2);
-		context.drawImage(this.image.canvas, 0, 0);
-		//
-		//            context.StrokeStyle = "red";
-		//
-		//            context.StrokeRect(0, 0, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize);
-		//
-		//            
-		//
-		//            switch (Collision) {
-		//
-		//            case CollisionType.Full:
-		//
-		//            context.FillStyle = "rgba(233,12,22,0.6)";
-		//
-		//            context.FillRect(0, 0, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize);
-		//
-		//            break;
-		//
-		//            case CollisionType.RightHalf:
-		//
-		//            context.FillStyle = "rgba(233,12,22,0.6)";
-		//
-		//            context.FillRect(ZombieGameConfig.TileSize / 2, 0, ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize);
-		//
-		//            break;
-		//
-		//            case CollisionType.TopHalf:
-		//
-		//            context.FillStyle = "rgba(233,12,22,0.6)";
-		//
-		//            context.FillRect(0, 0, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize / 2);
-		//
-		//            break;
-		//
-		//            case CollisionType.LeftHalf:
-		//
-		//            context.FillStyle = "rgba(233,12,22,0.6)";
-		//
-		//            context.FillRect(0, 0, ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize);
-		//
-		//            break;
-		//
-		//            case CollisionType.BottomHalf:
-		//
-		//            context.FillStyle = "rgba(233,12,22,0.6)";
-		//
-		//            context.FillRect(0, ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize / 2);
-		//
-		//            break;
-		//
-		//            }
-		//todo enable when some sort of edit mode is enabled
-		context.restore();
 	}
 };
 $ZombieGame_Common_Tile.makeKey = function(name, x, y) {
@@ -313,25 +246,26 @@ $ZombieGame_Common_Tile.makeKey = function(name, x, y) {
 // ZombieGame.Common.TileManager
 var $ZombieGame_Common_TileManager = function(gameManager) {
 	this.$myGameManager = null;
-	this.$loadedTiles = null;
+	this.loadedTiles = null;
 	this.$myGameManager = gameManager;
-	this.$loadedTiles = {};
+	this.loadedTiles = {};
 };
 $ZombieGame_Common_TileManager.prototype = {
-	loadTiles: function(jsonTileMap, tileImage, completed) {
-		var canvas = CommonClientLibraries.CanvasInformation.create(tileImage);
-		for (var x = 0; x < tileImage.width; x += jsonTileMap.tileWidth) {
-			for (var y = 0; y < tileImage.height; y += jsonTileMap.tileHeight) {
+	loadTiles: function(jsonTileMap, completed) {
+		var height = jsonTileMap.mapHeight * jsonTileMap.tileHeight;
+		var width = jsonTileMap.mapWidth * jsonTileMap.tileWidth;
+		for (var x = 0; x < width; x += jsonTileMap.tileWidth) {
+			for (var y = 0; y < height; y += jsonTileMap.tileHeight) {
 				//load just the xy width*height of the canvas into a tile object for caching mostly. 
-				var tile = new $ZombieGame_Common_Tile(canvas, x, y, jsonTileMap);
+				var tile = new $ZombieGame_Common_Tile(x, y, jsonTileMap);
 				//store each tile in a hash of name-x-y
-				this.$loadedTiles[tile.get_key()] = tile;
+				this.loadedTiles[tile.get_key()] = tile;
 			}
 		}
 		completed();
 	},
 	getTileByKey: function(key) {
-		return this.$loadedTiles[key];
+		return this.loadedTiles[key];
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -348,7 +282,9 @@ var $ZombieGame_Common_Unit = function(gameManager) {
 };
 $ZombieGame_Common_Unit.prototype = {
 	init: function() {
-		this.updatePosition(this.x, this.y);
+		if (ss.isValue(this.updatePosition)) {
+			this.updatePosition(this.x, this.y);
+		}
 	},
 	draw: function(context) {
 	},
@@ -365,7 +301,9 @@ $ZombieGame_Common_Unit.prototype = {
 				var m = CommonLibraries.Point.normalize(CommonLibraries.Point.negate$1(this.$movingTowards, this.x, this.y), this.moveRate);
 				this.x += m.x;
 				this.y += m.y;
-				this.updatePosition(this.x, this.y);
+				if (ss.isValue(this.updatePosition)) {
+					this.updatePosition(this.x, this.y);
+				}
 			}
 		}
 	}
@@ -380,9 +318,6 @@ var $ZombieGame_Common_UnitManager = function(gameManager) {
 	this.$myGameManager = gameManager;
 };
 $ZombieGame_Common_UnitManager.prototype = {
-	draw: function(context) {
-		this.mainCharacter.draw(context);
-	},
 	init: function() {
 		var $t1 = new $ZombieGame_Common_Person(this.$myGameManager);
 		$t1.x = 100;
@@ -507,7 +442,10 @@ Type.registerClass(global, 'ZombieGame.Common.AStarNode', $ZombieGame_Common_ASt
 Type.registerClass(global, 'ZombieGame.Common.GameManager', $ZombieGame_Common_GameManager, Object);
 Type.registerClass(global, 'ZombieGame.Common.GameMap', $ZombieGame_Common_GameMap, Object);
 Type.registerClass(global, 'ZombieGame.Common.GameMapLayout', $ZombieGame_Common_GameMapLayout, Object);
+Type.registerClass(global, 'ZombieGame.Common.GameServerAcceptMessage', $ZombieGame_Common_GameServerAcceptMessage);
 Type.registerClass(global, 'ZombieGame.Common.MapManager', $ZombieGame_Common_MapManager, Object);
+Type.registerClass(global, 'ZombieGame.Common.PlayerJoinMessage', $ZombieGame_Common_PlayerJoinMessage);
+Type.registerClass(global, 'ZombieGame.Common.PlayerMoveMessage', $ZombieGame_Common_PlayerMoveMessage);
 Type.registerClass(global, 'ZombieGame.Common.Tile', $ZombieGame_Common_Tile, Object);
 Type.registerClass(global, 'ZombieGame.Common.TileManager', $ZombieGame_Common_TileManager, Object);
 Type.registerClass(global, 'ZombieGame.Common.Unit', $ZombieGame_Common_Unit, Object);

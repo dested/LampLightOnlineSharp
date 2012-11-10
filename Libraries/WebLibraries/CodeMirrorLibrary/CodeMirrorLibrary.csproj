@@ -71,7 +71,9 @@
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeEditorCursor.cs" />
     <Compile Include="CodeMirror.cs" />
+    <Compile Include="CodeMirrorLine.cs" />
     <Compile Include="CodeMirrorOptions.cs" />
   </ItemGroup>
   <ItemGroup>

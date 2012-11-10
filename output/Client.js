@@ -1,45 +1,4 @@
 
-// Client.GameManager
-var $Client_$GameManager = function() {
-	this.$game = null;
-	this.$1$ScreenField = null;
-	//  game = new TowerD.Client.Game();
-	this.$game = new ZombieGame.Client.Game();
-	// game = new ZakGame.Client.Game();
-	this.set_$screen(CommonLibraries.Rectangle.$ctor1(0, 0, 0, 0));
-};
-$Client_$GameManager.prototype = {
-	get_$screen: function() {
-		return this.$1$ScreenField;
-	},
-	set_$screen: function(value) {
-		this.$1$ScreenField = value;
-	},
-	$mouseMove: function(queryEvent) {
-		return this.$game.mouseMove(queryEvent);
-	},
-	$buildUI: function(uiManager) {
-		this.$game.buildUI(uiManager);
-	},
-	$onClick: function(queryEvent) {
-		return this.$game.onClick(queryEvent);
-	},
-	$mouseUp: function(queryEvent) {
-		return this.$game.mouseUp(queryEvent);
-	},
-	$draw: function(context) {
-		this.$game.draw(context);
-	},
-	$tick: function() {
-		this.$game.tick();
-	},
-	$start: function(context) {
-		this.$game.screen = this.get_$screen();
-		this.$game.init([], context);
-		this.$game.bindKeys(KeyboardJS);
-	}
-};
-////////////////////////////////////////////////////////////////////////////////
 // Client.ClientManager
 var $Client_ClientManager = function(gatewayServerAddress) {
 	this.$canvasHeight = 0;
@@ -48,12 +7,12 @@ var $Client_ClientManager = function(gatewayServerAddress) {
 	this.$gameCanvasName = 'gameLayer';
 	this.$gameGoodSize = null;
 	this.$gameManager = null;
+	this.gateway = null;
 	this.$lastMouseMove = null;
 	this.$uiCanvas = null;
 	this.$uiCanvasName = 'uiLayer';
 	this.$uiGoodSize = null;
 	this.uiManager = null;
-	this.gateway = null;
 	var elem = document.getElementById('loading');
 	elem.parentNode.removeChild(elem);
 	var stats = new xStats();
@@ -61,8 +20,8 @@ var $Client_ClientManager = function(gatewayServerAddress) {
 	this.$gameCanvas = CommonClientLibraries.CanvasInformation.create$3(document.getElementById(this.$gameCanvasName), 0, 0);
 	this.$uiCanvas = CommonClientLibraries.CanvasInformation.create$3(document.getElementById(this.$uiCanvasName), 0, 0);
 	this.uiManager = new CommonClientLibraries.UIManager.UIManager();
-	this.$gameManager = new $Client_$GameManager();
 	this.gateway = new $Client_Gateway(gatewayServerAddress);
+	this.$gameManager = new $Client_GameManager(Function.mkdel(this.gateway, this.gateway.on), Function.mkdel(this.gateway, this.gateway.emit));
 	this.gateway.on('Area.Main.Login.Response', function(data) {
 		window.alert(JSON.stringify(data));
 	});
@@ -79,13 +38,13 @@ var $Client_ClientManager = function(gatewayServerAddress) {
 	window.setInterval(Function.mkdel(this, this.$tick), 16);
 	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);
-	this.$gameManager.$start(this.$gameCanvas.context);
+	this.$gameManager.start(this.$gameCanvas.context);
 	this.resizeCanvas();
-	this.$gameManager.$buildUI(this.uiManager);
+	this.$gameManager.buildUI(this.uiManager);
 };
 $Client_ClientManager.prototype = {
 	$tick: function() {
-		this.$gameManager.$tick();
+		this.$gameManager.tick();
 	},
 	$bindInput: function() {
 		this.$uiCanvas.domCanvas.mousedown(Function.mkdel(this, this.$canvasOnClick));
@@ -121,7 +80,7 @@ $Client_ClientManager.prototype = {
 		if (this.uiManager.onMouseMove(this.$lastMouseMove)) {
 			return;
 		}
-		if (this.$gameManager.$mouseMove(this.$lastMouseMove)) {
+		if (this.$gameManager.mouseMove(this.$lastMouseMove)) {
 			return;
 		}
 		return;
@@ -132,14 +91,14 @@ $Client_ClientManager.prototype = {
 		if (this.uiManager.onClick(cursorPosition)) {
 			return;
 		}
-		if (this.$gameManager.$onClick(cursorPosition)) {
+		if (this.$gameManager.onClick(cursorPosition)) {
 			return;
 		}
 	},
 	$canvasMouseUp: function(queryEvent) {
 		queryEvent.preventDefault();
 		this.uiManager.onMouseUp(this.$lastMouseMove);
-		if (this.$gameManager.$mouseUp(this.$lastMouseMove)) {
+		if (this.$gameManager.mouseUp(this.$lastMouseMove)) {
 			return;
 		}
 	},
@@ -148,12 +107,12 @@ $Client_ClientManager.prototype = {
 		this.$canvasHeight = $(window).height();
 		this.$uiCanvas.domCanvas.attr('width', this.$canvasWidth.toString());
 		this.$uiCanvas.domCanvas.attr('height', this.$canvasHeight.toString());
-		this.$gameManager.get_$screen().width = window.innerWidth;
-		this.$gameManager.get_$screen().height = window.innerHeight;
-		this.$gameCanvas.domCanvas.attr('width', this.$gameManager.get_$screen().width.toString());
-		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.get_$screen().height.toString());
+		this.$gameManager.screen.width = window.innerWidth;
+		this.$gameManager.screen.height = window.innerHeight;
+		this.$gameCanvas.domCanvas.attr('width', this.$gameManager.screen.width.toString());
+		this.$gameCanvas.domCanvas.attr('height', this.$gameManager.screen.height.toString());
 		this.$uiGoodSize = CommonLibraries.Point.$ctor1(this.$canvasWidth, this.$canvasHeight);
-		this.$gameGoodSize = CommonLibraries.Point.$ctor1(this.$gameManager.get_$screen().width, this.$gameManager.get_$screen().height);
+		this.$gameGoodSize = CommonLibraries.Point.$ctor1(this.$gameManager.screen.width, this.$gameManager.screen.height);
 	},
 	clear: function(canv) {
 		var w;
@@ -168,7 +127,7 @@ $Client_ClientManager.prototype = {
 	},
 	gameDraw: function() {
 		this.clear(this.$gameCanvas);
-		this.$gameManager.$draw(this.$gameCanvas.context);
+		this.$gameManager.draw(this.$gameCanvas.context);
 	},
 	uiDraw: function() {
 		this.clear(this.$uiCanvas);
@@ -189,32 +148,72 @@ $Client_ClientManager.$main = function() {
 	});
 };
 ////////////////////////////////////////////////////////////////////////////////
+// Client.GameManager
+var $Client_GameManager = function(receiveChannelMessage, sendChannelMessage) {
+	this.$game = null;
+	this.receiveChannelMessage = null;
+	this.sendChannelMessage = null;
+	this.screen = null;
+	this.receiveChannelMessage = receiveChannelMessage;
+	this.sendChannelMessage = sendChannelMessage;
+	//  game = new TowerD.Client.Game();
+	this.$game = new ZombieGame.Client.Game();
+	this.$game.receiveChannelMessage = this.receiveChannelMessage;
+	this.$game.sendChannelMessage = this.sendChannelMessage;
+	// game = new ZakGame.Client.Game();
+	this.screen = CommonLibraries.Rectangle.$ctor1(0, 0, 0, 0);
+};
+$Client_GameManager.prototype = {
+	mouseMove: function(queryEvent) {
+		return this.$game.mouseMove(queryEvent);
+	},
+	buildUI: function(uiManager) {
+		this.$game.buildUI(uiManager);
+	},
+	onClick: function(queryEvent) {
+		return this.$game.onClick(queryEvent);
+	},
+	mouseUp: function(queryEvent) {
+		return this.$game.mouseUp(queryEvent);
+	},
+	draw: function(context) {
+		this.$game.draw(context);
+	},
+	tick: function() {
+		this.$game.tick();
+	},
+	start: function(context) {
+		this.$game.screen = this.screen;
+		this.$game.init([], context);
+		this.$game.bindKeys(KeyboardJS);
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
 // Client.Gateway
 var $Client_Gateway = function(gatewayServer) {
 	this.$channels = null;
 	this.gatewaySocket = null;
-	this.$channels = new Object();
-	var someChannels = this.$channels;
+	this.$channels = {};
 	this.gatewaySocket = io.connect(gatewayServer);
-	this.gatewaySocket.on('Client.Message', function(data) {
-		someChannels[data.channel](data.content);
-	});
+	this.gatewaySocket.on('Client.Message', Function.mkdel(this, function(data) {
+		this.$channels[data.channel](data.content);
+	}));
 };
 $Client_Gateway.prototype = {
-	emit: function(channel, content, gameServer) {
-		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(channel, content, gameServer));
+	emit: function(channel, content) {
+		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(channel, content));
 	},
 	on: function(channel, callback) {
 		this.$channels[channel] = callback;
 	},
 	login: function(userName) {
 		var $t2 = this.gatewaySocket;
-		var $t1 = new CommonLibraries.UserModel();
+		var $t1 = new CommonAPI.UserModel();
 		$t1.set_userName(userName);
 		$t2.emit('Gateway.Login', $t1);
 	}
 };
-Type.registerClass(null, 'Client.$GameManager', $Client_$GameManager, Object);
 Type.registerClass(global, 'Client.ClientManager', $Client_ClientManager, Object);
+Type.registerClass(global, 'Client.GameManager', $Client_GameManager, Object);
 Type.registerClass(global, 'Client.Gateway', $Client_Gateway, Object);
 $Client_ClientManager.$main();

@@ -103,12 +103,20 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClickMode.cs" />
+    <Compile Include="DrawGameMap.cs" />
+    <Compile Include="DrawMapManager.cs" />
+    <Compile Include="DrawTile.cs" />
+    <Compile Include="DrawTileManager.cs" />
+    <Compile Include="DrawUnitManager.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="ClientGameManager.cs" />
+    <Compile Include="GameMode.cs" />
     <Compile Include="WindowManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="thing to know.txt" />
+    <Content Include="todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,6 +1,8 @@
 
 // ClientAPI.LampClient
 var $ClientAPI_LampClient = function() {
+	this.receiveChannelMessage = null;
+	this.sendChannelMessage = null;
 	this.screen = null;
 	this.$1$PlayersField = null;
 };

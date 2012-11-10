@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using CommonServerLibraries.Queue;
 using NodeJS;
@@ -21,27 +20,25 @@ namespace MM.HeadServer
         private int siteIndex;
 
         public HeadServer()
-        { 
-
-            qManager = new QueueManager("Head1", new QueueManagerOptions(new[]
-                {
-                    new QueueWatcher("HeadServer", null),
-                    new QueueWatcher("Head1", null),
-                }, new[]
-                    {
-                        "GatewayServer"
-                    }));
-
+        {
+            qManager = new QueueManager("Head1",
+                                        new QueueManagerOptions(new[] {
+                                                                              new QueueWatcher("HeadServer", null),
+                                                                              new QueueWatcher("Head1", null),
+                                                                      },
+                                                                new[] {
+                                                                              "GatewayServer"
+                                                                      }));
 
             FS.ReadFile(__dirname + "/index.html", ready);
 
-            pubsub = new PubSub(() => pubsub.Subscribe<string>("PUBSUB.GatewayServers", message =>
-            {
-                indexForSites.Add(indexPageData.Replace("{{gateway}}", message));
-                gateways.Add(message);
-            }));
+            pubsub = new PubSub(() => pubsub.Subscribe<string>("PUBSUB.GatewayServers",
+                                                               message => {
+                                                                   indexForSites.Add(indexPageData.Replace("{{gateway}}", message));
+                                                                   gateways.Add(message);
+                                                               }));
 
-            Http.CreateServer(handlerWS).Listen(8844); 
+            Http.CreateServer(handlerWS).Listen(8844);
 
             Globals.SetInterval(pollGateways, 1000);
             pollGateways();
@@ -52,13 +49,9 @@ namespace MM.HeadServer
             pubsub.Publish("PUBSUB.GatewayServers.Ping", "");
 
             if (indexForSites.Count > 0)
-            {
                 oldIndex = indexForSites;
-            }
             if (gateways.Count > 0)
-            {
                 oldGateways = gateways;
-            }
             indexForSites = new List<string>();
             gateways = new List<string>();
             siteIndex = 0;
@@ -66,9 +59,8 @@ namespace MM.HeadServer
 
         private void handlerWS(ServerRequest request, ServerResponse response)
         {
-            if (oldGateways.Count > 0)
-            {
-                var inj = (siteIndex++) % oldIndex.Count;
+            if (oldGateways.Count > 0) {
+                var inj = ( siteIndex++ ) % oldIndex.Count;
                 response.End(oldGateways[inj]);
                 return;
             }
@@ -77,17 +69,14 @@ namespace MM.HeadServer
 
         private void handler(ServerRequest request, ServerResponse response)
         {
-            var dict = new JsDictionary<string,string>();
+            var dict = new JsDictionary<string, string>();
             dict["Content-Type"] = "text/html";
             dict["Access-Control-Allow-Origin"] = "*";
-            if (oldIndex.Count > 0)
-            {
+            if (oldIndex.Count > 0) {
                 response.WriteHead(200, dict);
-                var inj = (siteIndex++) % oldIndex.Count;
+                var inj = ( siteIndex++ ) % oldIndex.Count;
                 response.End(oldIndex[inj]);
-            }
-            else
-            {
+            } else {
                 response.WriteHead(200, dict);
                 response.End();
             }

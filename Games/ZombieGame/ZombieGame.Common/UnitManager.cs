@@ -1,5 +1,4 @@
 using System;
-using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using CommonLibraries;
 namespace ZombieGame.Common
@@ -12,27 +11,21 @@ namespace ZombieGame.Common
         public Person MainCharacter { get; set; }
         [IntrinsicProperty]
         public Action<int, int> MainCharacterUpdate { get; set; }
-        
+
         public UnitManager(GameManager gameManager)
         {
-            myGameManager = gameManager; 
-        }
-
-        public void Draw(CanvasContext2D context)
-        {
-            MainCharacter.Draw(context);
+            myGameManager = gameManager;
         }
 
         public void Init()
         {
             MainCharacter = new Person(myGameManager) {
-                                                            X = 100,
-                                                            Y = 170,
-                                                            UpdatePosition = MainCharacterUpdate
-                                                    };
+                                                              X = 100,
+                                                              Y = 170,
+                                                              UpdatePosition = MainCharacterUpdate
+                                                      };
 
             MainCharacter.Init();
-
         }
 
         public void Tick()

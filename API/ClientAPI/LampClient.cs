@@ -1,3 +1,4 @@
+using System;
 using System.Html.Media.Graphics;
 using System.Runtime.CompilerServices;
 using CommonAPI;
@@ -9,8 +10,14 @@ namespace ClientAPI
     public class LampClient
     {
         [IntrinsicProperty]
-        public Rectangle Screen { get; set; }   public LampPlayer[] Players { get; set; }
-        public virtual void Init(LampPlayer[] players,CanvasContext2D context)
+        public Action<string, Action<ChannelListenTriggerMessage>> ReceiveChannelMessage { get; set; }
+        [IntrinsicProperty]
+        public Action<string, ChannelListenTriggerMessage> SendChannelMessage { get; set; }
+        [IntrinsicProperty]
+        public Rectangle Screen { get; set; }
+        public LampPlayer[] Players { get; set; }
+
+        public virtual void Init(LampPlayer[] players, CanvasContext2D context)
         {
             Players = players;
         }
@@ -37,10 +44,8 @@ namespace ClientAPI
         {
             return false;
         }
-        public virtual void Resize()
-        { 
-        }
 
+        public virtual void Resize() {}
         public virtual void Draw(CanvasContext2D context) {}
         public virtual void Tick() {}
     }

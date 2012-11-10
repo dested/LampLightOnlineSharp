@@ -1,4 +1,4 @@
-require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');
+require('./mscorlib.debug.js');require('./CommonAPI.js');require('./ServerAPI.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');
 var fs = require('fs');
 var http = require('http');
 ////////////////////////////////////////////////////////////////////////////////

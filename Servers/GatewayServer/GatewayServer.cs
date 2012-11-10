@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CommonAPI;
 using CommonLibraries;
 using NodeJS.HttpModule;
 using SocketIOLibrary;
@@ -7,7 +8,7 @@ namespace GatewayServer
 {
     public class GatewayServer
     {
-        public JsDictionary<string, UserModel> users = new JsDictionary<string, UserModel>();
+        public JsDictionary<string, GatewayUserModel> users = new JsDictionary<string, GatewayUserModel>();
 
         public GatewayServer()
         {
@@ -22,15 +23,16 @@ namespace GatewayServer
 
             io.Sockets.On("connection",
                           new Action<SocketIOConnection>((socket) => {
-                                                             UserModel user = null;
+                                                             GatewayUserModel user = null;
                                                              socket.On("Gateway.Message", new Action<GatewayMessageModel>(data => { }));
 
                                                              socket.On("Gateway.Login",
                                                                        new Action<GatewayLoginMessageModel>((data) => {
-                                                                                                                user = new UserModel();
+                                                                                                                user = new GatewayUserModel();
                                                                                                                 user.Socket = socket;
                                                                                                                 user.UserName = data.UserName;
                                                                                                                 users[data.UserName] = user;
+                                                                                                                socket.Emit("Area.Main.Login.Response", "hi! " + data.UserName);
                                                                                                             }));
                                                              socket.On("disconnect", new Action<string>((string data) => users.Remove(user.UserName)));
                                                          }));
@@ -41,7 +43,7 @@ namespace GatewayServer
             new GatewayServer();
         }
 
-        private void messageReceived(string gateway, UserModel user, string eventChannel, object content)
+        private void messageReceived(string gateway, UserModel user, string eventChannel, ChannelListenTriggerMessage content)
         {
             if (users.ContainsKey(user.UserName)) {
                 var u = users[user.UserName];

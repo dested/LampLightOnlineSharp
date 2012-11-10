@@ -50,51 +50,61 @@ namespace LampLightOnlineBuild
                     }*/
                                                                       {
                                                                               "MM.ChatServer", new Application(true,
-                                                                                                            new List<string> {
-                                                                                                                                     @"./CommonLibraries.js",
-                                                                                                                                     @"./CommonServerLibraries.js",
-                                                                                                                                     @"./Models.js",
-                                                                                                                             })
-                                                                      }, {
-                                                                                 "MM.GameServer", new Application(true,
                                                                                                                new List<string> {
+                                                                                                                                        @"./CommonAPI.js",
+                                                                                                                                        @"./ServerAPI.js",
                                                                                                                                         @"./CommonLibraries.js",
                                                                                                                                         @"./CommonServerLibraries.js",
                                                                                                                                         @"./Models.js",
-                                                                                                                                        @"./RawDeflate.js",
                                                                                                                                 })
+                                                                      }, {
+                                                                                 "MM.GameServer", new Application(true,
+                                                                                                                  new List<string> {
+                                                                                                                                           @"./CommonAPI.js",
+                                                                                                                                           @"./MMServerAPI.js",
+                                                                                                                                           @"./CommonLibraries.js",
+                                                                                                                                           @"./CommonServerLibraries.js",
+                                                                                                                                           @"./CommonClientLibraries.js",
+                                                                                                                                           @"./MMServer.js",
+                                                                                                                                           @"./Games/ZombieGame/ZombieGame.Common.js",
+                                                                                                                                           @"./Games/ZombieGame/ZombieGame.Server.js",
+                                                                                                                                           @"./Models.js",
+                                                                                                                                           @"./RawDeflate.js",
+                                                                                                                                   }) {}
                                                                          }, {
                                                                                     "MM.GatewayServer", new Application(true,
-                                                                                                                     new List<string> {
-                                                                                                                                              @"./CommonLibraries.js",
-                                                                                                                                              @"./CommonServerLibraries.js",
-                                                                                                                                              @"./Models.js",
-                                                                                                                                      })
-                                                                            }, { "MM.HeadServer", new Application(true,
-                                                                                                                     new List<string> {
-                                                                                                                                              @"./CommonLibraries.js",
-                                                                                                                                              @"./CommonServerLibraries.js",
-                                                                                                                                              @"./Models.js",
-                                                                                                                                      })
+                                                                                                                        new List<string> {
+                                                                                                                                                 @"./CommonAPI.js",
+                                                                                                                                                 @"./ServerAPI.js",
+                                                                                                                                                 @"./CommonLibraries.js",
+                                                                                                                                                 @"./CommonServerLibraries.js",
+                                                                                                                                                 @"./Models.js",
+                                                                                                                                         })
+                                                                            }, {
+                                                                                       "MM.HeadServer", new Application(true,
+                                                                                                                        new List<string> {
+                                                                                                                                                 @"./CommonAPI.js",
+                                                                                                                                                 @"./ServerAPI.js",
+                                                                                                                                                 @"./CommonLibraries.js",
+                                                                                                                                                 @"./CommonServerLibraries.js",
+                                                                                                                                                 @"./Models.js",
+                                                                                                                                         })
                                                                                }, {
                                                                                           "SiteServer", new Application(true,
-
                                                                                                                         new List<string> {
                                                                                                                                                  @"./CommonLibraries.js",
                                                                                                                                                  @"./CommonServerLibraries.js",
                                                                                                                                                  @"./Models.js",
                                                                                                                                          })
                                                                                   },
-                                                                      {"Client", new Application(false,  new List<string> {})},
-                                                                      {"CommonWebLibraries", new Application(false,  new List<string> {})},
+                                                                      {"Client", new Application(false, new List<string> {})},
+                                                                      {"CommonWebLibraries", new Application(false, new List<string> {})},
                                                                       {"CommonLibraries", new Application(false, new List<string> {})},
-                                                                      {"CommonClientLibraries", new Application(false,  new List<string> {})},
-                                                                      {"ClientAPI", new Application(false,  new List<string> {})},
-                                                                      {"ServerAPI", new Application(false,  new List<string> {})},
-                                                                      {"CommonAPI", new Application(false,  new List<string> {})},
+                                                                      {"CommonClientLibraries", new Application(false, new List<string> {})},
+                                                                      {"ClientAPI", new Application(false, new List<string> {})},
+                                                                      {"ServerAPI", new Application(false, new List<string> {})},
+                                                                      {"CommonAPI", new Application(false, new List<string> {})},
                                                               };
-
-
 
 #if FTP
             string loc = ConfigurationSettings.AppSettings["web-ftpdir"];
@@ -121,28 +131,18 @@ namespace LampLightOnlineBuild
                                    Console.WriteLine();
                                };
 
-
-
-
-
-
-
             string serverloc = ConfigurationSettings.AppSettings["server-ftpdir"];
             string serverloc2 = ConfigurationSettings.AppSettings["server-web-ftpdir"];
             Console.WriteLine("connecting server ftp");
             SftpClient client = new SftpClient(ConfigurationSettings.AppSettings["server-ftpurl"], ConfigurationSettings.AppSettings["server-ftpusername"], ConfigurationSettings.AppSettings["server-ftppassword"]);
             client.Connect();
 
-            
-
             Console.WriteLine("server connected");
-             
-
 
 #endif
 
             foreach (var depend in depends) {
-                var to = pre + "\\" + llo + @"\output\" + depend.Key + ".js"; 
+                var to = pre + "\\" + llo + @"\output\" + depend.Key + ".js";
                 var output = "";
 
                 if (depend.Value.Node)
@@ -155,9 +155,10 @@ namespace LampLightOnlineBuild
                     output += string.Format("require('{0}');", depe);
                 }
 
+                if (depend.Value.Postpend != null) output += depend.Value.Postpend;
                 var lines = new List<string>();
                 lines.Add(output);
-                lines.AddRange(File.ReadAllLines(to).After(1));//mscorlib
+                lines.AddRange(File.ReadAllLines(to).After(1)); //mscorlib
 
                 string text = lines.Aggregate("", (a, b) => a + b + "\n");
                 File.WriteAllText(to, text);
@@ -170,23 +171,20 @@ namespace LampLightOnlineBuild
 #if FTP
 
                 long length = new FileInfo(to).Length;
-                if (webftp.GetFileSize(loc + name) != length)
-                {
+                if (webftp.GetFileSize(loc + name) != length) {
                     Console.WriteLine("ftp start " + length.ToString("N0"));
                     webftp.Upload(loc + name, to);
                     Console.WriteLine("ftp complete " + to);
                 }
 
-                if (client.GetAttributes(serverloc + name).Size != length)
-                {
+                if (client.GetAttributes(serverloc + name).Size != length) {
                     Console.WriteLine("server ftp start " + length.ToString("N0"));
                     var fileStream = new FileInfo(to).OpenRead();
                     client.UploadFile(fileStream, serverloc + name, true);
                     fileStream.Close();
                     Console.WriteLine("server ftp complete " + to);
                 }
-                if (client.GetAttributes(serverloc2 + name).Size != length)
-                {
+                if (client.GetAttributes(serverloc2 + name).Size != length) {
                     Console.WriteLine("server ftp start " + length.ToString("N0"));
                     var fileStream = new FileInfo(to).OpenRead();
                     client.UploadFile(fileStream, serverloc2 + name, true);
@@ -194,7 +192,7 @@ namespace LampLightOnlineBuild
                     Console.WriteLine("server ftp complete " + to);
                 }
 #endif
-             }
+            }
 
             string[] games = {"ZombieGame" /*, "TowerD", "ZakGame" */};
 
@@ -219,11 +217,11 @@ namespace LampLightOnlineBuild
 
                     var fileStream = new FileInfo(fm).OpenRead();
                     client.UploadFile(fileStream, serverloc + "Games/" + depend + "/" + depend + "." + ext + ".js", true);
-                    fileStream.Close(); 
+                    fileStream.Close();
                     fileStream = new FileInfo(fm).OpenRead();
                     client.UploadFile(fileStream, serverloc2 + "Games/" + depend + "/" + depend + "." + ext + ".js", true);
                     fileStream.Close();
-                     
+
                     Console.WriteLine("server ftp complete " + fm);
 #endif
                 }
@@ -233,12 +231,13 @@ namespace LampLightOnlineBuild
         #region Nested type: Application
 
         public class Application
-        { 
+        {
             public bool Node { get; set; }
             public List<string> IncludesAfter { get; set; }
+            public string Postpend { get; set; }
 
-            public Application(bool node,  List<string> includesAfter)
-            { 
+            public Application(bool node, List<string> includesAfter)
+            {
                 Node = node;
                 IncludesAfter = includesAfter;
             }

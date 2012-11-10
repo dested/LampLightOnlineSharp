@@ -36,10 +36,13 @@ $MMServerAPI_LampPlayerMessage.$ctor = function() {
 };
 ////////////////////////////////////////////////////////////////////////////////
 // MMServerAPI.LampServer
-var $MMServerAPI_LampServer = function() {
+var $MMServerAPI_LampServer = function(manager) {
+	this.myManager = null;
 	this.$1$ActionsField = null;
 	this.$1$TickIndexField = 0;
 	this.$1$PlayersField = null;
+	this.myManager = manager;
+	this.set_actions({});
 };
 $MMServerAPI_LampServer.prototype = {
 	get_actions: function() {
@@ -88,16 +91,42 @@ $MMServerAPI_LampServer.prototype = {
 		this.set_tickIndex($t1 + 1);
 		var acts = $t2[$t1];
 		this.gameTick();
-		for (var $t3 = 0; $t3 < acts.length; $t3++) {
-			var lampAction = acts[$t3];
-			this.executeAction(lampAction);
+		if (ss.isValue(acts)) {
+			for (var $t3 = 0; $t3 < acts.length; $t3++) {
+				var lampAction = acts[$t3];
+				this.executeAction(lampAction);
+			}
 		}
 		delete this.get_actions()[this.get_tickIndex() - 1];
 	},
 	gameTick: function() {
+	},
+	end: function() {
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
+// MMServerAPI.ServerGameManager
+var $MMServerAPI_ServerGameManager = function(region, serverManager) {
+	this.$myGame = null;
+	this.region = 0;
+	this.serverManager = null;
+	this.region = region;
+	this.serverManager = serverManager;
+};
+$MMServerAPI_ServerGameManager.prototype = {
+	tick: function() {
+		this.$myGame.tick();
+	},
+	start: function(game) {
+		this.$myGame = game;
+		this.$myGame.init([]);
+	},
+	end: function() {
+		this.$myGame.end();
 	}
 };
 Type.registerClass(global, 'MMServerAPI.LampMessage', $MMServerAPI_LampMessage, Object);
 Type.registerClass(global, 'MMServerAPI.LampPlayerMessage', $MMServerAPI_LampPlayerMessage, Object);
 Type.registerClass(global, 'MMServerAPI.LampServer', $MMServerAPI_LampServer, Object);
+Type.registerClass(global, 'MMServerAPI.ServerGameManager', $MMServerAPI_ServerGameManager, Object);
 Type.registerClass(global, 'MMServerAPI.LampAction', $MMServerAPI_LampAction);

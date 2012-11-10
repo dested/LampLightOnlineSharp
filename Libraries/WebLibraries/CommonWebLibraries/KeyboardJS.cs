@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 namespace WebLibraries
 {
@@ -13,12 +12,5 @@ namespace WebLibraries
         {
             return null;
         }
-    }
-    public delegate void KeyboardJSBindKey(string key, Action down, Action up);
-    [Imported]
-    public class KeyboardJSBind
-    {
-        [IntrinsicProperty]
-        public KeyboardJSBindKey Key { get; set; }
     }
 }

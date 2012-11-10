@@ -1,4 +1,4 @@
-require('./mscorlib.debug.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');require('./RawDeflate.js');
+require('./mscorlib.debug.js');require('./CommonAPI.js');require('./MMServerAPI.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./CommonClientLibraries.js');require('./MMServer.js');require('./Games/ZombieGame/ZombieGame.Common.js');require('./Games/ZombieGame/ZombieGame.Server.js');require('./Models.js');require('./RawDeflate.js');
 // MM.GameServer.DataManager
 var $MM_GameServer_DataManager = function() {
 	this.$connection = null;
@@ -39,24 +39,29 @@ var $MM_GameServer_GameInfoObject = function() {
 };
 ////////////////////////////////////////////////////////////////////////////////
 // MM.GameServer.GameServer
-var $MM_GameServer_GameServer = function() {
+var $MM_GameServer_GameServer = function(region) {
 	this.$dataManager = null;
 	this.$gameServerIndex = null;
 	this.$qManager = null;
+	this.$serverManager = null;
+	this.$serverManager = new MMServer.ServerManager(region, Function.mkdel(this, this.$listenOnChannel));
 	this.$dataManager = new $MM_GameServer_DataManager();
 	this.$gameServerIndex = 'GameServer' + CommonLibraries.Guid.newGuid();
 	process.on('exit', Function.mkdel(this, function() {
+		this.$serverManager.end();
 		console.log('exiting game server ' + this.$gameServerIndex);
 	}));
 	this.$qManager = new CommonServerLibraries.Queue.QueueManager(this.$gameServerIndex, new CommonServerLibraries.Queue.QueueManagerOptions([new CommonServerLibraries.Queue.QueueWatcher('GameServer', null), new CommonServerLibraries.Queue.QueueWatcher(this.$gameServerIndex, null)], ['GameServer', 'GatewayServer', 'Gateway*']));
-	//        qManager.AddChannel<JoinGameRequestModel>("Area.Game.Join",
-	//        (user, data) =>
-	//        {
-	//        EmitAll(room, "Area.Game.RoomInfo", room.CleanUp());
-	//        });
+	this.$serverManager.init();
+};
+$MM_GameServer_GameServer.prototype = {
+	$listenOnChannel: function(channel, trigger) {
+		this.$qManager.addChannel(channel, trigger);
+	}
 };
 $MM_GameServer_GameServer.$main = function() {
-	new $MM_GameServer_GameServer();
+	var region = 1;
+	new $MM_GameServer_GameServer(region);
 };
 Type.registerClass(global, 'MM.GameServer.DataManager', $MM_GameServer_DataManager, Object);
 Type.registerClass(global, 'MM.GameServer.DataManagerGameData', $MM_GameServer_DataManagerGameData, Object);

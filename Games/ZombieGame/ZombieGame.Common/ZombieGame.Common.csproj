@@ -100,16 +100,22 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AStarNode.cs" />
     <Compile Include="CollisionType.cs" />
     <Compile Include="GameMap.cs" />
+    <Compile Include="GameMapLayout.cs" />
+    <Compile Include="JSONObjects\JsonMap.cs" />
     <Compile Include="JSONObjects\JsonTileMap.cs" />
     <Compile Include="MapManager.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="GameManager.cs" />
+    <Compile Include="PlayerMoveMessage.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TileManager.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitManager.cs" />
+    <Compile Include="Waypoint.cs" />
+    <Compile Include="WaypointDeterminer.cs" />
     <Compile Include="ZombieGameConfig.cs" />
   </ItemGroup>
   <ItemGroup>

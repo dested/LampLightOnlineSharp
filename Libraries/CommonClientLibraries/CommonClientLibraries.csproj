@@ -90,6 +90,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Saltarelle.Linq.1.5.2\lib\Script.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="Script.NodeJS, Version=1.5.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Saltarelle.NodeJS.1.5.2\lib\Script.NodeJS.dll</HintPath>
+    </Reference>
     <Reference Include="Script.Web, Version=1.5.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Saltarelle.Web.1.5.2\lib\Script.Web.dll</HintPath>
@@ -103,6 +106,7 @@
     <Compile Include="UIManager\Button.cs" />
     <Compile Include="UIManager\CHelp.cs" />
     <Compile Include="UIManager\EditorEngine.cs" />
+    <Compile Include="UIManager\EditorEnginePoint.cs" />
     <Compile Include="UIManager\Element.cs" />
     <Compile Include="UIManager\HScrollBox.cs" />
     <Compile Include="UIManager\HtmlBox.cs" />
@@ -114,6 +118,8 @@
     <Compile Include="UIManager\PropertyButton.cs" />
     <Compile Include="UIManager\ScrollBox.cs" />
     <Compile Include="UIManager\Table.cs" />
+    <Compile Include="UIManager\TableCell.cs" />
+    <Compile Include="UIManager\TableRow.cs" />
     <Compile Include="UIManager\TextArea.cs" />
     <Compile Include="UIManager\TextBox.cs" />
     <Compile Include="UIManager\UIArea.cs" />

@@ -83,6 +83,7 @@
     <Compile Include="ExtraData.cs" />
     <Compile Include="GatewayLoginMessageModel.cs" />
     <Compile Include="GatewayMessageModel.cs" />
+    <Compile Include="GatewayUserModel.cs" />
     <Compile Include="Guid.cs" />
     <Compile Include="Help.cs" />
     <Compile Include="IntersectingRectangle.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="Rectangle.cs" />
     <Compile Include="SizeNumber.cs" />
     <Compile Include="SocketClientMessageModel.cs" />
-    <Compile Include="UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -108,6 +108,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NodeLibraries\SocketIO\SocketIOLibrary.csproj">
       <Project>{BD7C6F4F-3798-4C32-9EE1-306CF197F81E}</Project>
       <Name>SocketIOLibrary</Name>

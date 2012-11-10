@@ -18,10 +18,11 @@ var $GatewayServer_GatewayServer = function() {
 		socket.on('Gateway.Message', function(data) {
 		});
 		socket.on('Gateway.Login', Function.mkdel(this, function(data1) {
-			user = new CommonLibraries.UserModel();
-			user.set_socket(socket);
+			user = new CommonLibraries.GatewayUserModel();
+			user.socket = socket;
 			user.set_userName(data1.userName);
 			this.users[data1.userName] = user;
+			socket.emit('Area.Main.Login.Response', 'hi! ' + data1.userName);
 		}));
 		socket.on('disconnect', Function.mkdel(this, function(data2) {
 			delete this.users[user.get_userName()];
@@ -32,7 +33,7 @@ $GatewayServer_GatewayServer.prototype = {
 	$messageReceived: function(gateway, user, eventChannel, content) {
 		if (Object.keyExists(this.users, user.get_userName())) {
 			var u = this.users[user.get_userName()];
-			u.get_socket().emit('Client.Message', new CommonLibraries.SocketClientMessageModel(user, eventChannel, content));
+			u.socket.emit('Client.Message', new CommonLibraries.SocketClientMessageModel(user, eventChannel, content));
 		}
 	}
 };

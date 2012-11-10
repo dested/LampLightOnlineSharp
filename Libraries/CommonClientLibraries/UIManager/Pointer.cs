@@ -21,9 +21,8 @@ namespace CommonClientLibraries.UIManager
         }
 
         public Pointer ClonePointer()
-        { 
-            return new Pointer(X, Y,WheelDelta,Right);
-      
+        {
+            return new Pointer(X, Y, WheelDelta, Right);
         }
     }
 }

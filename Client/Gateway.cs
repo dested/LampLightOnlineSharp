@@ -1,41 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using CommonAPI;
 using CommonLibraries;
 using SocketIOWebLibrary;
 namespace Client
 {
     public class Gateway
     {
-        private dynamic channels; //::dynamic okay
-
+        private JsDictionary<string, Action<ChannelListenTriggerMessage>> channels;
         [IntrinsicProperty]
         protected SocketIOClient GatewaySocket { get; set; }
 
         public Gateway(string gatewayServer)
         {
-            channels = new object();
-            var someChannels = channels;
+            channels = new JsDictionary<string, Action<ChannelListenTriggerMessage>>();
             GatewaySocket = SocketIOClient.Connect(gatewayServer);
-            GatewaySocket.On<SocketClientMessageModel>("Client.Message", data => someChannels[data.Channel](data.Content));
+            GatewaySocket.On<SocketClientMessageModel>("Client.Message", data => channels[data.Channel](data.Content));
         }
 
-
         [IgnoreGenericArguments]
-        public void Emit<T>(string channel, T content, string gameServer = null)
+        public void Emit(string channel, ChannelListenTriggerMessage content)
         {
-            GatewaySocket.Emit("Gateway.Message", new GatewayMessageModel(channel, content, gameServer));
+            GatewaySocket.Emit("Gateway.Message", new GatewayMessageModel(channel, content));
         }
 
         [IgnoreGenericArguments]
-        public void On<T>(string channel, Action<T> callback)
+        public void On(string channel, Action<ChannelListenTriggerMessage> callback)
         {
             channels[channel] = callback;
         }
 
         public void Login(string userName)
         {
-            GatewaySocket.Emit("Gateway.Login", new UserModel { UserName = userName });
+            GatewaySocket.Emit("Gateway.Login", new UserModel {UserName = userName});
         }
     }
-
 }

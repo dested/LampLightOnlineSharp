@@ -79,6 +79,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ChildProcess.cs" />
+    <Compile Include="Console.cs" />
     <Compile Include="EventEmitter.cs" />
     <Compile Include="FileSystemError.cs" />
     <Compile Include="FS.cs" />
@@ -89,6 +90,9 @@
     <Compile Include="Global.cs" />
     <Compile Include="NodeModule.cs" />
     <Compile Include="Process.cs" />
+    <Compile Include="STDError.cs" />
+    <Compile Include="STDIn.cs" />
+    <Compile Include="STDOut.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>

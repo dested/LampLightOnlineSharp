@@ -18,14 +18,13 @@ namespace Client
         private string gameCanvasName = "gameLayer";
         private Point gameGoodSize;
         private GameManager gameManager;
+        public Gateway gateway;
         private Pointer lastMouseMove;
         private CanvasInformation uiCanvas;
         private string uiCanvasName = "uiLayer";
         private Point uiGoodSize;
         [IntrinsicProperty]
         public UIManager UIManager { get; set; }
-        public Gateway gateway;
-
 
         public ClientManager(string gatewayServerAddress)
         {
@@ -38,12 +37,11 @@ namespace Client
             gameCanvas = CanvasInformation.Create((CanvasElement) Document.GetElementById(gameCanvasName), 0, 0);
             uiCanvas = CanvasInformation.Create((CanvasElement) Document.GetElementById(uiCanvasName), 0, 0);
             UIManager = new UIManager();
-
-            gameManager = new GameManager();
             gateway = new Gateway(gatewayServerAddress);
-            gateway.On<object>("Area.Main.Login.Response", (data) => { Window.Alert(Json.Stringify(data)); });
-            gateway.Login(ClientManager.randomName());
 
+            gameManager = new GameManager(gateway.On, gateway.Emit);
+            gateway.On("Area.Main.Login.Response", (data) => { Window.Alert(Json.Stringify(data)); });
+            gateway.Login(randomName());
 
             bindInput();
             Window.AddEventListener("resize", e => resizeCanvas());
@@ -55,7 +53,7 @@ namespace Client
             Window.SetInterval(UIDraw, 1000 / 10);
 
             gameManager.Start(gameCanvas.Context);
-            resizeCanvas(); 
+            resizeCanvas();
             gameManager.BuildUI(UIManager);
         }
 
@@ -71,7 +69,7 @@ namespace Client
 
         private static void Main()
         {
-            jQuery.OnDocumentReady(() => { new ClientManager(((InputElement)Document.GetElementById("gatewayServer")).Value); });
+            jQuery.OnDocumentReady(() => { new ClientManager(( (InputElement) Document.GetElementById("gatewayServer") ).Value); });
         }
 
         private void Tick()
@@ -145,8 +143,8 @@ namespace Client
             uiCanvas.DomCanvas.Attribute("width", canvasWidth.ToString());
             uiCanvas.DomCanvas.Attribute("height", canvasHeight.ToString());
 
-            gameManager.Screen.Width = Window.InnerWidth ;
-            gameManager.Screen.Height = Window.InnerHeight ;
+            gameManager.Screen.Width = Window.InnerWidth;
+            gameManager.Screen.Height = Window.InnerHeight;
             gameCanvas.DomCanvas.Attribute("width", gameManager.Screen.Width.ToString());
             gameCanvas.DomCanvas.Attribute("height", gameManager.Screen.Height.ToString());
             uiGoodSize = new Point(canvasWidth, canvasHeight);

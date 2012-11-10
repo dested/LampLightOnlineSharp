@@ -1,4 +1,15 @@
 
+// CommonAPI.ChannelListenTriggerMessage
+var $CommonAPI_ChannelListenTriggerMessage = function() {
+};
+$CommonAPI_ChannelListenTriggerMessage.createInstance = function() {
+	return $CommonAPI_ChannelListenTriggerMessage.$ctor();
+};
+$CommonAPI_ChannelListenTriggerMessage.$ctor = function() {
+	var $this = {};
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.DataObject
 var $CommonAPI_DataObject$1 = function(T) {
 	var $type = function(data) {
@@ -13,6 +24,11 @@ var $CommonAPI_DataObject$1 = function(T) {
 	return $type;
 };
 Type.registerGenericClass(global, 'CommonAPI.DataObject$1', $CommonAPI_DataObject$1, 1);
+////////////////////////////////////////////////////////////////////////////////
+// CommonAPI.IServerManager
+var $CommonAPI_IServerManager = function() {
+};
+$CommonAPI_IServerManager.prototype = { listenOnChannel: null, init: null, end: null };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.LampPlayer
 var $CommonAPI_LampPlayer = function() {
@@ -62,6 +78,29 @@ $CommonAPI_TaskHandler.prototype = {
 $CommonAPI_TaskHandler.start = function(task) {
 	return (new $CommonAPI_TaskHandler()).addTask(task);
 };
+////////////////////////////////////////////////////////////////////////////////
+// CommonAPI.UserModel
+var $CommonAPI_UserModel = function() {
+	this.$1$GatewayField = null;
+	this.$1$UserNameField = null;
+};
+$CommonAPI_UserModel.prototype = {
+	get_gateway: function() {
+		return this.$1$GatewayField;
+	},
+	set_gateway: function(value) {
+		this.$1$GatewayField = value;
+	},
+	get_userName: function() {
+		return this.$1$UserNameField;
+	},
+	set_userName: function(value) {
+		this.$1$UserNameField = value;
+	}
+};
+Type.registerClass(global, 'CommonAPI.ChannelListenTriggerMessage', $CommonAPI_ChannelListenTriggerMessage, Object);
+Type.registerInterface(global, 'CommonAPI.IServerManager', $CommonAPI_IServerManager, []);
 Type.registerClass(global, 'CommonAPI.LampPlayer', $CommonAPI_LampPlayer, Object);
 Type.registerClass(global, 'CommonAPI.LampPlayerMessage', $CommonAPI_LampPlayerMessage, Object);
 Type.registerClass(global, 'CommonAPI.TaskHandler', $CommonAPI_TaskHandler, Object);
+Type.registerClass(global, 'CommonAPI.UserModel', $CommonAPI_UserModel, Object);

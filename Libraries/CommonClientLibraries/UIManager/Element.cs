@@ -7,7 +7,7 @@ namespace CommonClientLibraries.UIManager
 {
     public class Element
     {
-        internal ForceRedrawing cachedForceRedrawing = new ForceRedrawing();
+        protected ForceRedrawing cachedForceRedrawing = new ForceRedrawing();
         private int myDepth;
         [IntrinsicProperty]
         public int X { get; set; }

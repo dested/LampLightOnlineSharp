@@ -14,6 +14,9 @@ var $ZombieGame_Client_ClientGameManager = function(game) {
 	this.clickMode = 0;
 	this.scale = null;
 	ZombieGame.Common.GameManager.call(this);
+	this.tileManager = new $ZombieGame_Client_DrawTileManager(this);
+	this.mapManager = new $ZombieGame_Client_DrawMapManager(this, 400, 400);
+	this.unitManager = new $ZombieGame_Client_DrawUnitManager(this);
 	this.$myGame = game;
 	this.set_windowManager(new $ZombieGame_Client_WindowManager(this, 0, 0, 400, 225));
 	this.$screenOffset = CommonLibraries.Point.$ctor1(0, 0);
@@ -29,6 +32,11 @@ $ZombieGame_Client_ClientGameManager.prototype = {
 	},
 	set_windowManager: function(value) {
 		this.$2$WindowManagerField = value;
+	},
+	loadTiles: function(jsonTileMap, completed) {
+		CommonClientLibraries.UIManager.CHelp.loadImageFromUrl(jsonTileMap.tileMapURL, Function.mkdel(this, function(image) {
+			Type.cast(this.tileManager, $ZombieGame_Client_DrawTileManager).loadTiles$1(jsonTileMap, image, completed);
+		}));
 	},
 	draw: function(context) {
 		context.save();
@@ -59,13 +67,159 @@ $ZombieGame_Client_ClientGameManager.prototype = {
 		context.clip();
 		context.closePath();
 		context.translate(-wm.x, -wm.y);
-		this.mapManager.draw(context, wX, wY, wWidth, wHeight);
-		this.unitManager.draw(context);
+		Type.cast(this.mapManager, $ZombieGame_Client_DrawMapManager).draw(context, wX, wY, wWidth, wHeight);
+		Type.cast(this.unitManager, $ZombieGame_Client_DrawUnitManager).draw(context);
 		context.restore();
 	},
 	offsetPointer: function(pointer) {
 		pointer.x -= this.$screenOffset.x;
 		pointer.y -= this.$screenOffset.y;
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.DrawGameMap
+var $ZombieGame_Client_DrawGameMap = function(mapManager, jsonMap) {
+	ZombieGame.Common.GameMap.call(this, mapManager, jsonMap);
+};
+$ZombieGame_Client_DrawGameMap.prototype = {
+	draw: function(context, tileX, tileY, wWidth, wHeight) {
+		context.save();
+		for (var x = tileX; x < wWidth; x++) {
+			for (var y = tileY; y < wHeight; y++) {
+				var tile = Type.cast(CommonLibraries.Extensions.getSafe(ZombieGame.Common.Tile).call(null, this.tileMap, x, y), $ZombieGame_Client_DrawTile);
+				if (ss.isNullOrUndefined(tile)) {
+					continue;
+				}
+				tile.draw(context, tileX, tileY, x, y);
+			}
+		}
+		context.restore();
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.DrawMapManager
+var $ZombieGame_Client_DrawMapManager = function(gameManager, totalRegionWidth, totalRegionHeight) {
+	ZombieGame.Common.MapManager.call(this, gameManager, totalRegionWidth, totalRegionHeight);
+};
+$ZombieGame_Client_DrawMapManager.prototype = {
+	loadMap: function(jsonMap) {
+		var gameMap = new $ZombieGame_Client_DrawGameMap(this, jsonMap);
+		this.get_gameMaps()[gameMap.name] = gameMap;
+		return gameMap;
+	},
+	draw: function(context, wX, wY, wWidth, wHeight) {
+		context.save();
+		wWidth = Math.min(wWidth, this.myTotalRegionWidth);
+		wHeight = Math.min(wHeight, this.myTotalRegionHeight);
+		var $t1 = this.get_gameMapLayouts();
+		for (var $t2 = 0; $t2 < $t1.length; $t2++) {
+			var gameMapLayout = $t1[$t2];
+			Type.cast(gameMapLayout.get_gameMap(), $ZombieGame_Client_DrawGameMap).draw(context, gameMapLayout.get_x() + wX, gameMapLayout.get_y() + wY, wWidth, wHeight);
+		}
+		context.restore();
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.DrawTile
+var $ZombieGame_Client_DrawTile = function(canvas, x, y, jsonMap) {
+	this.image = null;
+	ZombieGame.Common.Tile.call(this, x, y, jsonMap);
+	var imageData = canvas.context.getImageData(x, y, jsonMap.tileWidth, jsonMap.tileHeight);
+	var data = CommonClientLibraries.CanvasInformation.create$1(imageData);
+	this.image = data;
+};
+$ZombieGame_Client_DrawTile.prototype = {
+	draw: function(context, _x, _y, mapX, mapY) {
+		context.save();
+		context.translate(_x + mapX * ZombieGame.Common.ZombieGameConfig.tileSize, _y + mapY * ZombieGame.Common.ZombieGameConfig.tileSize);
+		//
+		//            context.Translate(ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize / 2);
+		//
+		//            //context.Rotate(fm);
+		//
+		//            context.Translate(-ZombieGameConfig.TileSize / 2, -ZombieGameConfig.TileSize / 2);
+		context.drawImage(this.image.canvas, 0, 0);
+		//
+		//            context.StrokeStyle = "red";
+		//
+		//            context.StrokeRect(0, 0, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize);
+		//
+		//            
+		//
+		//            switch (Collision) {
+		//
+		//            case CollisionType.Full:
+		//
+		//            context.FillStyle = "rgba(233,12,22,0.6)";
+		//
+		//            context.FillRect(0, 0, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize);
+		//
+		//            break;
+		//
+		//            case CollisionType.RightHalf:
+		//
+		//            context.FillStyle = "rgba(233,12,22,0.6)";
+		//
+		//            context.FillRect(ZombieGameConfig.TileSize / 2, 0, ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize);
+		//
+		//            break;
+		//
+		//            case CollisionType.TopHalf:
+		//
+		//            context.FillStyle = "rgba(233,12,22,0.6)";
+		//
+		//            context.FillRect(0, 0, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize / 2);
+		//
+		//            break;
+		//
+		//            case CollisionType.LeftHalf:
+		//
+		//            context.FillStyle = "rgba(233,12,22,0.6)";
+		//
+		//            context.FillRect(0, 0, ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize);
+		//
+		//            break;
+		//
+		//            case CollisionType.BottomHalf:
+		//
+		//            context.FillStyle = "rgba(233,12,22,0.6)";
+		//
+		//            context.FillRect(0, ZombieGameConfig.TileSize / 2, ZombieGameConfig.TileSize, ZombieGameConfig.TileSize / 2);
+		//
+		//            break;
+		//
+		//            }
+		//todo enable when some sort of edit mode is enabled
+		context.restore();
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.DrawTileManager
+var $ZombieGame_Client_DrawTileManager = function(gameManager) {
+	ZombieGame.Common.TileManager.call(this, gameManager);
+};
+$ZombieGame_Client_DrawTileManager.prototype = {
+	loadTiles$1: function(jsonTileMap, tileImage, completed) {
+		var canvas = CommonClientLibraries.CanvasInformation.create(tileImage);
+		for (var x = 0; x < jsonTileMap.mapWidth; x += jsonTileMap.tileWidth) {
+			for (var y = 0; y < jsonTileMap.mapHeight; y += jsonTileMap.tileHeight) {
+				//load just the xy width*height of the canvas into a tile object for caching mostly. 
+				var tile = new $ZombieGame_Client_DrawTile(canvas, x, y, jsonTileMap);
+				//store each tile in a hash of name-x-y
+				this.loadedTiles[tile.get_key()] = tile;
+			}
+		}
+		completed();
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.DrawUnitManager
+var $ZombieGame_Client_DrawUnitManager = function(gameManager) {
+	ZombieGame.Common.UnitManager.call(this, gameManager);
+};
+$ZombieGame_Client_DrawUnitManager.prototype = {
+	draw: function(context) {
+		this.mainCharacter.draw(context);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +263,9 @@ $ZombieGame_Client_Game.prototype = {
 			completed2();
 		})).do();
 		this.$gameManager.init();
+		this.receiveChannelMessage('GameServer.Joined', function(message) {
+			window.alert('Wooo joined!');
+		});
 	},
 	tick: function() {
 		this.$gameManager.tick();
@@ -153,6 +310,11 @@ $ZombieGame_Client_Game.prototype = {
 			case 0: {
 				if (this.$gameManager.get_windowManager().collides(gamePointer)) {
 					this.$gameManager.unitManager.mainCharacter.moveTowards(gamePointer.x, gamePointer.y);
+					var $t2 = this.sendChannelMessage;
+					var $t1 = ZombieGame.Common.PlayerMoveMessage.$ctor();
+					$t1.x = gamePointer.x;
+					$t1.y = gamePointer.y;
+					$t2('player.move', $t1);
 				}
 				break;
 			}
@@ -268,6 +430,11 @@ $ZombieGame_Client_WindowManager.prototype = {
 	}
 };
 Type.registerClass(global, 'ZombieGame.Client.ClientGameManager', $ZombieGame_Client_ClientGameManager, ZombieGame.Common.GameManager);
+Type.registerClass(global, 'ZombieGame.Client.DrawGameMap', $ZombieGame_Client_DrawGameMap, ZombieGame.Common.GameMap);
+Type.registerClass(global, 'ZombieGame.Client.DrawMapManager', $ZombieGame_Client_DrawMapManager, ZombieGame.Common.MapManager);
+Type.registerClass(global, 'ZombieGame.Client.DrawTile', $ZombieGame_Client_DrawTile, ZombieGame.Common.Tile);
+Type.registerClass(global, 'ZombieGame.Client.DrawTileManager', $ZombieGame_Client_DrawTileManager, ZombieGame.Common.TileManager);
+Type.registerClass(global, 'ZombieGame.Client.DrawUnitManager', $ZombieGame_Client_DrawUnitManager, ZombieGame.Common.UnitManager);
 Type.registerClass(global, 'ZombieGame.Client.Game', $ZombieGame_Client_Game, ClientAPI.LampClient);
 Type.registerClass(global, 'ZombieGame.Client.WindowManager', $ZombieGame_Client_WindowManager, Object);
 $ZombieGame_Client_Game.debugText = null;

@@ -129,9 +129,15 @@
     <Compile Include="Drawers\GunWeaponDrawer.cs" />
     <Compile Include="Drawers\KingdomDrawer.cs" />
     <Compile Include="Drawers\QuickShooterDrawer.cs" />
+    <Compile Include="Drawers\ShieldDrawer.cs" />
     <Compile Include="Drawers\SingeShotDrawer.cs" />
     <Compile Include="Drawers\Drawer.cs" />
+    <Compile Include="Drawers\TowerDrawer.cs" />
+    <Compile Include="Drawers\UnitDrawer.cs" />
+    <Compile Include="Drawers\WaypointDrawer.cs" />
+    <Compile Include="Drawers\WeaponDrawer.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Kingdom.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleSystem.cs" />
     <Compile Include="Pieces\Shields\Shield.cs" />
@@ -142,6 +148,7 @@
     <Compile Include="Pieces\Units\Unit.cs" />
     <Compile Include="Pieces\Weapons\GunWeapon.cs" />
     <Compile Include="Pieces\Weapons\Weapon.cs" />
+    <Compile Include="Waypoint.cs" />
     <Compile Include="WaypointMap.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets')" />

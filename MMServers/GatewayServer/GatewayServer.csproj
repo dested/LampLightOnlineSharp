@@ -94,9 +94,20 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GatewayMessageType.cs" />
     <Compile Include="GatewayServer.cs" />
+    <Compile Include="MessageMaker.cs" />
+    <Compile Include="TopLevelMessageType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\API\CommonAPI\CommonAPI.csproj">
+      <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
+      <Name>CommonAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Games\ZombieGame\ZombieGame.Common\ZombieGame.Common.csproj">
+      <Project>{095442DE-167D-4051-BEB5-B20890BD471C}</Project>
+      <Name>ZombieGame.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\CommonLibraries\CommonLibraries.csproj">
       <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
       <Name>CommonLibraries</Name>
@@ -104,6 +115,10 @@
     <ProjectReference Include="..\..\Libraries\CommonServerLibraries\CommonServerLibraries.csproj">
       <Project>{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}</Project>
       <Name>CommonServerLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\NodeLibraries\NodeJS\NodeJS.csproj">
+      <Project>{79800429-B885-4F5E-9A3B-48E50390214A}</Project>
+      <Name>NodeJS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\NodeLibraries\SocketIO\SocketIOLibrary.csproj">
       <Project>{BD7C6F4F-3798-4C32-9EE1-306CF197F81E}</Project>

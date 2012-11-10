@@ -43,7 +43,7 @@ namespace CommonClientLibraries
 
         public static CanvasInformation Create(int w, int h)
         {
-            var canvas = (CanvasElement) Document.CreateElement("canvas");
+            CanvasElement canvas = (CanvasElement) Document.CreateElement("canvas");
             return Create(canvas, w, h);
         }
 

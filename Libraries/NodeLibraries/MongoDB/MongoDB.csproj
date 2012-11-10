@@ -81,7 +81,7 @@
   <ItemGroup>
     <Compile Include="MongoCollection.cs" />
     <Compile Include="MongoConnection.cs" />
-    <Compile Include="MongoDB.cs" />
+    <Compile Include="MongoModule.cs" />
     <Compile Include="MongoDBModule.cs" />
     <Compile Include="MongoServer.cs" />
   </ItemGroup>

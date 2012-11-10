@@ -108,13 +108,13 @@ var $CommonServerLibraries_Queue_QueueManager = function(name, options) {
 	this.qw = null;
 	this.$qwCollection = null;
 	this.name = name;
-	this.channels = new Object();
+	this.channels = {};
 	this.qw = [];
 	this.qp = [];
 	for (var $t1 = 0; $t1 < options.watchers.length; $t1++) {
 		var queueWatcher = options.watchers[$t1];
 		if (ss.isNullOrUndefined(queueWatcher.get_callback())) {
-			queueWatcher.set_callback(Function.mkdel(this, this.$messageReceived(Object)));
+			queueWatcher.set_callback(Function.mkdel(this, this.$messageReceived));
 		}
 		this.qw.add(queueWatcher);
 	}
@@ -130,23 +130,19 @@ $CommonServerLibraries_Queue_QueueManager.prototype = {
 	addChannel: function(channel, callback) {
 		this.channels[channel] = callback;
 	},
-	$messageReceived: function(T) {
-		return function(name, user, eventChannel, content) {
-			user.set_gateway(name);
-			if (!!ss.isValue(this.channels[eventChannel])) {
-				this.channels[eventChannel](user, content);
-			}
-		};
+	$messageReceived: function(name, user, eventChannel, content) {
+		user.set_gateway(name);
+		if (ss.isValue(this.channels[eventChannel])) {
+			this.channels[eventChannel](user, content);
+		}
 	},
-	sendMessage: function(T) {
-		return function(user, channel, eventChannel, content) {
-			if (ss.isNullOrUndefined(this.$qpCollection.getByChannel(channel))) {
-				console.log(channel + ' No Existy');
-				return;
-			}
-			var pusher = Type.cast(this.$qpCollection.getByChannel(channel), $CommonServerLibraries_Queue_QueuePusher);
-			pusher.message(T).call(pusher, channel, this.name, user, eventChannel, content);
-		};
+	sendMessage: function(user, channel, eventChannel, content) {
+		if (ss.isNullOrUndefined(this.$qpCollection.getByChannel(channel))) {
+			console.log(channel + ' No Existy');
+			return;
+		}
+		var pusher = Type.cast(this.$qpCollection.getByChannel(channel), $CommonServerLibraries_Queue_QueuePusher);
+		pusher.message(CommonAPI.ChannelListenTriggerMessage).call(pusher, channel, this.name, user, eventChannel, content);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////

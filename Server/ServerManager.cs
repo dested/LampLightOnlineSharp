@@ -1,30 +1,45 @@
-﻿using System.Html;
+﻿using CommonAPI;
+using MMServerAPI;
+using NodeJSLibrary;
+using ZombieGame.Server;
 namespace MMServer
 {
-    public class ServerManager
-    {  
-        private GameManager gameManager;  
+    public class ServerManager : IServerManager
+    {
+        private readonly ChannelListener myOnChannel;
+        private ServerGameManager myServerGameManager;
 
-        public ServerManager()
-        { 
-             
-
-            gameManager = new GameManager();
-             
-            Window.SetInterval(Tick, 1000 / 10); 
-
-            gameManager.Start( ); 
-        }
-
-        private static void Main()
+        public ServerManager(int region, ChannelListener onChannel)
         {
-            new ServerManager(); ;
+            myOnChannel = onChannel;
+
+            myServerGameManager = new ServerGameManager(region, this);
         }
+
+        #region IServerManager Members
+
+        public void Init()
+        {
+            //probably some big game switch to determine which "Game" to run. 
+            myServerGameManager.Start(new Game(myServerGameManager));
+            Global.SetInterval(Tick, 1000 / 10); //needs to be incredibly high resolution. c++ lib
+        }
+
+        public void End()
+        {
+            myServerGameManager.End();
+        }
+
+        public void ListenOnChannel(string name, ChannelListenTrigger trigger)
+        {
+            myOnChannel(name, trigger);
+        }
+
+        #endregion
 
         private void Tick()
         {
-            gameManager.Tick();
+            myServerGameManager.Tick();
         }
-         
     }
 }

@@ -1,19 +1,25 @@
-using System;
 using System.Collections.Generic;
 using CommonAPI;
 namespace MMServerAPI
 {
     public class LampServer
     {
-        
-            
+        protected readonly ServerGameManager myManager;
         public JsDictionary<int, List<LampAction>> Actions { get; set; }
         public int TickIndex { get; set; }
         public LampPlayer[] Players { get; set; }
+
+        protected LampServer(ServerGameManager manager)
+        {
+            myManager = manager;
+            Actions = new JsDictionary<int, List<LampAction>>();
+        }
+
         public virtual void Init(LampPlayer[] players)
         {
             Players = players;
         }
+
         public void SendMessageToPlayer(LampPlayer player) {}
         public void SendMessageToPlayers(params LampPlayer[] player) {}
 
@@ -31,41 +37,21 @@ namespace MMServerAPI
             }
         }
 
-        public virtual void ExecuteAction(LampAction action)
-        {
-            
-        }
+        public virtual void ExecuteAction(LampAction action) {}
 
         public void Tick()
         {
             var acts = Actions[TickIndex++];
             GameTick();
-            foreach (var lampAction in acts) {
-                ExecuteAction(lampAction);
+            if (acts != null) {
+                foreach (var lampAction in acts) {
+                    ExecuteAction(lampAction);
                 }
+            }
             Actions.Remove(TickIndex - 1);
         }
 
-        public virtual void GameTick()
-        {
-
-        }
-    }
-    [Serializable]
-    public class LampAction : LampPlayerMessage
-    {
-        public int TickToInitiate { get; set; } 
-    }
-    [Serializable]
-    public class LampPlayerMessage
-    {
-        public LampPlayer Player { get; set; }
-        public LampMessageType Type { get; set; }
-        public LampMessage Message { get; set; }
-    }
-    public class LampMessage {}
-    public enum LampMessageType
-    {
-        Action = 0
+        public virtual void GameTick() {}
+        public void End() {}
     }
 }

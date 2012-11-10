@@ -1,4 +1,5 @@
 using System.Serialization;
+using CommonAPI;
 using CommonLibraries;
 using NodeJSLibrary;
 using Redis;
@@ -9,7 +10,7 @@ namespace CommonServerLibraries.Queue
         private RedisClient client1;
 
         public QueuePusher(string pusher)
-        { 
+        {
             var redis = Global.Require<RedisModule>("redis");
             Channel = pusher;
             client1 = redis.CreateClient(6379, IPs.RedisIP);

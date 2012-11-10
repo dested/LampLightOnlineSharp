@@ -70,7 +70,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="KeyboardJS.cs" />
-    <Compile Include="RawDeflate.cs" />
+    <Compile Include="KeyboardJSBind.cs" />
+    <Compile Include="KeyboardJSBindKey.cs" />
+    <Compile Include="Compressor.cs" />
     <Compile Include="XStats.cs" />
   </ItemGroup>
   <ItemGroup>
