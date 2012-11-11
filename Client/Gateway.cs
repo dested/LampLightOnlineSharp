@@ -20,9 +20,9 @@ namespace Client
         }
 
         [IgnoreGenericArguments]
-        public void Emit(string channel, ChannelListenTriggerMessage content)
+        public void Emit(ChannelListenTriggerMessage content)
         {
-            GatewaySocket.Emit("Gateway.Message", new GatewayMessageModel(channel, content));
+            GatewaySocket.Emit("Gateway.Message", new GatewayMessageModel(content.GatewayChannel, content));
         }
 
         [IgnoreGenericArguments]

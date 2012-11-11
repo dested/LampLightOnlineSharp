@@ -8,13 +8,18 @@ using CommonServerLibraries.Queue;
 using NodeJSLibrary;
 using SocketIOLibrary;
 using ZombieGame.Common;
+using ZombieGame.Common.Messages;
 using Http = NodeJS.HttpModule.Http;
 namespace MM.GatewayServer
 {
     public class GatewayServer
     {
+        private static void Main(){int region = 1;new GatewayServer(region);}
+        private QueueManager queueManager;
+        private int port;
         private PubSub ps;
         public JsDictionary<string, GatewayUserModel> users = new JsDictionary<string, GatewayUserModel>();
+        private string myName;
         [IntrinsicProperty]
         public int Region { get; set; }
 
@@ -25,70 +30,68 @@ namespace MM.GatewayServer
 
             var io = SocketIO.Listen(app);
 
-            QueueManager queueManager;
 
-            var port = 1800 + Math.Truncate((int) ( Math.Random() * 4000 ));
+           port = 1800 + Math.Truncate((int) ( Math.Random() * 4000 ));
 
             app.Listen(port);
             io.Set("log level", 1);
-            var myName = "Gateway " + Guid.NewGuid();
+            myName = "Gateway " + Guid.NewGuid();
 
-            ps = new PubSub(() => {
-                                ps.Subscribe<string>("PUBSUB.GatewayServers.Ping", message => ps.Publish("PUBSUB.GatewayServers", string.Format("http://{0}:{1}", IPs.GatewayIP, port)));
-                                ps.Publish("PUBSUB.GatewayServers", string.Format("http://{0}:{1}", IPs.GatewayIP, port));
-                            });
+            ps = new PubSub(pubSubReady);
 
-            queueManager = new QueueManager(myName,
-                                            new QueueManagerOptions(new[] {
-                                                                                  new QueueWatcher("GatewayServer", messageReceived),
-                                                                                  new QueueWatcher(myName, messageReceived)
-                                                                          },
-                                                                    new[] {
-                                                                                  "GameServer*",
-                                                                                  "ChatServer",
-                                                                                  "HeadServer"
-                                                                          }));
+            queueManager = new QueueManager(myName);
 
-            io.Sockets.On("connection",
-                          new Action<SocketIOConnection>((socket) => {
-                                                             GatewayUserModel user = null;
-                                                             socket.On("Gateway.Message",
-                                                                       new Action<GatewayMessageModel>((data) => {
-                                                                                                           if (user == null) {
-                                                                                                               Global.Console.Log("no user found:   " + data.Stringify());
-                                                                                                               return;
-                                                                                                           }
-                                                                                                           var channel = "Bad";
-                                                                                                           switch (data.Channel.Split('.')[1]) {
-                                                                                                               case "Game":
-                                                                                                                   channel = user.GameServer;
-                                                                                                                   break;
-                                                                                                               case "Chat":
-                                                                                                                   channel = user.ChatServer ?? "ChatServer";
-                                                                                                                   break;
-                                                                                                           }
-                                                                                                           queueManager.SendMessage(user, channel, data.Content);
-                                                                                                       }));
+            queueManager.AddWatcher(new QueueWatcher("GatewayServer", messageReceived));
+            queueManager.AddWatcher(new QueueWatcher(myName, messageReceived));
 
-                                                             socket.On("Gateway.Login",
-                                                                       new Action<GatewayLoginMessageModel>((data) => {
-                                                                                                                user = new GatewayUserModel();
-                                                                                                                user.Socket = socket;
-                                                                                                                user.UserName = data.UserName;
+            queueManager.AddPusher(new QueuePusher("GameServer*")); 
+            queueManager.AddPusher(new QueuePusher("HeadServer"));
 
-                                                                                                                users[data.UserName] = user;
-                                                                                                                queueManager.SendMessage(user,"GameServer",  new PlayerJoinMessage());
-
-                                                                                                                socket.Emit("Area.Main.Login.Response", "hi! " + data.UserName);
-                                                                                                            }));
-                                                             socket.On("disconnect", new Action<string>((data) => users.Remove(user.UserName)));
-                                                         }));
+            io.Sockets.On("connection", new Action<SocketIOConnection>(userJoin));
         }
 
-        private static void Main()
+        private void pubSubReady()
         {
-            int region = 1;
-            new GatewayServer(region);
+
+            ps.Subscribe<string>("PUBSUB.GatewayServers.Ping", message => ps.Publish("PUBSUB.GatewayServers", string.Format("http://{0}:{1}", IPs.GatewayIP, port)));
+            ps.Publish("PUBSUB.GatewayServers", string.Format("http://{0}:{1}", IPs.GatewayIP, port));
+
+        }
+
+        private void userJoin(SocketIOConnection socket)
+        {
+            GatewayUserModel user = null;
+            socket.On("Gateway.Message",
+                      new Action<GatewayMessageModel>((data) => {
+                                                          if (user == null) {
+                                                              Global.Console.Log("no user found:   " + data.Stringify());
+                                                              return;
+                                                          }
+                                                          var channel = "Bad";
+                                                          switch (data.Channel.Split('.')[1]) {
+                                                              case "Game":
+                                                                  channel = user.GameServer;
+                                                                  break;
+                                                              case "Chat":
+                                                                  channel = user.ChatServer ?? "ChatServer";
+                                                                  break;
+                                                          }
+                                                          queueManager.SendMessage(user, channel, data.Content);
+                                                      }));
+
+            socket.On("Gateway.Login",
+                      new Action<GatewayLoginMessageModel>((data) => {
+                                                               user = new GatewayUserModel();
+                                                               user.Socket = socket;
+                                                               user.UserName = data.UserName;
+
+                                                               users[data.UserName] = user;
+                                                               queueManager.SendMessage(user, "GameServer", new PlayerJoinMessage());
+
+                                                               socket.Emit("Area.Main.Login.Response", "hi! " + data.UserName);
+                                                           }));
+            socket.On("disconnect", new Action<string>((data) => users.Remove(user.UserName)));
+
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace MM.GatewayServer
         /// <param name="channel">the queue channel, generally not needed</param>
         /// <param name="user"></param>
         /// <param name="content"></param>
-        private void messageReceived(string gatewayName,string channel, UserModel user,  ChannelListenTriggerMessage content)
+        private void messageReceived(string gatewayName,UserModel user,  ChannelListenTriggerMessage content)
         {
             if (users.ContainsKey(user.UserName)) {
                 var u = users[user.UserName];

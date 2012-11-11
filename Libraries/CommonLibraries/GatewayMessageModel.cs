@@ -8,6 +8,7 @@ namespace CommonLibraries
     {
         [IntrinsicProperty]
         public string Channel { get; set; }
+
         [IntrinsicProperty]
         public ChannelListenTriggerMessage Content { get; set; }
 

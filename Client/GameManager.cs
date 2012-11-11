@@ -15,11 +15,11 @@ namespace Client
         [IntrinsicProperty]
         public Action<string, Action<ChannelListenTriggerMessage>> ReceiveChannelMessage { get; set; }
         [IntrinsicProperty]
-        public Action<string, ChannelListenTriggerMessage> SendChannelMessage { get; set; }
+        public Action< ChannelListenTriggerMessage> SendChannelMessage { get; set; }
         [IntrinsicProperty]
         public Rectangle Screen { get; set; }
 
-        public GameManager(Action<string, Action<ChannelListenTriggerMessage>> receiveChannelMessage, Action<string, ChannelListenTriggerMessage> sendChannelMessage)
+        public GameManager(Action<string, Action<ChannelListenTriggerMessage>> receiveChannelMessage, Action<ChannelListenTriggerMessage> sendChannelMessage)
         {
             ReceiveChannelMessage = receiveChannelMessage;
             SendChannelMessage = sendChannelMessage;

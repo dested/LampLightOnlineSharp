@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.ClickMode
 var $ZombieGame_Client_ClickMode = function() {
 };
@@ -201,8 +201,10 @@ var $ZombieGame_Client_DrawTileManager = function(gameManager) {
 $ZombieGame_Client_DrawTileManager.prototype = {
 	loadTiles$1: function(jsonTileMap, tileImage, completed) {
 		var canvas = CommonClientLibraries.CanvasInformation.create(tileImage);
-		for (var x = 0; x < jsonTileMap.mapWidth; x += jsonTileMap.tileWidth) {
-			for (var y = 0; y < jsonTileMap.mapHeight; y += jsonTileMap.tileHeight) {
+		var height = jsonTileMap.mapHeight * jsonTileMap.tileHeight;
+		var width = jsonTileMap.mapWidth * jsonTileMap.tileWidth;
+		for (var x = 0; x < width; x += jsonTileMap.tileWidth) {
+			for (var y = 0; y < height; y += jsonTileMap.tileHeight) {
 				//load just the xy width*height of the canvas into a tile object for caching mostly. 
 				var tile = new $ZombieGame_Client_DrawTile(canvas, x, y, jsonTileMap);
 				//store each tile in a hash of name-x-y
@@ -311,10 +313,10 @@ $ZombieGame_Client_Game.prototype = {
 				if (this.$gameManager.get_windowManager().collides(gamePointer)) {
 					this.$gameManager.unitManager.mainCharacter.moveTowards(gamePointer.x, gamePointer.y);
 					var $t2 = this.sendChannelMessage;
-					var $t1 = ZombieGame.Common.PlayerMoveMessage.$ctor();
+					var $t1 = ZombieGame.Common.Messages.PlayerMoveMessage.$ctor();
 					$t1.x = gamePointer.x;
 					$t1.y = gamePointer.y;
-					$t2('player.move', $t1);
+					$t2($t1);
 				}
 				break;
 			}
@@ -385,10 +387,10 @@ $ZombieGame_Client_Game.$makeFakeMap = function(name, w, h) {
 	return keys;
 };
 $ZombieGame_Client_Game.$fakeJsonTileMap2 = function() {
-	return { name: 'Pretty', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/top.png' };
+	return { mapWidth: 20, mapHeight: 16, name: 'Pretty', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/top.png' };
 };
 $ZombieGame_Client_Game.$fakeJsonTileMap = function() {
-	return { name: 'Pretty2', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png' };
+	return { mapWidth: 12, mapHeight: 10, name: 'Pretty2', tileWidth: ZombieGame.Common.ZombieGameConfig.tileSize, tileHeight: ZombieGame.Common.ZombieGameConfig.tileSize, tileMapURL: 'http://50.116.22.241:8881/lamp/Games/ZombieGame/assets/watertileset3qb2tg0.png' };
 };
 $ZombieGame_Client_Game.$fakeJsonMap2 = function() {
 	return { mapWidth: 20, mapHeight: 16, name: 'Pretties', tileMap: $ZombieGame_Client_Game.$makeFakeMap('Pretty', 20, 16) };

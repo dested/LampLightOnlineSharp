@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Serialization;
 using CommonAPI;
 using NodeJSLibrary;
@@ -7,6 +8,7 @@ namespace CommonServerLibraries.Queue
     public class QueueWatcher : QueueItem //todo generisize
     {
         private RedisClient client1;
+        [IntrinsicProperty]
         public QueueCallback Callback { get; set; }
 
         public QueueWatcher(string queue, QueueCallback callback)
@@ -28,7 +30,7 @@ namespace CommonServerLibraries.Queue
                               var data = (string[]) dtj;
                               if (dtj != null) {
                                   var dt = Json.Parse<QueueMessage>(data[1]);
-                                  Callback(dt.Name, channel,dt.User, dt.Content);
+                                  Callback(dt.Name, dt.User, dt.Content);
                               }
                               Cycle(channel);
                           });

@@ -1,4 +1,4 @@
-
+﻿////////////////////////////////////////////////////////////////////////////////
 // Client.ClientManager
 var $Client_ClientManager = function(gatewayServerAddress) {
 	this.$canvasHeight = 0;
@@ -200,16 +200,16 @@ var $Client_Gateway = function(gatewayServer) {
 	}));
 };
 $Client_Gateway.prototype = {
-	emit: function(channel, content) {
-		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(channel, content));
+	emit: function(content) {
+		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(content.gatewayChannel, content));
 	},
 	on: function(channel, callback) {
 		this.$channels[channel] = callback;
 	},
 	login: function(userName) {
 		var $t2 = this.gatewaySocket;
-		var $t1 = new CommonAPI.UserModel();
-		$t1.set_userName(userName);
+		var $t1 = CommonAPI.UserModel.$ctor();
+		$t1.userName = userName;
 		$t2.emit('Gateway.Login', $t1);
 	}
 };

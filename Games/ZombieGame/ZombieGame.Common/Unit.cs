@@ -35,7 +35,7 @@ namespace ZombieGame.Common
         {
             movingTowards = new Point(x, y);
 
-            new WaypointDeterminer(new Point(X, Y), new Point(x, y), MoveRate, myGameManager.MapManager.CollisionMap);
+            //new WaypointDeterminer(new Point(X, Y), new Point(x, y), MoveRate, myGameManager.MapManager.CollisionMap);
         }
 
         public virtual void Tick()

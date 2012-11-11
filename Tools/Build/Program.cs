@@ -78,6 +78,10 @@ namespace LampLightOnlineBuild
                                                                                                                                                  @"./ServerAPI.js",
                                                                                                                                                  @"./CommonLibraries.js",
                                                                                                                                                  @"./CommonServerLibraries.js",
+                                                                                                                                           @"./MMServer.js",
+                                                                                                                                           @"./MMServerAPI.js",
+                                                                                                                                           @"./Games/ZombieGame/ZombieGame.Common.js",
+                                                                                                                                           @"./Games/ZombieGame/ZombieGame.Server.js",
                                                                                                                                                  @"./Models.js",
                                                                                                                                          })
                                                                             }, {

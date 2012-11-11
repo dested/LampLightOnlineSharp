@@ -9,42 +9,29 @@ namespace CommonServerLibraries.Queue
         private readonly JsDictionary<string, ChannelListenTrigger> channels;
         private readonly QueueItemCollection qpCollection;
         private readonly QueueItemCollection qwCollection;
-        private readonly List<QueuePusher> qp;
-        private readonly List<QueueWatcher> qw;
+
         public string Name { get; set; }
 
-        public QueueManager(string name, QueueManagerOptions options)
+        public QueueManager(string name)
         {
             Name = name;
-            channels = new JsDictionary<string, ChannelListenTrigger>();
-            qw = new List<QueueWatcher>();
-            qp = new List<QueuePusher>();
-            foreach (var queueWatcher in options.Watchers) {
-                if (queueWatcher.Callback == null)
-                    queueWatcher.Callback = messageReceived;
-                qw.Add(queueWatcher);
-            }
-            qw.AddRange(options.Watchers);
-            foreach (var pusher in options.Pushers) {
-                qp.Add(new QueuePusher(pusher));
-            }
-
-            qwCollection = new QueueItemCollection(qw);
-            qpCollection = new QueueItemCollection(qp);
+            channels = new JsDictionary<string, ChannelListenTrigger>(); 
+            qwCollection = new QueueItemCollection( );
+            qpCollection = new QueueItemCollection( );
         }
 
-        [IgnoreGenericArguments]
+
         public void AddChannel(string channel, ChannelListenTrigger callback)
         {
             channels[channel] = callback;
         }
 
-        private void messageReceived(string name, string channel, UserModel user, ChannelListenTriggerMessage message)
+        private void messageReceived(string name,  UserModel user, ChannelListenTriggerMessage message)
         {
             user.Gateway = name;
 
-            if (channels[channel] != null)
-                channels[channel](user, message);
+            if (channels[message.Channel] != null)
+                channels[message.Channel](user, message);
         }
 
         public void SendMessage(UserModel user,string channel , ChannelListenTriggerMessage message)
@@ -57,6 +44,19 @@ namespace CommonServerLibraries.Queue
             }
 
             pusher.Message(channel, Name, user,  message);
+        }
+
+        public void AddWatcher(QueueWatcher queueWatcher)
+        {
+
+            if (queueWatcher.Callback == null)
+                queueWatcher.Callback = messageReceived;
+            qwCollection.AddItem(queueWatcher);
+
+        }
+        public void AddPusher(QueuePusher queuePusher)
+        { 
+            qpCollection.AddItem(queuePusher);
         }
     }
 }

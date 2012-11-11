@@ -1,4 +1,4 @@
-
+﻿////////////////////////////////////////////////////////////////////////////////
 // CommonLibraries.DelegateOrValue
 var $CommonLibraries_DelegateOrValue$1 = function(T) {
 	var $type = function(d) {
@@ -175,10 +175,16 @@ $CommonLibraries_GatewayMessageModel.$ctor = function(channel, content) {
 ////////////////////////////////////////////////////////////////////////////////
 // CommonLibraries.GatewayUserModel
 var $CommonLibraries_GatewayUserModel = function() {
-	this.socket = null;
-	this.gameServer = null;
-	this.chatServer = null;
-	CommonAPI.UserModel.call(this);
+};
+$CommonLibraries_GatewayUserModel.createInstance = function() {
+	return $CommonLibraries_GatewayUserModel.$ctor();
+};
+$CommonLibraries_GatewayUserModel.$ctor = function() {
+	var $this = CommonAPI.UserModel.$ctor();
+	$this.socket = null;
+	$this.gameServer = null;
+	$this.chatServer = null;
+	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonLibraries.Guid
@@ -339,7 +345,7 @@ Type.registerClass(global, 'CommonLibraries.DoublePoint', $CommonLibraries_Doubl
 Type.registerClass(global, 'CommonLibraries.Extensions', $CommonLibraries_Extensions, Object);
 Type.registerClass(global, 'CommonLibraries.GatewayLoginMessageModel', $CommonLibraries_GatewayLoginMessageModel, Object);
 Type.registerClass(global, 'CommonLibraries.GatewayMessageModel', $CommonLibraries_GatewayMessageModel, Object);
-Type.registerClass(global, 'CommonLibraries.GatewayUserModel', $CommonLibraries_GatewayUserModel, CommonAPI.UserModel);
+Type.registerClass(global, 'CommonLibraries.GatewayUserModel', $CommonLibraries_GatewayUserModel);
 Type.registerClass(global, 'CommonLibraries.Guid', $CommonLibraries_Guid, Object);
 Type.registerClass(global, 'CommonLibraries.Help', $CommonLibraries_Help, Object);
 Type.registerClass(global, 'CommonLibraries.IntersectingRectangle', $CommonLibraries_IntersectingRectangle, Object);

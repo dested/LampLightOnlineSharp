@@ -77,7 +77,6 @@
   <ItemGroup>
     <Compile Include="ChannelListener.cs" />
     <Compile Include="Completed.cs" />
-    <Compile Include="IServerManager.cs" />
     <Compile Include="DataObject.cs" />
     <Compile Include="LampPlayer.cs" />
     <Compile Include="LampPlayerMessage.cs" />

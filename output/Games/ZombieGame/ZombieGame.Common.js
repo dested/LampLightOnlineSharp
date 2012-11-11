@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.AStarNode
 var $ZombieGame_Common_AStarNode = function(movementCost, heuristicCost, parent, coord) {
 	this.totalCost = 0;
@@ -95,18 +95,6 @@ $ZombieGame_Common_GameMapLayout.prototype = {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
-// ZombieGame.Common.GameServerAcceptMessage
-var $ZombieGame_Common_GameServerAcceptMessage = function() {
-};
-$ZombieGame_Common_GameServerAcceptMessage.createInstance = function() {
-	return $ZombieGame_Common_GameServerAcceptMessage.$ctor();
-};
-$ZombieGame_Common_GameServerAcceptMessage.$ctor = function() {
-	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
-	$this.gameServer = null;
-	return $this;
-};
-////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.MapManager
 var $ZombieGame_Common_MapManager = function(gameManager, totalRegionWidth, totalRegionHeight) {
 	this.myGameManager = null;
@@ -185,31 +173,6 @@ $ZombieGame_Common_Person.prototype = {
 		context.fillRect(this.x - 13, this.y - 13, 26, 26);
 		context.restore();
 	}
-};
-////////////////////////////////////////////////////////////////////////////////
-// ZombieGame.Common.PlayerJoinMessage
-var $ZombieGame_Common_PlayerJoinMessage = function() {
-};
-$ZombieGame_Common_PlayerJoinMessage.createInstance = function() {
-	return $ZombieGame_Common_PlayerJoinMessage.$ctor();
-};
-$ZombieGame_Common_PlayerJoinMessage.$ctor = function() {
-	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
-	$this.channel = 'Player.Join';
-	return $this;
-};
-////////////////////////////////////////////////////////////////////////////////
-// ZombieGame.Common.PlayerMoveMessage
-var $ZombieGame_Common_PlayerMoveMessage = function() {
-};
-$ZombieGame_Common_PlayerMoveMessage.createInstance = function() {
-	return $ZombieGame_Common_PlayerMoveMessage.$ctor();
-};
-$ZombieGame_Common_PlayerMoveMessage.$ctor = function() {
-	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
-	$this.x = 0;
-	$this.y = 0;
-	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.Tile
@@ -291,7 +254,7 @@ $ZombieGame_Common_Unit.prototype = {
 	},
 	moveTowards: function(x, y) {
 		this.$movingTowards = CommonLibraries.Point.$ctor1(x, y);
-		new $ZombieGame_Common_WaypointDeterminer(CommonLibraries.Point.$ctor1(this.x, this.y), CommonLibraries.Point.$ctor1(x, y), this.moveRate, this.$myGameManager.mapManager.get_collisionMap());
+		//new WaypointDeterminer(new Point(X, Y), new Point(x, y), MoveRate, myGameManager.MapManager.CollisionMap);
 	},
 	tick: function() {
 		if (ss.isValue(this.$movingTowards)) {
@@ -439,14 +402,53 @@ $ZombieGame_Common_WaypointDeterminer.prototype = {
 // ZombieGame.Common.ZombieGameConfig
 var $ZombieGame_Common_ZombieGameConfig = function() {
 };
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.Messages.GameServerAcceptMessage
+var $ZombieGame_Common_Messages_GameServerAcceptMessage = function() {
+};
+$ZombieGame_Common_Messages_GameServerAcceptMessage.createInstance = function() {
+	return $ZombieGame_Common_Messages_GameServerAcceptMessage.$ctor();
+};
+$ZombieGame_Common_Messages_GameServerAcceptMessage.$ctor = function() {
+	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
+	$this.gameServer = null;
+	$this.channel = $ZombieGame_Common_Messages_GameServerAcceptMessage.messageChannel;
+	$this.gatewayChannel = 'Client';
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.Messages.PlayerJoinMessage
+var $ZombieGame_Common_Messages_PlayerJoinMessage = function() {
+};
+$ZombieGame_Common_Messages_PlayerJoinMessage.createInstance = function() {
+	return $ZombieGame_Common_Messages_PlayerJoinMessage.$ctor();
+};
+$ZombieGame_Common_Messages_PlayerJoinMessage.$ctor = function() {
+	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
+	$this.channel = $ZombieGame_Common_Messages_PlayerJoinMessage.messageChannel;
+	$this.gatewayChannel = 'Game';
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.Messages.PlayerMoveMessage
+var $ZombieGame_Common_Messages_PlayerMoveMessage = function() {
+};
+$ZombieGame_Common_Messages_PlayerMoveMessage.createInstance = function() {
+	return $ZombieGame_Common_Messages_PlayerMoveMessage.$ctor();
+};
+$ZombieGame_Common_Messages_PlayerMoveMessage.$ctor = function() {
+	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
+	$this.x = 0;
+	$this.y = 0;
+	$this.channel = $ZombieGame_Common_Messages_PlayerMoveMessage.messageChannel;
+	$this.gatewayChannel = 'Game';
+	return $this;
+};
 Type.registerClass(global, 'ZombieGame.Common.AStarNode', $ZombieGame_Common_AStarNode, Object);
 Type.registerClass(global, 'ZombieGame.Common.GameManager', $ZombieGame_Common_GameManager, Object);
 Type.registerClass(global, 'ZombieGame.Common.GameMap', $ZombieGame_Common_GameMap, Object);
 Type.registerClass(global, 'ZombieGame.Common.GameMapLayout', $ZombieGame_Common_GameMapLayout, Object);
-Type.registerClass(global, 'ZombieGame.Common.GameServerAcceptMessage', $ZombieGame_Common_GameServerAcceptMessage);
 Type.registerClass(global, 'ZombieGame.Common.MapManager', $ZombieGame_Common_MapManager, Object);
-Type.registerClass(global, 'ZombieGame.Common.PlayerJoinMessage', $ZombieGame_Common_PlayerJoinMessage);
-Type.registerClass(global, 'ZombieGame.Common.PlayerMoveMessage', $ZombieGame_Common_PlayerMoveMessage);
 Type.registerClass(global, 'ZombieGame.Common.Tile', $ZombieGame_Common_Tile, Object);
 Type.registerClass(global, 'ZombieGame.Common.TileManager', $ZombieGame_Common_TileManager, Object);
 Type.registerClass(global, 'ZombieGame.Common.Unit', $ZombieGame_Common_Unit, Object);
@@ -454,7 +456,13 @@ Type.registerClass(global, 'ZombieGame.Common.UnitManager', $ZombieGame_Common_U
 Type.registerClass(global, 'ZombieGame.Common.Waypoint', $ZombieGame_Common_Waypoint, Object);
 Type.registerClass(global, 'ZombieGame.Common.WaypointDeterminer', $ZombieGame_Common_WaypointDeterminer, Object);
 Type.registerClass(global, 'ZombieGame.Common.ZombieGameConfig', $ZombieGame_Common_ZombieGameConfig, Object);
+Type.registerClass(global, 'ZombieGame.Common.Messages.GameServerAcceptMessage', $ZombieGame_Common_Messages_GameServerAcceptMessage);
+Type.registerClass(global, 'ZombieGame.Common.Messages.PlayerJoinMessage', $ZombieGame_Common_Messages_PlayerJoinMessage);
+Type.registerClass(global, 'ZombieGame.Common.Messages.PlayerMoveMessage', $ZombieGame_Common_Messages_PlayerMoveMessage);
 Type.registerClass(global, 'ZombieGame.Common.Person', $ZombieGame_Common_Person, $ZombieGame_Common_Unit);
 $ZombieGame_Common_AStarNode.lateralCost = 10;
 $ZombieGame_Common_AStarNode.diagonalCost = 14;
 $ZombieGame_Common_ZombieGameConfig.tileSize = 32;
+$ZombieGame_Common_Messages_GameServerAcceptMessage.messageChannel = 'GameServer.Accept';
+$ZombieGame_Common_Messages_PlayerJoinMessage.messageChannel = 'Player.Join';
+$ZombieGame_Common_Messages_PlayerMoveMessage.messageChannel = 'Player.Move';

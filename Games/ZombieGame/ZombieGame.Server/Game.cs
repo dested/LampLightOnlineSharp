@@ -2,15 +2,15 @@
 using MMServerAPI;
 using ZombieGame.Common;
 using ZombieGame.Common.JSONObjects;
+using ZombieGame.Common.Messages;
 namespace ZombieGame.Server
 {
     public class Game : LampServer
     {
         private ZombieServerGameManager gameManager;
 
-        public Game(ServerGameManager manager) : base(manager)
-        {
-            gameManager = new ZombieServerGameManager(this);
+        public Game(int region,IServerManager manager) : base(region,manager)
+        {            gameManager = new ZombieServerGameManager(this);
         }
 
         public override void Init()
@@ -27,7 +27,18 @@ namespace ZombieGame.Server
 
             gameManager.Init();
 
-            myManager.ServerManager.ListenOnChannel("player.move", (UserModel user, ChannelListenTriggerMessage model) => { var player = (PlayerMoveMessage) model; });
+            myManager.ListenOnChannel(PlayerMoveMessage.MessageChannel,
+                                                    (UserModel user, ChannelListenTriggerMessage model) => {
+                                                        var message = (PlayerMoveMessage) model;
+
+                                                        
+
+                                                    });
+            myManager.ListenOnChannel(PlayerJoinMessage.MessageChannel,
+                                                    (UserModel user, ChannelListenTriggerMessage model) => {
+                                                        var message = (PlayerJoinMessage)model;
+
+                                                    });
         }
 
         public override void GameTick() {}

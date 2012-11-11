@@ -1,4 +1,4 @@
-require('./mscorlib.debug.js');require('./CommonAPI.js');require('./ServerAPI.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');
+﻿require('mscorlib');
 var http = require('http');
 var socketio = require('socket.io');
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,29 +28,39 @@ Type.registerEnum(global, 'Messages.TopLevelMessageType', $Messages_TopLevelMess
 ////////////////////////////////////////////////////////////////////////////////
 // MM.GatewayServer.GatewayServer
 var $MM_GatewayServer_GatewayServer = function(region) {
+	this.$queueManager = null;
+	this.$port = 0;
 	this.$ps = null;
 	this.users = {};
+	this.$myName = null;
 	this.region = 0;
 	this.region = region;
 	var app = http.createServer(function(req, res) {
 		res.end();
 	});
 	var io = socketio.listen(app);
-	var queueManager;
-	var port = 1800 + (ss.Int32.trunc(Math.random() * 4000) | 0);
-	app.listen(port);
+	this.$port = 1800 + (ss.Int32.trunc(Math.random() * 4000) | 0);
+	app.listen(this.$port);
 	io.set('log level', 1);
-	var myName = 'Gateway ' + CommonLibraries.Guid.newGuid();
-	this.$ps = new CommonServerLibraries.Queue.PubSub(Function.mkdel(this, function() {
+	this.$myName = 'Gateway ' + CommonLibraries.Guid.newGuid();
+	this.$ps = new CommonServerLibraries.Queue.PubSub(Function.mkdel(this, this.$pubSubReady));
+	this.$queueManager = new CommonServerLibraries.Queue.QueueManager(this.$myName);
+	this.$queueManager.addWatcher(new CommonServerLibraries.Queue.QueueWatcher('GatewayServer', Function.mkdel(this, this.$messageReceived)));
+	this.$queueManager.addWatcher(new CommonServerLibraries.Queue.QueueWatcher(this.$myName, Function.mkdel(this, this.$messageReceived)));
+	this.$queueManager.addPusher(new CommonServerLibraries.Queue.QueuePusher('GameServer*'));
+	this.$queueManager.addPusher(new CommonServerLibraries.Queue.QueuePusher('HeadServer'));
+	io.sockets.on('connection', Function.mkdel(this, this.$userJoin));
+};
+$MM_GatewayServer_GatewayServer.prototype = {
+	$pubSubReady: function() {
 		this.$ps.subscribe('PUBSUB.GatewayServers.Ping', Function.mkdel(this, function(message) {
-			this.$ps.publish('PUBSUB.GatewayServers', String.format('http://{0}:{1}', CommonServerLibraries.IPs.get_gatewayIP(), port));
+			this.$ps.publish('PUBSUB.GatewayServers', String.format('http://{0}:{1}', CommonServerLibraries.IPs.get_gatewayIP(), this.$port));
 		}));
-		this.$ps.publish('PUBSUB.GatewayServers', String.format('http://{0}:{1}', CommonServerLibraries.IPs.get_gatewayIP(), port));
-	}));
-	queueManager = new CommonServerLibraries.Queue.QueueManager(myName, new CommonServerLibraries.Queue.QueueManagerOptions([new CommonServerLibraries.Queue.QueueWatcher('GatewayServer', Function.mkdel(this, this.$messageReceived)), new CommonServerLibraries.Queue.QueueWatcher(myName, Function.mkdel(this, this.$messageReceived))], ['GameServer*', 'ChatServer', 'HeadServer']));
-	io.sockets.on('connection', Function.mkdel(this, function(socket) {
+		this.$ps.publish('PUBSUB.GatewayServers', String.format('http://{0}:{1}', CommonServerLibraries.IPs.get_gatewayIP(), this.$port));
+	},
+	$userJoin: function(socket) {
 		var user = null;
-		socket.on('Gateway.Message', function(data) {
+		socket.on('Gateway.Message', Function.mkdel(this, function(data) {
 			if (ss.isNullOrUndefined(user)) {
 				console.log('no user found:   ' + CommonLibraries.Extensions.stringify(data));
 				return;
@@ -66,25 +76,23 @@ var $MM_GatewayServer_GatewayServer = function(region) {
 					break;
 				}
 			}
-			queueManager.sendMessage(user, channel, data.content);
-		});
+			this.$queueManager.sendMessage(user, channel, data.content);
+		}));
 		socket.on('Gateway.Login', Function.mkdel(this, function(data1) {
-			user = new CommonLibraries.GatewayUserModel();
+			user = CommonLibraries.GatewayUserModel.$ctor();
 			user.socket = socket;
-			user.set_userName(data1.userName);
+			user.userName = data1.userName;
 			this.users[data1.userName] = user;
-			queueManager.sendMessage(user, 'GameServer', ZombieGame.Common.PlayerJoinMessage.$ctor());
+			this.$queueManager.sendMessage(user, 'GameServer', ZombieGame.Common.Messages.PlayerJoinMessage.$ctor());
 			socket.emit('Area.Main.Login.Response', 'hi! ' + data1.userName);
 		}));
 		socket.on('disconnect', Function.mkdel(this, function(data2) {
-			delete this.users[user.get_userName()];
+			delete this.users[user.userName];
 		}));
-	}));
-};
-$MM_GatewayServer_GatewayServer.prototype = {
-	$messageReceived: function(gatewayName, channel, user, content) {
-		if (Object.keyExists(this.users, user.get_userName())) {
-			var u = this.users[user.get_userName()];
+	},
+	$messageReceived: function(gatewayName, user, content) {
+		if (Object.keyExists(this.users, user.userName)) {
+			var u = this.users[user.userName];
 			if (content.channel === 'GameServer.AcceptPlayer') {
 				//if the gamserver has accepted the player, tell him he has joined
 				var message = content;
@@ -99,7 +107,7 @@ $MM_GatewayServer_GatewayServer.prototype = {
 			}
 		}
 		else {
-			throw new ss.Exception(String.format('client {0} no found so failure', user.get_userName()));
+			throw new ss.Exception(String.format('client {0} no found so failure', user.userName));
 		}
 	}
 };

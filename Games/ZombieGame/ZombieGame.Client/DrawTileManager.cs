@@ -14,8 +14,13 @@ namespace ZombieGame.Client
         {
             var canvas = CanvasInformation.Create(tileImage);
 
-            for (int x = 0; x < jsonTileMap.MapWidth; x += jsonTileMap.TileWidth) {
-                for (int y = 0; y < jsonTileMap.MapHeight; y += jsonTileMap.TileHeight) {
+            int height = jsonTileMap.MapHeight * jsonTileMap.TileHeight;
+            int width = jsonTileMap.MapWidth * jsonTileMap.TileWidth;
+
+            for (int x = 0; x < width; x += jsonTileMap.TileWidth)
+            {
+                for (int y = 0; y < height; y += jsonTileMap.TileHeight)
+                {
                     //load just the xy width*height of the canvas into a tile object for caching mostly. 
                     var tile = new DrawTile(canvas, x, y, jsonTileMap);
                     //store each tile in a hash of name-x-y

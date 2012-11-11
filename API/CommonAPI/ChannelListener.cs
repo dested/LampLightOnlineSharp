@@ -12,13 +12,7 @@ namespace CommonAPI
     public class ChannelListenTriggerMessage
     {
         public string Channel { get; set; }
+        public string GatewayChannel { get; set; }
     }
-    [Serializable]
-    public class GameServerCapabilities
-    {
-        public ChannelListener ListenOnChannel { get; set; }
-        public ChannelEmit Emit { get; set; }
-        public ChannelEmitAll EmitAll { get; set; }
-    }
-
+ 
 }

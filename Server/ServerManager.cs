@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CommonAPI;
 using CommonLibraries;
+using CommonServerLibraries.Queue;
 using MMServerAPI;
 using NodeJSLibrary;
 using ZombieGame.Server;
@@ -8,14 +9,14 @@ namespace MMServer
 {
     public class ServerManager : IServerManager
     {
-        private readonly GameServerCapabilities myGameServerCapabilities;
-        private ServerGameManager myServerGameManager;
+        private readonly int myRegion;
+        private readonly QueueManager myQueueManager;
+        private LampServer myGame;
 
-        public ServerManager(int region, GameServerCapabilities gameServerCapabilities)
+        public ServerManager(int region, QueueManager queueManager)
         {
-            myGameServerCapabilities = gameServerCapabilities;
-
-            myServerGameManager = new ServerGameManager(region, this);
+            myRegion = region;
+            myQueueManager = queueManager;
         }
 
         #region IServerManager Members
@@ -23,33 +24,39 @@ namespace MMServer
         public void Init()
         {
             //probably some big game switch to determine which "Game" to run. 
-            myServerGameManager.Start(new Game(myServerGameManager));
+            myGame = new Game(myRegion,this);
+            myGame.Init();
             Global.SetInterval(Tick, 1000 / 10); //needs to be incredibly high resolution. c++ lib
         }
 
         public void End()
         {
-            myServerGameManager.End();
+            myGame.End();
         }
 
-        public void ListenOnChannel(string name, ChannelListenTrigger trigger)
+
+        public void ListenOnChannel(string channel, ChannelListenTrigger trigger)
         {
-            myGameServerCapabilities.ListenOnChannel(name, trigger);
+            myQueueManager.AddChannel(channel, trigger);
         }
-        public void Emit(LampPlayer player,  ChannelListenTriggerMessage message)
+
+        public void Emit(LampPlayer player, ChannelListenTriggerMessage val)
         {
-            myGameServerCapabilities.Emit(player, message);
+            myQueueManager.SendMessage(player, player.Gateway, val);
         }
-        public void EmitAll(List<LampPlayer> players,  ChannelListenTriggerMessage message)
+
+        public void EmitAll(IEnumerable<LampPlayer> players, ChannelListenTriggerMessage val)
         {
-            myGameServerCapabilities.EmitAll(new List<UserModel>(players), message);
+            foreach (var player in players)
+            {
+                myQueueManager.SendMessage(player, player.Gateway, val);
+            }
         }
- 
         #endregion
 
         private void Tick()
         {
-            myServerGameManager.Tick();
+            myGame.Tick();
         }
     }
 }

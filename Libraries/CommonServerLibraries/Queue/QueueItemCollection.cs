@@ -1,13 +1,14 @@
 using System.Collections.Generic;
+using CommonLibraries;
 namespace CommonServerLibraries.Queue
 {
     public class QueueItemCollection
     {
-        private readonly IEnumerable<QueueItem> queueItems;
+        private readonly List<QueueItem> queueItems;
 
-        public QueueItemCollection(IEnumerable<QueueItem> queueItems)
+        public QueueItemCollection()
         {
-            this.queueItems = queueItems;
+            this.queueItems = new List<QueueItem>();
         }
 
         /// <summary>
@@ -22,6 +23,11 @@ namespace CommonServerLibraries.Queue
                     return queueWatcher;
             }
             return null;
+        }
+
+        public void AddItem(QueueItem item)
+        {
+            queueItems.Add(item);
         }
     }
 }

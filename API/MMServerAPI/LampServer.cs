@@ -3,16 +3,19 @@ using CommonAPI;
 using CommonLibraries;
 namespace MMServerAPI
 {
-    public class LampServer
+    public abstract class LampServer
     {
-        protected readonly ServerGameManager myManager;
+        protected readonly IServerManager myManager;
+        private readonly int myRegion;
         public JsDictionary<int, List<LampAction>> Actions { get; set; }
         public int TickIndex { get; set; }
         public List<LampPlayer> Players { get; set; }
 
-        protected LampServer(ServerGameManager manager)
+        protected LampServer(int region, IServerManager manager)
         {
+            myRegion = region;
             myManager = manager;
+
             Actions = new JsDictionary<int, List<LampAction>>();
         }
 
@@ -23,13 +26,12 @@ namespace MMServerAPI
 
         public void SendMessageToPlayer(LampPlayerMessage message, LampPlayer player)
         {
-            myManager.ServerManager.Emit(player,message );
-
+            myManager.Emit(player, message);
         }
-        public void SendMessageToPlayers(LampPlayerMessage message,params LampPlayer[] players)
+
+        public void SendMessageToPlayers(LampPlayerMessage message, params LampPlayer[] players)
         {
-            myManager.ServerManager.EmitAll(players.Cast<List<LampPlayer>>(), message);
-            
+            myManager.EmitAll(players.Cast<List<LampPlayer>>(), message);
         }
 
         public void ReceiveMessage(LampPlayerMessage message)
@@ -38,7 +40,7 @@ namespace MMServerAPI
                 case LampMessageType.Action:
                     LampAction lampAction = ( (LampAction) message );
 
-                    List<LampAction> lampActions = Actions[lampAction.TickToInitiate] = Actions[lampAction.TickToInitiate] ?? new List<LampAction>();//set it and forget it!
+                    List<LampAction> lampActions = Actions[lampAction.TickToInitiate] = Actions[lampAction.TickToInitiate] ?? new List<LampAction>(); //set it and forget it!
 
                     lampActions.Add(lampAction);
 

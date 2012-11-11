@@ -77,54 +77,35 @@ var $CommonServerLibraries_Queue_QueueItem = function() {
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonServerLibraries.Queue.QueueItemCollection
-var $CommonServerLibraries_Queue_QueueItemCollection = function(queueItems) {
+var $CommonServerLibraries_Queue_QueueItemCollection = function() {
 	this.$queueItems = null;
-	this.$queueItems = queueItems;
+	this.$queueItems = [];
 };
 $CommonServerLibraries_Queue_QueueItemCollection.prototype = {
 	getByChannel: function(channel) {
-		var $t1 = this.$queueItems.getEnumerator();
-		try {
-			while ($t1.moveNext()) {
-				var queueWatcher = $t1.get_current();
-				if (ss.referenceEquals(queueWatcher.channel, channel) || channel.indexOf(queueWatcher.channel.replaceAll('*', '')) === 0) {
-					return queueWatcher;
-				}
+		for (var $t1 = 0; $t1 < this.$queueItems.length; $t1++) {
+			var queueWatcher = this.$queueItems[$t1];
+			if (ss.referenceEquals(queueWatcher.channel, channel) || channel.indexOf(queueWatcher.channel.replaceAll('*', '')) === 0) {
+				return queueWatcher;
 			}
 		}
-		finally {
-			$t1.dispose();
-		}
 		return null;
+	},
+	addItem: function(item) {
+		this.$queueItems.add(item);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonServerLibraries.Queue.QueueManager
-var $CommonServerLibraries_Queue_QueueManager = function(name, options) {
+var $CommonServerLibraries_Queue_QueueManager = function(name) {
 	this.$channels = null;
 	this.$qpCollection = null;
 	this.$qwCollection = null;
-	this.$qp = null;
-	this.$qw = null;
 	this.$1$NameField = null;
 	this.set_name(name);
 	this.$channels = {};
-	this.$qw = [];
-	this.$qp = [];
-	for (var $t1 = 0; $t1 < options.watchers.length; $t1++) {
-		var queueWatcher = options.watchers[$t1];
-		if (ss.isNullOrUndefined(queueWatcher.get_callback())) {
-			queueWatcher.set_callback(Function.mkdel(this, this.$messageReceived));
-		}
-		this.$qw.add(queueWatcher);
-	}
-	this.$qw.addRange(options.watchers);
-	for (var $t2 = 0; $t2 < options.pushers.length; $t2++) {
-		var pusher = options.pushers[$t2];
-		this.$qp.add(new $CommonServerLibraries_Queue_QueuePusher(pusher));
-	}
-	this.$qwCollection = new $CommonServerLibraries_Queue_QueueItemCollection(this.$qw);
-	this.$qpCollection = new $CommonServerLibraries_Queue_QueueItemCollection(this.$qp);
+	this.$qwCollection = new $CommonServerLibraries_Queue_QueueItemCollection();
+	this.$qpCollection = new $CommonServerLibraries_Queue_QueueItemCollection();
 };
 $CommonServerLibraries_Queue_QueueManager.prototype = {
 	get_name: function() {
@@ -136,10 +117,10 @@ $CommonServerLibraries_Queue_QueueManager.prototype = {
 	addChannel: function(channel, callback) {
 		this.$channels[channel] = callback;
 	},
-	$messageReceived: function(name, channel, user, message) {
-		user.set_gateway(name);
-		if (ss.isValue(this.$channels[channel])) {
-			this.$channels[channel](user, message);
+	$messageReceived: function(name, user, message) {
+		user.gateway = name;
+		if (ss.isValue(this.$channels[message.channel])) {
+			this.$channels[message.channel](user, message);
 		}
 	},
 	sendMessage: function(user, channel, message) {
@@ -149,6 +130,15 @@ $CommonServerLibraries_Queue_QueueManager.prototype = {
 			return;
 		}
 		pusher.message(channel, this.get_name(), user, message);
+	},
+	addWatcher: function(queueWatcher) {
+		if (ss.isNullOrUndefined(queueWatcher.callback)) {
+			queueWatcher.callback = Function.mkdel(this, this.$messageReceived);
+		}
+		this.$qwCollection.addItem(queueWatcher);
+	},
+	addPusher: function(queuePusher) {
+		this.$qpCollection.addItem(queuePusher);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -190,27 +180,21 @@ $CommonServerLibraries_Queue_QueuePusher.prototype = {
 // CommonServerLibraries.Queue.QueueWatcher
 var $CommonServerLibraries_Queue_QueueWatcher = function(queue, callback) {
 	this.$client1 = null;
-	this.$2$CallbackField = null;
+	this.callback = null;
 	$CommonServerLibraries_Queue_QueueItem.call(this);
 	this.channel = queue;
-	this.set_callback(callback);
+	this.callback = callback;
 	var redis = require('redis');
 	this.$client1 = redis.createClient(6379, $CommonServerLibraries_IPs.get_redisIP());
 	this.cycle(queue);
 };
 $CommonServerLibraries_Queue_QueueWatcher.prototype = {
-	get_callback: function() {
-		return this.$2$CallbackField;
-	},
-	set_callback: function(value) {
-		this.$2$CallbackField = value;
-	},
 	cycle: function(channel) {
 		this.$client1.blpop([channel, 0], Function.mkdel(this, function(caller, dtj) {
 			var data = Type.cast(dtj, Array);
 			if (ss.isValue(dtj)) {
 				var dt = JSON.parse(data[1]);
-				this.get_callback()(dt.name, channel, dt.user, dt.content);
+				this.callback(dt.name, dt.user, dt.content);
 			}
 			this.cycle(channel);
 		}));

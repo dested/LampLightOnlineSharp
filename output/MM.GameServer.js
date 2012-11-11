@@ -63,12 +63,12 @@ $MM_GameServer_GameServer.prototype = {
 		this.$qManager.addChannel(channel, trigger);
 	},
 	$emit: function(player, val) {
-		this.$qManager.sendMessage(player, player.get_gateway(), val);
+		this.$qManager.sendMessage(player, player.gateway, val);
 	},
 	$emitAll: function(players, val) {
 		for (var $t1 = 0; $t1 < players.length; $t1++) {
 			var player = players[$t1];
-			this.$qManager.sendMessage(player, player.get_gateway(), val);
+			this.$qManager.sendMessage(player, player.gateway, val);
 		}
 	}
 };

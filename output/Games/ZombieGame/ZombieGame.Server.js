@@ -1,8 +1,8 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Server.Game
-var $ZombieGame_Server_Game = function(manager) {
+var $ZombieGame_Server_Game = function(region, manager) {
 	this.$gameManager = null;
-	MMServerAPI.LampServer.call(this, manager);
+	MMServerAPI.LampServer.call(this, region, manager);
 	this.$gameManager = new $ZombieGame_Server_ZombieServerGameManager(this);
 };
 $ZombieGame_Server_Game.prototype = {
@@ -19,8 +19,11 @@ $ZombieGame_Server_Game.prototype = {
 			completed2();
 		})).do();
 		this.$gameManager.init();
-		this.myManager.serverManager.listenOnChannel('player.move', function(user, model) {
-			var player = model;
+		this.myManager.listenOnChannel(ZombieGame.Common.Messages.PlayerMoveMessage.messageChannel, function(user, model) {
+			var message = model;
+		});
+		this.myManager.listenOnChannel(ZombieGame.Common.Messages.PlayerJoinMessage.messageChannel, function(user1, model1) {
+			var message1 = model1;
 		});
 	},
 	gameTick: function() {
