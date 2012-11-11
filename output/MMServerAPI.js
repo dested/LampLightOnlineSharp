@@ -28,7 +28,7 @@ $MMServerAPI_LampPlayerMessage.createInstance = function() {
 	return $MMServerAPI_LampPlayerMessage.$ctor();
 };
 $MMServerAPI_LampPlayerMessage.$ctor = function() {
-	var $this = {};
+	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
 	$this.player = null;
 	$this.type = 0;
 	$this.message = null;
@@ -63,21 +63,20 @@ $MMServerAPI_LampServer.prototype = {
 	set_players: function(value) {
 		this.$1$PlayersField = value;
 	},
-	init: function(players) {
-		this.set_players(players);
+	init: function() {
+		this.set_players([]);
 	},
-	sendMessageToPlayer: function(player) {
+	sendMessageToPlayer: function(message, player) {
+		this.myManager.serverManager.emit(player, message);
 	},
-	sendMessageToPlayers: function(player) {
+	sendMessageToPlayers: function(message, players) {
+		this.myManager.serverManager.emitAll(players, message);
 	},
 	receiveMessage: function(message) {
 		switch (message.type) {
 			case 0: {
 				var lampAction = message;
-				var lampActions = this.get_actions()[lampAction.tickToInitiate];
-				if (ss.isNullOrUndefined(lampActions)) {
-					this.get_actions()[lampAction.tickToInitiate] = lampActions = [];
-				}
+				var lampActions = this.get_actions()[lampAction.tickToInitiate] = this.get_actions()[lampAction.tickToInitiate] || [];
 				lampActions.add(lampAction);
 				break;
 			}
@@ -119,14 +118,14 @@ $MMServerAPI_ServerGameManager.prototype = {
 	},
 	start: function(game) {
 		this.$myGame = game;
-		this.$myGame.init([]);
+		this.$myGame.init();
 	},
 	end: function() {
 		this.$myGame.end();
 	}
 };
 Type.registerClass(global, 'MMServerAPI.LampMessage', $MMServerAPI_LampMessage, Object);
-Type.registerClass(global, 'MMServerAPI.LampPlayerMessage', $MMServerAPI_LampPlayerMessage, Object);
+Type.registerClass(global, 'MMServerAPI.LampPlayerMessage', $MMServerAPI_LampPlayerMessage);
 Type.registerClass(global, 'MMServerAPI.LampServer', $MMServerAPI_LampServer, Object);
 Type.registerClass(global, 'MMServerAPI.ServerGameManager', $MMServerAPI_ServerGameManager, Object);
 Type.registerClass(global, 'MMServerAPI.LampAction', $MMServerAPI_LampAction);

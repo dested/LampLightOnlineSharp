@@ -16,9 +16,9 @@ namespace CommonServerLibraries.Queue
             client1 = redis.CreateClient(6379, IPs.RedisIP);
         }
 
-        public void Message<T>(string channel, string name, UserModel user, string eventChannel, T content)
+        public void Message(string channel, string name, UserModel user, ChannelListenTriggerMessage content)  
         {
-            var message = new QueueMessage<T>(name, user, eventChannel, content);
+            var message = new QueueMessage(name, user, content);
             var value = Json.Stringify(message, Help.Sanitize);
             client1.RPush(channel, value); //todo:maybe sanitize
         }

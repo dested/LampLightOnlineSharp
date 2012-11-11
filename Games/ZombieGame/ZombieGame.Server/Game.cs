@@ -13,9 +13,9 @@ namespace ZombieGame.Server
             gameManager = new ZombieServerGameManager(this);
         }
 
-        public override void Init(LampPlayer[] players)
+        public override void Init()
         {
-            base.Init(players);
+            base.Init();
 
             TaskHandler.Start(
                     (completed) => { gameManager.LoadTiles(fakeJsonTileMap2(), completed); }).AddTask((completed) => { gameManager.LoadTiles(fakeJsonTileMap(), completed); }).AddTask((completed) => {

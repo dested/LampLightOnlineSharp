@@ -195,6 +195,7 @@ $ZombieGame_Common_PlayerJoinMessage.createInstance = function() {
 };
 $ZombieGame_Common_PlayerJoinMessage.$ctor = function() {
 	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
+	$this.channel = 'Player.Join';
 	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////

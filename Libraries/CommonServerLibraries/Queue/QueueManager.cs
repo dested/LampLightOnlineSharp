@@ -6,12 +6,12 @@ namespace CommonServerLibraries.Queue
 {
     public class QueueManager
     {
-        public string Name;
-        public JsDictionary<string, ChannelListenTrigger> channels; //necessary evil for maintaining sanity//::dynamic okay
-        public List<QueuePusher> qp;
-        private QueueItemCollection qpCollection;
-        public List<QueueWatcher> qw;
-        private QueueItemCollection qwCollection;
+        private readonly JsDictionary<string, ChannelListenTrigger> channels;
+        private readonly QueueItemCollection qpCollection;
+        private readonly QueueItemCollection qwCollection;
+        private readonly List<QueuePusher> qp;
+        private readonly List<QueueWatcher> qw;
+        public string Name { get; set; }
 
         public QueueManager(string name, QueueManagerOptions options)
         {
@@ -39,24 +39,24 @@ namespace CommonServerLibraries.Queue
             channels[channel] = callback;
         }
 
-        private void messageReceived(string name, UserModel user, string eventChannel, ChannelListenTriggerMessage content)
+        private void messageReceived(string name, string channel, UserModel user, ChannelListenTriggerMessage message)
         {
             user.Gateway = name;
 
-            if (channels[eventChannel] != null)
-                channels[eventChannel](user, content);
+            if (channels[channel] != null)
+                channels[channel](user, message);
         }
 
-        public void SendMessage(UserModel user, string channel, string eventChannel, ChannelListenTriggerMessage content)
+        public void SendMessage(UserModel user,string channel , ChannelListenTriggerMessage message)
         {
-            if (qpCollection.GetByChannel(channel) == null) {
+            var pusher = (QueuePusher)qpCollection.GetByChannel(channel);
+
+            if (pusher == null) {
                 Global.Console.Log(channel + " No Existy");
                 return;
             }
 
-            var pusher = ( (QueuePusher) qpCollection.GetByChannel(channel) );
-
-            pusher.Message(channel, Name, user, eventChannel, content);
+            pusher.Message(channel, Name, user,  message);
         }
     }
 }

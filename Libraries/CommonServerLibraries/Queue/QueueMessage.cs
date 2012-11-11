@@ -1,18 +1,16 @@
 using CommonAPI;
 namespace CommonServerLibraries.Queue
 {
-    public class QueueMessage<T>
+    public class QueueMessage
     {
-        public T Content;
-        public string EventChannel;
+        public ChannelListenTriggerMessage Content; 
         public string Name;
         public UserModel User;
 
-        public QueueMessage(string name, UserModel user, string eventChannel, T content)
+        public QueueMessage(string name, UserModel user, ChannelListenTriggerMessage content)
         {
             Name = name;
             User = user;
-            EventChannel = eventChannel;
             Content = content;
         }
     }

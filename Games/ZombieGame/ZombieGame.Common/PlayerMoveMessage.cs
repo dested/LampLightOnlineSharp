@@ -9,7 +9,13 @@ namespace ZombieGame.Common
         public int Y { get; set; }
     }
     [Serializable]
-    public class PlayerJoinMessage : ChannelListenTriggerMessage {}
+    public class PlayerJoinMessage : ChannelListenTriggerMessage
+    {
+        public PlayerJoinMessage()
+        {
+            Channel = "Player.Join";
+        }
+    }
     [Serializable]
     public class GameServerAcceptMessage : ChannelListenTriggerMessage
     {

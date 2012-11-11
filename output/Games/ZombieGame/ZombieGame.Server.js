@@ -6,8 +6,8 @@ var $ZombieGame_Server_Game = function(manager) {
 	this.$gameManager = new $ZombieGame_Server_ZombieServerGameManager(this);
 };
 $ZombieGame_Server_Game.prototype = {
-	init: function(players) {
-		MMServerAPI.LampServer.prototype.init.call(this, players);
+	init: function() {
+		MMServerAPI.LampServer.prototype.init.call(this);
 		CommonAPI.TaskHandler.start(Function.mkdel(this, function(completed) {
 			this.$gameManager.loadTiles($ZombieGame_Server_Game.$fakeJsonTileMap2(), completed);
 		})).addTask(Function.mkdel(this, function(completed1) {

@@ -66,14 +66,14 @@ var $MM_GatewayServer_GatewayServer = function(region) {
 					break;
 				}
 			}
-			queueManager.sendMessage(user, channel, data.channel, data.content);
+			queueManager.sendMessage(user, channel, data.content);
 		});
 		socket.on('Gateway.Login', Function.mkdel(this, function(data1) {
 			user = new CommonLibraries.GatewayUserModel();
 			user.socket = socket;
 			user.set_userName(data1.userName);
 			this.users[data1.userName] = user;
-			queueManager.sendMessage(user, 'GameServer', 'Player.Join', ZombieGame.Common.PlayerJoinMessage.$ctor());
+			queueManager.sendMessage(user, 'GameServer', ZombieGame.Common.PlayerJoinMessage.$ctor());
 			socket.emit('Area.Main.Login.Response', 'hi! ' + data1.userName);
 		}));
 		socket.on('disconnect', Function.mkdel(this, function(data2) {
@@ -82,10 +82,10 @@ var $MM_GatewayServer_GatewayServer = function(region) {
 	}));
 };
 $MM_GatewayServer_GatewayServer.prototype = {
-	$messageReceived: function(gatewayName, user, eventChannel, content) {
+	$messageReceived: function(gatewayName, channel, user, content) {
 		if (Object.keyExists(this.users, user.get_userName())) {
 			var u = this.users[user.get_userName()];
-			if (eventChannel === 'GameServer.AcceptPlayer') {
+			if (content.channel === 'GameServer.AcceptPlayer') {
 				//if the gamserver has accepted the player, tell him he has joined
 				var message = content;
 				u.gameServer = message.gameServer;
@@ -94,7 +94,7 @@ $MM_GatewayServer_GatewayServer.prototype = {
 			}
 			else {
 				//otherwise this is a normal message, just forward it along. 
-				var socketClientMessageModel1 = new CommonLibraries.SocketClientMessageModel(user, eventChannel, content);
+				var socketClientMessageModel1 = new CommonLibraries.SocketClientMessageModel(user, content.channel, content);
 				u.socket.emit('Client.Message', socketClientMessageModel1);
 			}
 		}

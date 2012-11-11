@@ -1,6 +1,6 @@
 namespace CommonAPI
 {
-    public class LampPlayer
+    public class LampPlayer:UserModel
     {
         public string PlayerName { get; set; }
     }

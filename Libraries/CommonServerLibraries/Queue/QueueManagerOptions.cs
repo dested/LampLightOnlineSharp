@@ -7,8 +7,8 @@ namespace CommonServerLibraries.Queue
 
         public QueueManagerOptions(QueueWatcher[] watchers, string[] pushers)
         {
-            Pushers = pushers;
             Watchers = watchers;
+            Pushers = pushers;
         }
     }
 }

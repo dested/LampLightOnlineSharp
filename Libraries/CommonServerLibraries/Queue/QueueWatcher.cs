@@ -27,8 +27,8 @@ namespace CommonServerLibraries.Queue
                           (caller, dtj) => {
                               var data = (string[]) dtj;
                               if (dtj != null) {
-                                  var dt = Json.Parse<QueueMessage<ChannelListenTriggerMessage>>(data[1]);
-                                  Callback(dt.Name, dt.User, dt.EventChannel, dt.Content);
+                                  var dt = Json.Parse<QueueMessage>(data[1]);
+                                  Callback(dt.Name, channel,dt.User, dt.Content);
                               }
                               Cycle(channel);
                           });

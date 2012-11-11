@@ -1,4 +1,6 @@
-﻿using CommonAPI;
+﻿using System;
+using System.Collections.Generic;
+using CommonAPI;
 using CommonLibraries;
 using CommonServerLibraries.Queue;
 using MMServer;
@@ -6,8 +8,13 @@ using NodeJSLibrary;
 using Console = NodeJS.Console;
 namespace MM.GameServer
 {
+
     public class GameServer
     {
+        private static void Main(){int region = 1;new GameServer(region);}
+
+
+
         private DataManager dataManager;
         private string gameServerIndex;
         private QueueManager qManager;
@@ -15,7 +22,7 @@ namespace MM.GameServer
 
         public GameServer(int region)
         {
-            serverManager = new ServerManager(region, ListenOnChannel);
+            serverManager = new ServerManager(region, new GameServerCapabilities() {Emit = Emit, EmitAll = EmitAll, ListenOnChannel = ListenOnChannel});
             dataManager = new DataManager();
 
             gameServerIndex = "GameServer" + Guid.NewGuid();
@@ -30,27 +37,30 @@ namespace MM.GameServer
                                         new QueueManagerOptions(new[] {
                                                                               new QueueWatcher("GameServer", null),
                                                                               new QueueWatcher(gameServerIndex, null),
+                                                                              new QueueWatcher("GameServerProducts", null)
                                                                       },
                                                                 new[] {
+                                                                              "GameServerProducts",
                                                                               "GameServer",
                                                                               "GatewayServer",
                                                                               "Gateway*"
                                                                       }));
-
             serverManager.Init();
         }
 
         //ServerManager server needs to be able to take messages from their players connected
         //and take game product messages from every other game server
-        //it must be able to emit to his connected players
-        //and also send product messages to every other game server
+        //it must be able to emit to all players in the region, via gateway switching
+        //and also send product messages to every other game server 
+        //  the gameserver will join the channel "Region 9 Game Products"
+        //  he will organize the products into the correct tick execution
         //"Player.Join"
         //  "GameServer.AcceptPlayer"
         //"player.move" from user
         //  "player.moveto" as product
         //this whole thing needs to be "action" driven. there needs to be an action queue that will 
         //take these messages and queue them for execution (2 ticks ahead of now, defined in the message ideally)
-        //when taht tick fires it needs to execute the enum to the client 
+
         //
         //ex
         //the client will click on tick 100
@@ -63,7 +73,7 @@ namespace MM.GameServer
         //sends the data to _all applicable players_
         //  this will be determined by the players near the actioned player
         //  players will store their near by players to be updated every 10 ticks (once a second)
-        //  possibly have some way to mitigate this to another server
+        //  possibly have some way to mitigate player sending this to another server
         //      send this server one message that has all the players in it that need to receive this product message
         //      that server sends the data out so the gameserver doesnt have to waste its _precious precious_ ticks on sending redis messages
         //all other gameservers receive the product message and queues it in a product queue to be executed at the prescribed tick
@@ -79,24 +89,24 @@ namespace MM.GameServer
         //  each game server will queue up the product of these messages and execute them at the prescribed time, properly updating the game servers in sync
         //  each applicable client will also receive the move player command and will build his _OWN_ waypoint for the player based on his state of the game.
         //  the server will also send the product to assure the player ends in correct spot?
+       
         private void ListenOnChannel(string channel, ChannelListenTrigger trigger)
         {
             qManager.AddChannel(channel, trigger);
         }
-
-        /* private void EmitAll(GameRoom room, string message, object val)
+        private void Emit(UserModel player, ChannelListenTriggerMessage val)
         {
-            foreach (var player in room.Players)
-            {
-                qManager.SendMessage(player, player.Gateway, message, val);
-            }
-        }*/
-
-        private static void Main()
-        {
-            int region = 1;
-
-            new GameServer(region);
+            qManager.SendMessage(player, player.Gateway,  val);
+         
         }
+        private void EmitAll(List<UserModel> players, ChannelListenTriggerMessage val)
+        {
+            foreach (var player in players)
+            {
+                qManager.SendMessage(player, player.Gateway, val);
+            }
+        }
+       
+
     }
 }

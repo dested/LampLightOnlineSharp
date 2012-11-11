@@ -101,48 +101,54 @@ $CommonServerLibraries_Queue_QueueItemCollection.prototype = {
 ////////////////////////////////////////////////////////////////////////////////
 // CommonServerLibraries.Queue.QueueManager
 var $CommonServerLibraries_Queue_QueueManager = function(name, options) {
-	this.name = null;
-	this.channels = null;
-	this.qp = null;
+	this.$channels = null;
 	this.$qpCollection = null;
-	this.qw = null;
 	this.$qwCollection = null;
-	this.name = name;
-	this.channels = {};
-	this.qw = [];
-	this.qp = [];
+	this.$qp = null;
+	this.$qw = null;
+	this.$1$NameField = null;
+	this.set_name(name);
+	this.$channels = {};
+	this.$qw = [];
+	this.$qp = [];
 	for (var $t1 = 0; $t1 < options.watchers.length; $t1++) {
 		var queueWatcher = options.watchers[$t1];
 		if (ss.isNullOrUndefined(queueWatcher.get_callback())) {
 			queueWatcher.set_callback(Function.mkdel(this, this.$messageReceived));
 		}
-		this.qw.add(queueWatcher);
+		this.$qw.add(queueWatcher);
 	}
-	this.qw.addRange(options.watchers);
+	this.$qw.addRange(options.watchers);
 	for (var $t2 = 0; $t2 < options.pushers.length; $t2++) {
 		var pusher = options.pushers[$t2];
-		this.qp.add(new $CommonServerLibraries_Queue_QueuePusher(pusher));
+		this.$qp.add(new $CommonServerLibraries_Queue_QueuePusher(pusher));
 	}
-	this.$qwCollection = new $CommonServerLibraries_Queue_QueueItemCollection(this.qw);
-	this.$qpCollection = new $CommonServerLibraries_Queue_QueueItemCollection(this.qp);
+	this.$qwCollection = new $CommonServerLibraries_Queue_QueueItemCollection(this.$qw);
+	this.$qpCollection = new $CommonServerLibraries_Queue_QueueItemCollection(this.$qp);
 };
 $CommonServerLibraries_Queue_QueueManager.prototype = {
-	addChannel: function(channel, callback) {
-		this.channels[channel] = callback;
+	get_name: function() {
+		return this.$1$NameField;
 	},
-	$messageReceived: function(name, user, eventChannel, content) {
+	set_name: function(value) {
+		this.$1$NameField = value;
+	},
+	addChannel: function(channel, callback) {
+		this.$channels[channel] = callback;
+	},
+	$messageReceived: function(name, channel, user, message) {
 		user.set_gateway(name);
-		if (ss.isValue(this.channels[eventChannel])) {
-			this.channels[eventChannel](user, content);
+		if (ss.isValue(this.$channels[channel])) {
+			this.$channels[channel](user, message);
 		}
 	},
-	sendMessage: function(user, channel, eventChannel, content) {
-		if (ss.isNullOrUndefined(this.$qpCollection.getByChannel(channel))) {
+	sendMessage: function(user, channel, message) {
+		var pusher = Type.cast(this.$qpCollection.getByChannel(channel), $CommonServerLibraries_Queue_QueuePusher);
+		if (ss.isNullOrUndefined(pusher)) {
 			console.log(channel + ' No Existy');
 			return;
 		}
-		var pusher = Type.cast(this.$qpCollection.getByChannel(channel), $CommonServerLibraries_Queue_QueuePusher);
-		pusher.message(CommonAPI.ChannelListenTriggerMessage).call(pusher, channel, this.name, user, eventChannel, content);
+		pusher.message(channel, this.get_name(), user, message);
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -150,30 +156,19 @@ $CommonServerLibraries_Queue_QueueManager.prototype = {
 var $CommonServerLibraries_Queue_QueueManagerOptions = function(watchers, pushers) {
 	this.pushers = null;
 	this.watchers = null;
-	this.pushers = pushers;
 	this.watchers = watchers;
+	this.pushers = pushers;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonServerLibraries.Queue.QueueMessage
-var $CommonServerLibraries_Queue_QueueMessage$1 = function(T) {
-	var $type = function(name, user, eventChannel, content) {
-		this.content = T.getDefaultValue();
-		this.eventChannel = null;
-		this.name = null;
-		this.user = null;
-		this.name = name;
-		this.user = user;
-		this.eventChannel = eventChannel;
-		this.content = content;
-	};
-	Type.registerGenericClassInstance($type, $CommonServerLibraries_Queue_QueueMessage$1, [T], function() {
-		return Object;
-	}, function() {
-		return [];
-	});
-	return $type;
+var $CommonServerLibraries_Queue_QueueMessage = function(name, user, content) {
+	this.content = null;
+	this.name = null;
+	this.user = null;
+	this.name = name;
+	this.user = user;
+	this.content = content;
 };
-Type.registerGenericClass(global, 'CommonServerLibraries.Queue.QueueMessage$1', $CommonServerLibraries_Queue_QueueMessage$1, 1);
 ////////////////////////////////////////////////////////////////////////////////
 // CommonServerLibraries.Queue.QueuePusher
 var $CommonServerLibraries_Queue_QueuePusher = function(pusher) {
@@ -184,13 +179,11 @@ var $CommonServerLibraries_Queue_QueuePusher = function(pusher) {
 	this.$client1 = redis.createClient(6379, $CommonServerLibraries_IPs.get_redisIP());
 };
 $CommonServerLibraries_Queue_QueuePusher.prototype = {
-	message: function(T) {
-		return function(channel, name, user, eventChannel, content) {
-			var message = new (Type.makeGenericType($CommonServerLibraries_Queue_QueueMessage$1, [T]))(name, user, eventChannel, content);
-			var value = JSON.stringify(message, CommonLibraries.Help.sanitize);
-			this.$client1.rpush(channel, value);
-			//todo:maybe sanitize
-		};
+	message: function(channel, name, user, content) {
+		var message = new $CommonServerLibraries_Queue_QueueMessage(name, user, content);
+		var value = JSON.stringify(message, CommonLibraries.Help.sanitize);
+		this.$client1.rpush(channel, value);
+		//todo:maybe sanitize
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -217,7 +210,7 @@ $CommonServerLibraries_Queue_QueueWatcher.prototype = {
 			var data = Type.cast(dtj, Array);
 			if (ss.isValue(dtj)) {
 				var dt = JSON.parse(data[1]);
-				this.get_callback()(dt.name, dt.user, dt.eventChannel, dt.content);
+				this.get_callback()(dt.name, channel, dt.user, dt.content);
 			}
 			this.cycle(channel);
 		}));
@@ -230,5 +223,6 @@ Type.registerClass(global, 'CommonServerLibraries.Queue.QueueItem', $CommonServe
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueItemCollection', $CommonServerLibraries_Queue_QueueItemCollection, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueManager', $CommonServerLibraries_Queue_QueueManager, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueManagerOptions', $CommonServerLibraries_Queue_QueueManagerOptions, Object);
+Type.registerClass(global, 'CommonServerLibraries.Queue.QueueMessage', $CommonServerLibraries_Queue_QueueMessage, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueuePusher', $CommonServerLibraries_Queue_QueuePusher, $CommonServerLibraries_Queue_QueueItem);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueWatcher', $CommonServerLibraries_Queue_QueueWatcher, $CommonServerLibraries_Queue_QueueItem);

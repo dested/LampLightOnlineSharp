@@ -3,7 +3,7 @@ using CommonAPI;
 namespace MMServerAPI
 {
     [Serializable]
-    public class LampPlayerMessage
+    public class LampPlayerMessage:ChannelListenTriggerMessage
     {
         public LampPlayer Player { get; set; }
         public LampMessageType Type { get; set; }

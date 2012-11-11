@@ -88,6 +88,14 @@
       <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
       <Name>CommonAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\CommonLibraries\CommonLibraries.csproj">
+      <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
+      <Name>CommonLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\CommonServerLibraries\CommonServerLibraries.csproj">
+      <Project>{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}</Project>
+      <Name>CommonServerLibraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

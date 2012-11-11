@@ -24,7 +24,7 @@ namespace MMServerAPI
         public void Start(LampServer game)
         {
             myGame = game;
-            myGame.Init(new LampPlayer[0]);
+            myGame.Init( );
         }
 
         public void End()

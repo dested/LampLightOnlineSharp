@@ -1,4 +1,6 @@
-﻿using CommonAPI;
+﻿using System.Collections.Generic;
+using CommonAPI;
+using CommonLibraries;
 using MMServerAPI;
 using NodeJSLibrary;
 using ZombieGame.Server;
@@ -6,12 +8,12 @@ namespace MMServer
 {
     public class ServerManager : IServerManager
     {
-        private readonly ChannelListener myOnChannel;
+        private readonly GameServerCapabilities myGameServerCapabilities;
         private ServerGameManager myServerGameManager;
 
-        public ServerManager(int region, ChannelListener onChannel)
+        public ServerManager(int region, GameServerCapabilities gameServerCapabilities)
         {
-            myOnChannel = onChannel;
+            myGameServerCapabilities = gameServerCapabilities;
 
             myServerGameManager = new ServerGameManager(region, this);
         }
@@ -32,9 +34,17 @@ namespace MMServer
 
         public void ListenOnChannel(string name, ChannelListenTrigger trigger)
         {
-            myOnChannel(name, trigger);
+            myGameServerCapabilities.ListenOnChannel(name, trigger);
         }
-
+        public void Emit(LampPlayer player,  ChannelListenTriggerMessage message)
+        {
+            myGameServerCapabilities.Emit(player, message);
+        }
+        public void EmitAll(List<LampPlayer> players,  ChannelListenTriggerMessage message)
+        {
+            myGameServerCapabilities.EmitAll(new List<UserModel>(players), message);
+        }
+ 
         #endregion
 
         private void Tick()

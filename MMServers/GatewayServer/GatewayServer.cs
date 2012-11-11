@@ -67,7 +67,7 @@ namespace MM.GatewayServer
                                                                                                                    channel = user.ChatServer ?? "ChatServer";
                                                                                                                    break;
                                                                                                            }
-                                                                                                           queueManager.SendMessage(user, channel, data.Channel, data.Content);
+                                                                                                           queueManager.SendMessage(user, channel, data.Content);
                                                                                                        }));
 
                                                              socket.On("Gateway.Login",
@@ -77,7 +77,7 @@ namespace MM.GatewayServer
                                                                                                                 user.UserName = data.UserName;
 
                                                                                                                 users[data.UserName] = user;
-                                                                                                                queueManager.SendMessage(user, "GameServer", "Player.Join", new PlayerJoinMessage());
+                                                                                                                queueManager.SendMessage(user,"GameServer",  new PlayerJoinMessage());
 
                                                                                                                 socket.Emit("Area.Main.Login.Response", "hi! " + data.UserName);
                                                                                                             }));
@@ -95,32 +95,28 @@ namespace MM.GatewayServer
         ///     the message received from the gameserver
         /// </summary>
         /// <param name="gatewayName">This will either be the gateway's name (gateway94) or just "gateway" meaning it was sent to all gateways and you are the one to pop it from the queue</param>
+        /// <param name="channel">the queue channel, generally not needed</param>
         /// <param name="user"></param>
-        /// <param name="eventChannel">The thing thats happening, "player.shootshit"</param>
         /// <param name="content"></param>
-        private void messageReceived(string gatewayName, UserModel user, string eventChannel, ChannelListenTriggerMessage content)
+        private void messageReceived(string gatewayName,string channel, UserModel user,  ChannelListenTriggerMessage content)
         {
             if (users.ContainsKey(user.UserName)) {
                 var u = users[user.UserName];
 
-                if (eventChannel == "GameServer.AcceptPlayer") {
-//if the gamserver has accepted the player, tell him he has joined
+                if (content.Channel == "GameServer.AcceptPlayer")
+                {//if the gamserver has accepted the player, tell him he has joined
 
                     var message = ( (GameServerAcceptMessage) content );
                     u.GameServer = message.GameServer;
 
                     SocketClientMessageModel socketClientMessageModel = new SocketClientMessageModel(user, "GameServer.Joined", new ChannelListenTriggerMessage());
                     u.Socket.Emit("Client.Message", socketClientMessageModel);
-                } else {
-//otherwise this is a normal message, just forward it along. 
+                } else {//otherwise this is a normal message, just forward it along. 
 
-                    SocketClientMessageModel socketClientMessageModel = new SocketClientMessageModel(user, eventChannel, content);
+                    SocketClientMessageModel socketClientMessageModel = new SocketClientMessageModel(user, content.Channel, content);
                     u.Socket.Emit("Client.Message", socketClientMessageModel);
                 }
             } else throw new Exception(string.Format("client {0} no found so failure", user.UserName));
         }
     }
-}
-namespace Messages
-{
 }

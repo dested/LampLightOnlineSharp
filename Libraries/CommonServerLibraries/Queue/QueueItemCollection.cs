@@ -10,6 +10,11 @@ namespace CommonServerLibraries.Queue
             this.queueItems = queueItems;
         }
 
+        /// <summary>
+        /// Returns the QueueItem for that channel
+        /// </summary>
+        /// <param name="channel">Can be the name of a channel or name* if applicable </param>
+        /// <returns></returns>
         public QueueItem GetByChannel(string channel)
         {
             foreach (var queueWatcher in queueItems) {

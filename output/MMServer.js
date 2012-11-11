@@ -1,9 +1,9 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // MMServer.ServerManager
-var $MMServer_ServerManager = function(region, onChannel) {
-	this.$myOnChannel = null;
+var $MMServer_ServerManager = function(region, gameServerCapabilities) {
+	this.$myGameServerCapabilities = null;
 	this.$myServerGameManager = null;
-	this.$myOnChannel = onChannel;
+	this.$myGameServerCapabilities = gameServerCapabilities;
 	this.$myServerGameManager = new MMServerAPI.ServerGameManager(region, this);
 };
 $MMServer_ServerManager.prototype = {
@@ -17,7 +17,13 @@ $MMServer_ServerManager.prototype = {
 		this.$myServerGameManager.end();
 	},
 	listenOnChannel: function(name, trigger) {
-		this.$myOnChannel(name, trigger);
+		this.$myGameServerCapabilities.listenOnChannel(name, trigger);
+	},
+	emit: function(player, message) {
+		this.$myGameServerCapabilities.emit(player, message);
+	},
+	emitAll: function(players, message) {
+		this.$myGameServerCapabilities.emitAll(Array.fromEnumerable(players), message);
 	},
 	$tick: function() {
 		this.$myServerGameManager.tick();

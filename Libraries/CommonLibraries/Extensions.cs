@@ -72,7 +72,7 @@ namespace CommonLibraries
         [InlineCode("{num}")]
         public static T Cast<T>(this object num)
         {
-            return default( T );
+            return default(T);
         }
 
         public static ExtraData<T, T2> WithData<T, T2>(this T item, T2 data)

@@ -44,19 +44,32 @@ var $MM_GameServer_GameServer = function(region) {
 	this.$gameServerIndex = null;
 	this.$qManager = null;
 	this.$serverManager = null;
-	this.$serverManager = new MMServer.ServerManager(region, Function.mkdel(this, this.$listenOnChannel));
+	var $t1 = CommonAPI.GameServerCapabilities.$ctor();
+	$t1.emit = Function.mkdel(this, this.$emit);
+	$t1.emitAll = Function.mkdel(this, this.$emitAll);
+	$t1.listenOnChannel = Function.mkdel(this, this.$listenOnChannel);
+	this.$serverManager = new MMServer.ServerManager(region, $t1);
 	this.$dataManager = new $MM_GameServer_DataManager();
 	this.$gameServerIndex = 'GameServer' + CommonLibraries.Guid.newGuid();
 	process.on('exit', Function.mkdel(this, function() {
 		this.$serverManager.end();
 		console.log('exiting game server ' + this.$gameServerIndex);
 	}));
-	this.$qManager = new CommonServerLibraries.Queue.QueueManager(this.$gameServerIndex, new CommonServerLibraries.Queue.QueueManagerOptions([new CommonServerLibraries.Queue.QueueWatcher('GameServer', null), new CommonServerLibraries.Queue.QueueWatcher(this.$gameServerIndex, null)], ['GameServer', 'GatewayServer', 'Gateway*']));
+	this.$qManager = new CommonServerLibraries.Queue.QueueManager(this.$gameServerIndex, new CommonServerLibraries.Queue.QueueManagerOptions([new CommonServerLibraries.Queue.QueueWatcher('GameServer', null), new CommonServerLibraries.Queue.QueueWatcher(this.$gameServerIndex, null), new CommonServerLibraries.Queue.QueueWatcher('GameServerProducts', null)], ['GameServerProducts', 'GameServer', 'GatewayServer', 'Gateway*']));
 	this.$serverManager.init();
 };
 $MM_GameServer_GameServer.prototype = {
 	$listenOnChannel: function(channel, trigger) {
 		this.$qManager.addChannel(channel, trigger);
+	},
+	$emit: function(player, val) {
+		this.$qManager.sendMessage(player, player.get_gateway(), val);
+	},
+	$emitAll: function(players, val) {
+		for (var $t1 = 0; $t1 < players.length; $t1++) {
+			var player = players[$t1];
+			this.$qManager.sendMessage(player, player.get_gateway(), val);
+		}
 	}
 };
 $MM_GameServer_GameServer.$main = function() {

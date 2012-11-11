@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CommonAPI;
+using CommonLibraries;
 namespace MMServerAPI
 {
     public class LampServer
@@ -7,7 +8,7 @@ namespace MMServerAPI
         protected readonly ServerGameManager myManager;
         public JsDictionary<int, List<LampAction>> Actions { get; set; }
         public int TickIndex { get; set; }
-        public LampPlayer[] Players { get; set; }
+        public List<LampPlayer> Players { get; set; }
 
         protected LampServer(ServerGameManager manager)
         {
@@ -15,13 +16,21 @@ namespace MMServerAPI
             Actions = new JsDictionary<int, List<LampAction>>();
         }
 
-        public virtual void Init(LampPlayer[] players)
+        public virtual void Init()
         {
-            Players = players;
+            Players = new List<LampPlayer>();
         }
 
-        public void SendMessageToPlayer(LampPlayer player) {}
-        public void SendMessageToPlayers(params LampPlayer[] player) {}
+        public void SendMessageToPlayer(LampPlayerMessage message, LampPlayer player)
+        {
+            myManager.ServerManager.Emit(player,message );
+
+        }
+        public void SendMessageToPlayers(LampPlayerMessage message,params LampPlayer[] players)
+        {
+            myManager.ServerManager.EmitAll(players.Cast<List<LampPlayer>>(), message);
+            
+        }
 
         public void ReceiveMessage(LampPlayerMessage message)
         {
@@ -29,8 +38,8 @@ namespace MMServerAPI
                 case LampMessageType.Action:
                     LampAction lampAction = ( (LampAction) message );
 
-                    List<LampAction> lampActions = Actions[lampAction.TickToInitiate];
-                    if (lampActions == null) Actions[lampAction.TickToInitiate] = lampActions = new List<LampAction>();
+                    List<LampAction> lampActions = Actions[lampAction.TickToInitiate] = Actions[lampAction.TickToInitiate] ?? new List<LampAction>();//set it and forget it!
+
                     lampActions.Add(lampAction);
 
                     break;
