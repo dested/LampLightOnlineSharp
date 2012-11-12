@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+
 // CommonServerLibraries.Consumer
 var $CommonServerLibraries_Consumer = function(obj) {
 	var tf = this;
@@ -12,6 +12,35 @@ var $CommonServerLibraries_Consumer = function(obj) {
 	finally {
 		$t1.dispose();
 	}
+};
+////////////////////////////////////////////////////////////////////////////////
+// CommonServerLibraries.DataManager
+var $CommonServerLibraries_DataManager = function() {
+	this.$connection = null;
+	this.$server = null;
+	this.client = null;
+	var mongo = require('mongodb');
+	var Db = mongo.Db;
+	this.$connection = mongo.Connection;
+	var server = this.$server = mongo.Server;
+	this.client = new Db('test', new server('50.116.28.16', 27017, {}));
+	this.client.open(function(arg1, arg2) {
+		//client.Collection("test_insert", "test");
+	});
+};
+////////////////////////////////////////////////////////////////////////////////
+// CommonServerLibraries.GameServerInfo
+var $CommonServerLibraries_GameServerInfo = function() {
+};
+$CommonServerLibraries_GameServerInfo.createInstance = function() {
+	return $CommonServerLibraries_GameServerInfo.$ctor();
+};
+$CommonServerLibraries_GameServerInfo.$ctor = function() {
+	var $this = {};
+	$this.dataManager = null;
+	$this.queueManager = null;
+	$this.gameServerName = null;
+	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonServerLibraries.IPs
@@ -119,17 +148,25 @@ $CommonServerLibraries_Queue_QueueManager.prototype = {
 	},
 	$messageReceived: function(name, user, message) {
 		user.gateway = name;
-		if (ss.isValue(this.$channels[message.channel])) {
-			this.$channels[message.channel](user, message);
+		if (ss.isValue(this.$channels[message.get_channel()])) {
+			this.$channels[message.get_channel()](user, message);
 		}
 	},
-	sendMessage: function(user, channel, message) {
+	sendMessage$1: function(user, channel, message) {
 		var pusher = Type.cast(this.$qpCollection.getByChannel(channel), $CommonServerLibraries_Queue_QueuePusher);
 		if (ss.isNullOrUndefined(pusher)) {
 			console.log(channel + ' No Existy');
 			return;
 		}
-		pusher.message(channel, this.get_name(), user, message);
+		pusher.message$1(channel, this.get_name(), user, message);
+	},
+	sendMessage: function(channel, message) {
+		var pusher = Type.cast(this.$qpCollection.getByChannel(channel), $CommonServerLibraries_Queue_QueuePusher);
+		if (ss.isNullOrUndefined(pusher)) {
+			console.log(channel + ' No Existy');
+			return;
+		}
+		pusher.message(channel, this.get_name(), message);
 	},
 	addWatcher: function(queueWatcher) {
 		if (ss.isNullOrUndefined(queueWatcher.callback)) {
@@ -140,14 +177,6 @@ $CommonServerLibraries_Queue_QueueManager.prototype = {
 	addPusher: function(queuePusher) {
 		this.$qpCollection.addItem(queuePusher);
 	}
-};
-////////////////////////////////////////////////////////////////////////////////
-// CommonServerLibraries.Queue.QueueManagerOptions
-var $CommonServerLibraries_Queue_QueueManagerOptions = function(watchers, pushers) {
-	this.pushers = null;
-	this.watchers = null;
-	this.watchers = watchers;
-	this.pushers = pushers;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonServerLibraries.Queue.QueueMessage
@@ -169,8 +198,14 @@ var $CommonServerLibraries_Queue_QueuePusher = function(pusher) {
 	this.$client1 = redis.createClient(6379, $CommonServerLibraries_IPs.get_redisIP());
 };
 $CommonServerLibraries_Queue_QueuePusher.prototype = {
-	message: function(channel, name, user, content) {
+	message$1: function(channel, name, user, content) {
 		var message = new $CommonServerLibraries_Queue_QueueMessage(name, user, content);
+		var value = JSON.stringify(message, CommonLibraries.Help.sanitize);
+		this.$client1.rpush(channel, value);
+		//todo:maybe sanitize
+	},
+	message: function(channel, name, content) {
+		var message = new $CommonServerLibraries_Queue_QueueMessage(name, null, content);
 		var value = JSON.stringify(message, CommonLibraries.Help.sanitize);
 		this.$client1.rpush(channel, value);
 		//todo:maybe sanitize
@@ -192,6 +227,7 @@ $CommonServerLibraries_Queue_QueueWatcher.prototype = {
 	cycle: function(channel) {
 		this.$client1.blpop([channel, 0], Function.mkdel(this, function(caller, dtj) {
 			var data = Type.cast(dtj, Array);
+			debugger;
 			if (ss.isValue(dtj)) {
 				var dt = JSON.parse(data[1]);
 				this.callback(dt.name, dt.user, dt.content);
@@ -201,12 +237,13 @@ $CommonServerLibraries_Queue_QueueWatcher.prototype = {
 	}
 };
 Type.registerClass(global, 'CommonServerLibraries.Consumer', $CommonServerLibraries_Consumer, Object);
+Type.registerClass(global, 'CommonServerLibraries.DataManager', $CommonServerLibraries_DataManager, Object);
+Type.registerClass(global, 'CommonServerLibraries.GameServerInfo', $CommonServerLibraries_GameServerInfo, Object);
 Type.registerClass(global, 'CommonServerLibraries.IPs', $CommonServerLibraries_IPs, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.PubSub', $CommonServerLibraries_Queue_PubSub, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueItem', $CommonServerLibraries_Queue_QueueItem, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueItemCollection', $CommonServerLibraries_Queue_QueueItemCollection, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueManager', $CommonServerLibraries_Queue_QueueManager, Object);
-Type.registerClass(global, 'CommonServerLibraries.Queue.QueueManagerOptions', $CommonServerLibraries_Queue_QueueManagerOptions, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueMessage', $CommonServerLibraries_Queue_QueueMessage, Object);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueuePusher', $CommonServerLibraries_Queue_QueuePusher, $CommonServerLibraries_Queue_QueueItem);
 Type.registerClass(global, 'CommonServerLibraries.Queue.QueueWatcher', $CommonServerLibraries_Queue_QueueWatcher, $CommonServerLibraries_Queue_QueueItem);

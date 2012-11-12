@@ -77,10 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IServerManager.cs" />
-    <Compile Include="LampAction.cs" />
-    <Compile Include="LampMessage.cs" />
-    <Compile Include="LampMessageType.cs" />
-    <Compile Include="LampPlayerMessage.cs" />
     <Compile Include="LampServer.cs" />
   </ItemGroup>
   <ItemGroup>

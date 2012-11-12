@@ -7,19 +7,16 @@ using CommonServerLibraries;
 using CommonServerLibraries.Queue;
 using NodeJSLibrary;
 using SocketIOLibrary;
-using ZombieGame.Common;
-using ZombieGame.Common.Messages;
 using Http = NodeJS.HttpModule.Http;
 namespace MM.GatewayServer
 {
     public class GatewayServer
     {
-        private static void Main(){int region = 1;new GatewayServer(region);}
-        private QueueManager queueManager;
+        private string myName;
         private int port;
         private PubSub ps;
+        private QueueManager queueManager;
         public JsDictionary<string, GatewayUserModel> users = new JsDictionary<string, GatewayUserModel>();
-        private string myName;
         [IntrinsicProperty]
         public int Region { get; set; }
 
@@ -30,8 +27,7 @@ namespace MM.GatewayServer
 
             var io = SocketIO.Listen(app);
 
-
-           port = 1800 + Math.Truncate((int) ( Math.Random() * 4000 ));
+            port = 1800 + Math.Truncate((int) ( Math.Random() * 4000 ));
 
             app.Listen(port);
             io.Set("log level", 1);
@@ -44,18 +40,22 @@ namespace MM.GatewayServer
             queueManager.AddWatcher(new QueueWatcher("GatewayServer", messageReceived));
             queueManager.AddWatcher(new QueueWatcher(myName, messageReceived));
 
-            queueManager.AddPusher(new QueuePusher("GameServer*")); 
+            queueManager.AddPusher(new QueuePusher("GameServer*"));
             queueManager.AddPusher(new QueuePusher("HeadServer"));
 
             io.Sockets.On("connection", new Action<SocketIOConnection>(userJoin));
         }
 
+        private static void Main()
+        {
+            int region = 1;
+            new GatewayServer(region);
+        }
+
         private void pubSubReady()
         {
-
             ps.Subscribe<string>("PUBSUB.GatewayServers.Ping", message => ps.Publish("PUBSUB.GatewayServers", string.Format("http://{0}:{1}", IPs.GatewayIP, port)));
             ps.Publish("PUBSUB.GatewayServers", string.Format("http://{0}:{1}", IPs.GatewayIP, port));
-
         }
 
         private void userJoin(SocketIOConnection socket)
@@ -87,11 +87,8 @@ namespace MM.GatewayServer
 
                                                                users[data.UserName] = user;
                                                                queueManager.SendMessage(user, "GameServer", new PlayerJoinMessage());
-
-                                                               socket.Emit("Area.Main.Login.Response", "hi! " + data.UserName);
                                                            }));
             socket.On("disconnect", new Action<string>((data) => users.Remove(user.UserName)));
-
         }
 
         /// <summary>
@@ -101,20 +98,21 @@ namespace MM.GatewayServer
         /// <param name="channel">the queue channel, generally not needed</param>
         /// <param name="user"></param>
         /// <param name="content"></param>
-        private void messageReceived(string gatewayName,UserModel user,  ChannelListenTriggerMessage content)
+        private void messageReceived(string gatewayName, UserModel user, ChannelMessage content)
         {
             if (users.ContainsKey(user.UserName)) {
                 var u = users[user.UserName];
 
-                if (content.Channel == "GameServer.AcceptPlayer")
-                {//if the gamserver has accepted the player, tell him he has joined
+                if (content.Channel == "GameServer.Accept") {
+//if the gamserver has accepted the player, tell him he has joined
 
                     var message = ( (GameServerAcceptMessage) content );
                     u.GameServer = message.GameServer;
 
-                    SocketClientMessageModel socketClientMessageModel = new SocketClientMessageModel(user, "GameServer.Joined", new ChannelListenTriggerMessage());
+                    SocketClientMessageModel socketClientMessageModel = new SocketClientMessageModel(user, "GameServer.Joined", null);
                     u.Socket.Emit("Client.Message", socketClientMessageModel);
-                } else {//otherwise this is a normal message, just forward it along. 
+                } else {
+//otherwise this is a normal message, just forward it along. 
 
                     SocketClientMessageModel socketClientMessageModel = new SocketClientMessageModel(user, content.Channel, content);
                     u.Socket.Emit("Client.Message", socketClientMessageModel);

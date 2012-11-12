@@ -89,8 +89,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataManager.cs" />
-    <Compile Include="DataManagerGameData.cs" />
     <Compile Include="GameInfoObject.cs" />
     <Compile Include="GameServer.cs" />
   </ItemGroup>
@@ -98,6 +96,10 @@
     <ProjectReference Include="..\..\API\CommonAPI\CommonAPI.csproj">
       <Project>{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}</Project>
       <Name>CommonAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\API\MMServerAPI\MMServerAPI.csproj">
+      <Project>{70874705-C97C-40D3-B303-3F9F1A635C51}</Project>
+      <Name>MMServerAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\CommonClientLibraries\CommonClientLibraries.csproj">
       <Project>{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}</Project>

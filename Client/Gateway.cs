@@ -8,25 +8,25 @@ namespace Client
 {
     public class Gateway
     {
-        private JsDictionary<string, Action<ChannelListenTriggerMessage>> channels;
+        private JsDictionary<string, Action<ChannelMessage>> channels;
         [IntrinsicProperty]
         protected SocketIOClient GatewaySocket { get; set; }
 
         public Gateway(string gatewayServer)
         {
-            channels = new JsDictionary<string, Action<ChannelListenTriggerMessage>>();
+            channels = new JsDictionary<string, Action<ChannelMessage>>();
             GatewaySocket = SocketIOClient.Connect(gatewayServer);
             GatewaySocket.On<SocketClientMessageModel>("Client.Message", data => channels[data.Channel](data.Content));
         }
 
         [IgnoreGenericArguments]
-        public void Emit(ChannelListenTriggerMessage content)
+        public void Emit(ChannelMessage content)
         {
             GatewaySocket.Emit("Gateway.Message", new GatewayMessageModel(content.GatewayChannel, content));
         }
 
         [IgnoreGenericArguments]
-        public void On(string channel, Action<ChannelListenTriggerMessage> callback)
+        public void On(string channel, Action<ChannelMessage> callback)
         {
             channels[channel] = callback;
         }

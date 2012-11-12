@@ -10,9 +10,9 @@ namespace ClientAPI
     public class LampClient
     {
         [IntrinsicProperty]
-        public Action<string, Action<ChannelListenTriggerMessage>> ReceiveChannelMessage { get; set; }
+        public Action<string, Action<ChannelMessage>> ReceiveChannelMessage { get; set; }
         [IntrinsicProperty]
-        public Action<ChannelListenTriggerMessage> SendChannelMessage { get; set; }
+        public Action<ChannelMessage> SendChannelMessage { get; set; }
         [IntrinsicProperty]
         public Rectangle Screen { get; set; }
         public LampPlayer[] Players { get; set; }

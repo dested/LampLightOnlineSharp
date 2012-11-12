@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+
 // CommonLibraries.DelegateOrValue
 var $CommonLibraries_DelegateOrValue$1 = function(T) {
 	var $type = function(d) {

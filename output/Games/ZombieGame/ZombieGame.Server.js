@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Server.Game
 var $ZombieGame_Server_Game = function(region, manager) {
 	this.$gameManager = null;
@@ -19,24 +19,21 @@ $ZombieGame_Server_Game.prototype = {
 			completed2();
 		})).do();
 		this.$gameManager.init();
-		this.myManager.listenOnChannel(ZombieGame.Common.Messages.PlayerMoveMessage.messageChannel, function(user, model) {
-			var message = model;
-		});
-		this.myManager.listenOnChannel(ZombieGame.Common.Messages.PlayerJoinMessage.messageChannel, function(user1, model1) {
-			var message1 = model1;
-		});
 	},
 	gameTick: function() {
 	},
+	end: function() {
+	},
+	makePlayerActive: function(lampPlayer) {
+	},
 	executeAction: function(action) {
-		var zAction = action;
-		switch (zAction.zombieActionType) {
+		var zAction = Type.cast(action, $ZombieGame_Server_ZombieLampAction);
+		switch (zAction.get_zombieActionType()) {
 			case 0: {
-				var zMoveAction = zAction;
+				var zMoveAction = Type.cast(zAction, $ZombieGame_Server_MovePlayerZombieLampAction);
 				break;
 			}
 		}
-		MMServerAPI.LampServer.prototype.executeAction.call(this, action);
 	}
 };
 $ZombieGame_Server_Game.$makeFakeMap = function(name, w, h) {
@@ -64,15 +61,26 @@ $ZombieGame_Server_Game.$fakeJsonMap = function() {
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Server.MovePlayerZombieLampAction
 var $ZombieGame_Server_MovePlayerZombieLampAction = function() {
+	this.$5$XField = 0;
+	this.$5$YField = 0;
+	$ZombieGame_Server_ZombieLampAction.call(this);
 };
-$ZombieGame_Server_MovePlayerZombieLampAction.createInstance = function() {
-	return $ZombieGame_Server_MovePlayerZombieLampAction.$ctor();
-};
-$ZombieGame_Server_MovePlayerZombieLampAction.$ctor = function() {
-	var $this = $ZombieGame_Server_ZombieLampAction.$ctor();
-	$this.x = 0;
-	$this.y = 0;
-	return $this;
+$ZombieGame_Server_MovePlayerZombieLampAction.prototype = {
+	get_x: function() {
+		return this.$5$XField;
+	},
+	set_x: function(value) {
+		this.$5$XField = value;
+	},
+	get_y: function() {
+		return this.$5$YField;
+	},
+	set_y: function(value) {
+		this.$5$YField = value;
+	},
+	get_channel: function() {
+		return 'Zombie.MovePlayer';
+	}
 };
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Server.ZombieActionType
@@ -83,14 +91,16 @@ Type.registerEnum(global, 'ZombieGame.Server.ZombieActionType', $ZombieGame_Serv
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Server.ZombieLampAction
 var $ZombieGame_Server_ZombieLampAction = function() {
+	this.$4$ZombieActionTypeField = 0;
+	CommonAPI.LampAction.call(this);
 };
-$ZombieGame_Server_ZombieLampAction.createInstance = function() {
-	return $ZombieGame_Server_ZombieLampAction.$ctor();
-};
-$ZombieGame_Server_ZombieLampAction.$ctor = function() {
-	var $this = MMServerAPI.LampAction.$ctor();
-	$this.zombieActionType = 0;
-	return $this;
+$ZombieGame_Server_ZombieLampAction.prototype = {
+	get_zombieActionType: function() {
+		return this.$4$ZombieActionTypeField;
+	},
+	set_zombieActionType: function(value) {
+		this.$4$ZombieActionTypeField = value;
+	}
 };
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Server.ZombieServerGameManager
@@ -105,6 +115,6 @@ $ZombieGame_Server_ZombieServerGameManager.prototype = {
 	}
 };
 Type.registerClass(global, 'ZombieGame.Server.Game', $ZombieGame_Server_Game, MMServerAPI.LampServer);
-Type.registerClass(global, 'ZombieGame.Server.ZombieLampAction', $ZombieGame_Server_ZombieLampAction);
+Type.registerClass(global, 'ZombieGame.Server.ZombieLampAction', $ZombieGame_Server_ZombieLampAction, CommonAPI.LampAction);
 Type.registerClass(global, 'ZombieGame.Server.ZombieServerGameManager', $ZombieGame_Server_ZombieServerGameManager, ZombieGame.Common.GameManager);
-Type.registerClass(global, 'ZombieGame.Server.MovePlayerZombieLampAction', $ZombieGame_Server_MovePlayerZombieLampAction);
+Type.registerClass(global, 'ZombieGame.Server.MovePlayerZombieLampAction', $ZombieGame_Server_MovePlayerZombieLampAction, $ZombieGame_Server_ZombieLampAction);

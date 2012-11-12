@@ -1,18 +1,16 @@
 using System.Runtime.CompilerServices;
 using MongoDB;
 using NodeJSLibrary;
-namespace MM.GameServer
+namespace CommonServerLibraries
 {
     public class DataManager
     {
         private MongoConnection Connection;
-        public DataManagerGameData GameData;
         private MongoServer Server;
         public MongoDB.MongoDB client;
 
         public DataManager()
         {
-            GameData = new DataManagerGameData(this);
             var mongo = Global.Require<MongoModule>("mongodb");
 
             var Db = mongo.DB;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CommonAPI;
-using CommonLibraries;
+using CommonServerLibraries;
 using CommonServerLibraries.Queue;
 using MMServerAPI;
 using NodeJSLibrary;
@@ -9,22 +9,29 @@ namespace MMServer
 {
     public class ServerManager : IServerManager
     {
+        private readonly GameServerInfo myGameServerInfo;
         private readonly int myRegion;
-        private readonly QueueManager myQueueManager;
         private LampServer myGame;
 
-        public ServerManager(int region, QueueManager queueManager)
+        public ServerManager(int region, GameServerInfo gameServerInfo)
         {
             myRegion = region;
-            myQueueManager = queueManager;
+            myGameServerInfo = gameServerInfo;
         }
 
         #region IServerManager Members
 
         public void Init()
         {
+            myGameServerInfo.QueueManager.AddPusher(new QueuePusher("GameServerProducts"));
+            myGameServerInfo.QueueManager.AddPusher(new QueuePusher("Gateway*"));
+
+            myGameServerInfo.QueueManager.AddWatcher(new QueueWatcher("GameServer", gameServerMessage));
+            myGameServerInfo.QueueManager.AddWatcher(new QueueWatcher(myGameServerInfo.GameServerName, gameServerIndexMessage));
+            myGameServerInfo.QueueManager.AddWatcher(new QueueWatcher("GameServerProducts", gameServerProductMessage));
+
             //probably some big game switch to determine which "Game" to run. 
-            myGame = new Game(myRegion,this);
+            myGame = new Game(myRegion, this);
             myGame.Init();
             Global.SetInterval(Tick, 1000 / 10); //needs to be incredibly high resolution. c++ lib
         }
@@ -34,25 +41,61 @@ namespace MMServer
             myGame.End();
         }
 
-
         public void ListenOnChannel(string channel, ChannelListenTrigger trigger)
         {
-            myQueueManager.AddChannel(channel, trigger);
+            myGameServerInfo.QueueManager.AddChannel(channel, trigger);
         }
 
-        public void Emit(LampPlayer player, ChannelListenTriggerMessage val)
+        public void Emit(LampPlayer player, ChannelMessage val)
         {
-            myQueueManager.SendMessage(player, player.Gateway, val);
+            myGameServerInfo.QueueManager.SendMessage(player, player.Gateway, val);
         }
 
-        public void EmitAll(IEnumerable<LampPlayer> players, ChannelListenTriggerMessage val)
+        public void EmitAll(IEnumerable<LampPlayer> players, ChannelMessage val)
         {
-            foreach (var player in players)
-            {
-                myQueueManager.SendMessage(player, player.Gateway, val);
+            foreach (var player in players) {
+                myGameServerInfo.QueueManager.SendMessage(player, player.Gateway, val);
             }
         }
+
         #endregion
+
+        private void gameServerProductMessage(string name, UserModel user, ChannelMessage content)
+        {
+            var player = (LampPlayer) user;
+        }
+
+        private void gameServerIndexMessage(string name, UserModel user, ChannelMessage content)
+        {
+            LampMessage message = (LampMessage) content;
+            message.User = (LampPlayer) user;
+            myGame.ReceiveMessage(message);
+        }
+
+        private void gameServerMessage(string name, UserModel user, ChannelMessage content)
+        {
+            switch (content.Channel) {
+                case PlayerJoinMessage.MessageChannel:
+                    var c = (PlayerJoinMessage) content;
+                    var lampPlayer = new LampPlayer(user);
+                    myGame.MakePlayerActive(lampPlayer);
+
+                    PushPlayerMessage(lampPlayer, new GameServerAcceptMessage() {GameServer = myGameServerInfo.GameServerName});
+
+                    break;
+            }
+        }
+
+        private void PushPlayerMessage(LampPlayer user, ChannelMessage message)
+        {
+            myGameServerInfo.QueueManager.SendMessage(user, user.Gateway, message);
+        }
+
+        public void PushProduct(LampActionProduct product, IEnumerable<LampPlayer> applicablePlayers)
+        {
+/*
+            myGameServerInfo.QueueManager.SendMessage("GameServerProducts", product);*/
+        }
 
         private void Tick()
         {

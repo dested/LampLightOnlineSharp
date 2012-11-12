@@ -9,7 +9,7 @@ using CommonLibraries;
 using WebLibraries;
 using ZombieGame.Common;
 using ZombieGame.Common.JSONObjects;
-using ZombieGame.Common.Messages;
+using ZombieGame.Server;
 namespace ZombieGame.Client
 {
     public class Game : LampClient
@@ -107,7 +107,7 @@ namespace ZombieGame.Client
                 case ClickMode.MoveCharacter:
                     if (gameManager.WindowManager.Collides(gamePointer)) {
                         gameManager.UnitManager.MainCharacter.MoveTowards(gamePointer.X, gamePointer.Y);
-                        SendChannelMessage(new PlayerMoveMessage() {X = gamePointer.X, Y = gamePointer.Y});
+                        SendChannelMessage(new MovePlayerZombieLampAction() {X = gamePointer.X, Y = gamePointer.Y});
                     }
                     break;
                 case ClickMode.DragMap:
@@ -192,10 +192,9 @@ namespace ZombieGame.Client
 
         private static JsonTileMap fakeJsonTileMap2()
         {
-            return new JsonTileMap()
-            {
-                MapWidth = 20,
-                MapHeight = 16,
+            return new JsonTileMap() {
+                                             MapWidth = 20,
+                                             MapHeight = 16,
                                              Name = "Pretty",
                                              TileWidth = ZombieGameConfig.TileSize,
                                              TileHeight = ZombieGameConfig.TileSize,
@@ -205,10 +204,9 @@ namespace ZombieGame.Client
 
         private static JsonTileMap fakeJsonTileMap()
         {
-            return new JsonTileMap()
-            {
-                MapWidth = 12,
-                MapHeight = 10,
+            return new JsonTileMap() {
+                                             MapWidth = 12,
+                                             MapHeight = 10,
                                              Name = "Pretty2",
                                              TileWidth = ZombieGameConfig.TileSize,
                                              TileHeight = ZombieGameConfig.TileSize,

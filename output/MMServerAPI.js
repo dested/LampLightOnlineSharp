@@ -1,46 +1,17 @@
-﻿////////////////////////////////////////////////////////////////////////////////
-// MMServerAPI.LampAction
-var $MMServerAPI_LampAction = function() {
+
+// MMServerAPI.IServerManager
+var $MMServerAPI_IServerManager = function() {
 };
-$MMServerAPI_LampAction.createInstance = function() {
-	return $MMServerAPI_LampAction.$ctor();
-};
-$MMServerAPI_LampAction.$ctor = function() {
-	var $this = $MMServerAPI_LampPlayerMessage.$ctor();
-	$this.tickToInitiate = 0;
-	return $this;
-};
-////////////////////////////////////////////////////////////////////////////////
-// MMServerAPI.LampMessage
-var $MMServerAPI_LampMessage = function() {
-};
-////////////////////////////////////////////////////////////////////////////////
-// MMServerAPI.LampMessageType
-var $MMServerAPI_LampMessageType = function() {
-};
-$MMServerAPI_LampMessageType.prototype = { action: 0 };
-Type.registerEnum(global, 'MMServerAPI.LampMessageType', $MMServerAPI_LampMessageType, false);
-////////////////////////////////////////////////////////////////////////////////
-// MMServerAPI.LampPlayerMessage
-var $MMServerAPI_LampPlayerMessage = function() {
-};
-$MMServerAPI_LampPlayerMessage.createInstance = function() {
-	return $MMServerAPI_LampPlayerMessage.$ctor();
-};
-$MMServerAPI_LampPlayerMessage.$ctor = function() {
-	var $this = CommonAPI.ChannelListenTriggerMessage.$ctor();
-	$this.player = null;
-	$this.type = 0;
-	$this.message = null;
-	return $this;
-};
+$MMServerAPI_IServerManager.prototype = { listenOnChannel: null, emit: null, emitAll: null, init: null, end: null };
 ////////////////////////////////////////////////////////////////////////////////
 // MMServerAPI.LampServer
-var $MMServerAPI_LampServer = function(manager) {
+var $MMServerAPI_LampServer = function(region, manager) {
 	this.myManager = null;
+	this.$myRegion = 0;
 	this.$1$ActionsField = null;
 	this.$1$TickIndexField = 0;
 	this.$1$PlayersField = null;
+	this.$myRegion = region;
 	this.myManager = manager;
 	this.set_actions({});
 };
@@ -67,23 +38,22 @@ $MMServerAPI_LampServer.prototype = {
 		this.set_players([]);
 	},
 	sendMessageToPlayer: function(message, player) {
-		this.myManager.serverManager.emit(player, message);
+		this.myManager.emit(player, message);
 	},
 	sendMessageToPlayers: function(message, players) {
-		this.myManager.serverManager.emitAll(players, message);
+		this.myManager.emitAll(players, message);
 	},
 	receiveMessage: function(message) {
-		switch (message.type) {
+		switch (message.get_type()) {
 			case 0: {
-				var lampAction = message;
-				var lampActions = this.get_actions()[lampAction.tickToInitiate] = this.get_actions()[lampAction.tickToInitiate] || [];
+				var lampAction = Type.cast(message, CommonAPI.LampAction);
+				var lampActions = this.get_actions()[lampAction.get_tickToInitiate()] = this.get_actions()[lampAction.get_tickToInitiate()] || [];
 				lampActions.add(lampAction);
 				break;
 			}
 		}
 	},
-	executeAction: function(action) {
-	},
+	executeAction: null,
 	tick: function() {
 		var $t2 = this.get_actions();
 		var $t1 = this.get_tickIndex();
@@ -98,34 +68,9 @@ $MMServerAPI_LampServer.prototype = {
 		}
 		delete this.get_actions()[this.get_tickIndex() - 1];
 	},
-	gameTick: function() {
-	},
-	end: function() {
-	}
+	gameTick: null,
+	end: null,
+	makePlayerActive: null
 };
-////////////////////////////////////////////////////////////////////////////////
-// MMServerAPI.ServerGameManager
-var $MMServerAPI_ServerGameManager = function(region, serverManager) {
-	this.$myGame = null;
-	this.region = 0;
-	this.serverManager = null;
-	this.region = region;
-	this.serverManager = serverManager;
-};
-$MMServerAPI_ServerGameManager.prototype = {
-	tick: function() {
-		this.$myGame.tick();
-	},
-	start: function(game) {
-		this.$myGame = game;
-		this.$myGame.init();
-	},
-	end: function() {
-		this.$myGame.end();
-	}
-};
-Type.registerClass(global, 'MMServerAPI.LampMessage', $MMServerAPI_LampMessage, Object);
-Type.registerClass(global, 'MMServerAPI.LampPlayerMessage', $MMServerAPI_LampPlayerMessage);
+Type.registerInterface(global, 'MMServerAPI.IServerManager', $MMServerAPI_IServerManager, []);
 Type.registerClass(global, 'MMServerAPI.LampServer', $MMServerAPI_LampServer, Object);
-Type.registerClass(global, 'MMServerAPI.ServerGameManager', $MMServerAPI_ServerGameManager, Object);
-Type.registerClass(global, 'MMServerAPI.LampAction', $MMServerAPI_LampAction);

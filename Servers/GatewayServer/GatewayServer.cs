@@ -43,7 +43,7 @@ namespace GatewayServer
             new GatewayServer();
         }
 
-        private void messageReceived(string gateway, UserModel user, string eventChannel, ChannelListenTriggerMessage content)
+        private void messageReceived(string gateway, UserModel user, string eventChannel, ChannelMessage content)
         {
             if (users.ContainsKey(user.UserName)) {
                 var u = users[user.UserName];

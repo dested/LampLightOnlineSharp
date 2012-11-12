@@ -3,11 +3,11 @@ namespace CommonServerLibraries.Queue
 {
     public class QueueMessage
     {
-        public ChannelListenTriggerMessage Content; 
+        public ChannelMessage Content;
         public string Name;
         public UserModel User;
 
-        public QueueMessage(string name, UserModel user, ChannelListenTriggerMessage content)
+        public QueueMessage(string name, UserModel user, ChannelMessage content)
         {
             Name = name;
             User = user;

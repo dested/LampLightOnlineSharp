@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Messages\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -107,7 +108,6 @@
     <Compile Include="JSONObjects\JsonMap.cs" />
     <Compile Include="JSONObjects\JsonTileMap.cs" />
     <Compile Include="MapManager.cs" />
-    <Compile Include="Messages\PlayerMoveMessage.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Tile.cs" />

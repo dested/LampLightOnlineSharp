@@ -7,11 +7,11 @@ namespace CommonLibraries
         [IntrinsicProperty]
         public string Channel { get; set; }
         [IntrinsicProperty]
-        public ChannelListenTriggerMessage Content { get; set; }
+        public ChannelMessage Content { get; set; }
         [IntrinsicProperty]
         public UserModel User { get; set; }
 
-        public SocketClientMessageModel(UserModel user, string channel, ChannelListenTriggerMessage content)
+        public SocketClientMessageModel(UserModel user, string channel, ChannelMessage content)
         {
             User = user;
             Channel = channel;

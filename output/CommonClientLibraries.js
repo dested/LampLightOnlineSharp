@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////////////////
+
 // CommonClientLibraries.CanvasInformation
 var $CommonClientLibraries_CanvasInformation = function(context, domCanvas) {
 	this.context = null;

@@ -1,9 +1,8 @@
 ﻿using System;
-using MMServerAPI;
+using CommonAPI;
 namespace ZombieGame.Server
 {
-    [Serializable]
-    public class ZombieLampAction : LampAction
+    public abstract class ZombieLampAction : LampAction
     {
         public ZombieActionType ZombieActionType { get; set; }
     }

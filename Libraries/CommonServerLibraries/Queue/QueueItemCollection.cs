@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using CommonLibraries;
 namespace CommonServerLibraries.Queue
 {
     public class QueueItemCollection
@@ -8,11 +7,11 @@ namespace CommonServerLibraries.Queue
 
         public QueueItemCollection()
         {
-            this.queueItems = new List<QueueItem>();
+            queueItems = new List<QueueItem>();
         }
 
         /// <summary>
-        /// Returns the QueueItem for that channel
+        ///     Returns the QueueItem for that channel
         /// </summary>
         /// <param name="channel">Can be the name of a channel or name* if applicable </param>
         /// <returns></returns>

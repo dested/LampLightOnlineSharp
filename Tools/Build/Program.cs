@@ -78,10 +78,10 @@ namespace LampLightOnlineBuild
                                                                                                                                                  @"./ServerAPI.js",
                                                                                                                                                  @"./CommonLibraries.js",
                                                                                                                                                  @"./CommonServerLibraries.js",
-                                                                                                                                           @"./MMServer.js",
-                                                                                                                                           @"./MMServerAPI.js",
-                                                                                                                                           @"./Games/ZombieGame/ZombieGame.Common.js",
-                                                                                                                                           @"./Games/ZombieGame/ZombieGame.Server.js",
+                                                                                                                                                 @"./MMServerAPI.js",
+                                                                                                                                                 @"./MMServer.js",
+                                                                                                                                                 @"./Games/ZombieGame/ZombieGame.Common.js",
+                                                                                                                                                 @"./Games/ZombieGame/ZombieGame.Server.js",
                                                                                                                                                  @"./Models.js",
                                                                                                                                          })
                                                                             }, {
@@ -105,6 +105,9 @@ namespace LampLightOnlineBuild
                                                                       {"CommonWebLibraries", new Application(false, new List<string> {})},
                                                                       {"CommonLibraries", new Application(false, new List<string> {})},
                                                                       {"CommonClientLibraries", new Application(false, new List<string> {})},
+                                                                      {"CommonServerLibraries", new Application(false, new List<string> {})},
+                                                                      {"MMServer", new Application(false, new List<string> {})},
+                                                                      {"MMServerAPI", new Application(false, new List<string> {})},
                                                                       {"ClientAPI", new Application(false, new List<string> {})},
                                                                       {"ServerAPI", new Application(false, new List<string> {})},
                                                                       {"CommonAPI", new Application(false, new List<string> {})},
@@ -120,6 +123,9 @@ namespace LampLightOnlineBuild
             Console.WriteLine("connected");
 
             webftp.Progress += (e, c) => {
+                                   var left = Console.CursorLeft;
+                                   var top = Console.CursorTop;
+
                                    Console.SetCursorPosition(65, 5);
                                    Console.Write("|");
 
@@ -133,6 +139,7 @@ namespace LampLightOnlineBuild
 
                                    Console.Write(c.Percentage + "  %  ");
                                    Console.WriteLine();
+                                   Console.SetCursorPosition(left, top);
                                };
 
             string serverloc = ConfigurationSettings.AppSettings["server-ftpdir"];
@@ -150,16 +157,16 @@ namespace LampLightOnlineBuild
                 var output = "";
 
                 if (depend.Value.Node)
-                    output += "require('./mscorlib.debug.js');";
+                    output += "require('./mscorlib.debug.js');\r\n";
                 else {
                     //output += "require('./mscorlib.debug.js');";
                 }
 
                 foreach (var depe in depend.Value.IncludesAfter) {
-                    output += string.Format("require('{0}');", depe);
+                    output += string.Format("require('{0}');\r\n", depe);
                 }
 
-                if (depend.Value.Postpend != null) output += depend.Value.Postpend;
+                if (depend.Value.Postpend != null) output += depend.Value.Postpend + "\r\n";
                 var lines = new List<string>();
                 lines.Add(output);
                 lines.AddRange(File.ReadAllLines(to).After(1)); //mscorlib
@@ -175,20 +182,20 @@ namespace LampLightOnlineBuild
 #if FTP
 
                 long length = new FileInfo(to).Length;
-                if (webftp.GetFileSize(loc + name) != length) {
+                if (!webftp.FileExists(loc + name) || webftp.GetFileSize(loc + name) != length) {
                     Console.WriteLine("ftp start " + length.ToString("N0"));
                     webftp.Upload(loc + name, to);
                     Console.WriteLine("ftp complete " + to);
                 }
 
-                if (client.GetAttributes(serverloc + name).Size != length) {
+                if (!client.Exists(serverloc + name) || client.GetAttributes(serverloc + name).Size != length) {
                     Console.WriteLine("server ftp start " + length.ToString("N0"));
                     var fileStream = new FileInfo(to).OpenRead();
                     client.UploadFile(fileStream, serverloc + name, true);
                     fileStream.Close();
                     Console.WriteLine("server ftp complete " + to);
                 }
-                if (client.GetAttributes(serverloc2 + name).Size != length) {
+                if (!client.Exists(serverloc2 + name) || client.GetAttributes(serverloc2 + name).Size != length) {
                     Console.WriteLine("server ftp start " + length.ToString("N0"));
                     var fileStream = new FileInfo(to).OpenRead();
                     client.UploadFile(fileStream, serverloc2 + name, true);

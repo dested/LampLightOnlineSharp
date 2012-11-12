@@ -1,4 +1,14 @@
-﻿require('mscorlib');
+require('./mscorlib.debug.js');
+require('./CommonAPI.js');
+require('./ServerAPI.js');
+require('./CommonLibraries.js');
+require('./CommonServerLibraries.js');
+require('./MMServerAPI.js');
+require('./MMServer.js');
+require('./Games/ZombieGame/ZombieGame.Common.js');
+require('./Games/ZombieGame/ZombieGame.Server.js');
+require('./Models.js');
+
 var http = require('http');
 var socketio = require('socket.io');
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,11 +38,11 @@ Type.registerEnum(global, 'Messages.TopLevelMessageType', $Messages_TopLevelMess
 ////////////////////////////////////////////////////////////////////////////////
 // MM.GatewayServer.GatewayServer
 var $MM_GatewayServer_GatewayServer = function(region) {
-	this.$queueManager = null;
+	this.$myName = null;
 	this.$port = 0;
 	this.$ps = null;
+	this.$queueManager = null;
 	this.users = {};
-	this.$myName = null;
 	this.region = 0;
 	this.region = region;
 	var app = http.createServer(function(req, res) {
@@ -76,15 +86,14 @@ $MM_GatewayServer_GatewayServer.prototype = {
 					break;
 				}
 			}
-			this.$queueManager.sendMessage(user, channel, data.content);
+			this.$queueManager.sendMessage$1(user, channel, data.content);
 		}));
 		socket.on('Gateway.Login', Function.mkdel(this, function(data1) {
 			user = CommonLibraries.GatewayUserModel.$ctor();
 			user.socket = socket;
 			user.userName = data1.userName;
 			this.users[data1.userName] = user;
-			this.$queueManager.sendMessage(user, 'GameServer', ZombieGame.Common.Messages.PlayerJoinMessage.$ctor());
-			socket.emit('Area.Main.Login.Response', 'hi! ' + data1.userName);
+			this.$queueManager.sendMessage$1(user, 'GameServer', new CommonAPI.PlayerJoinMessage());
 		}));
 		socket.on('disconnect', Function.mkdel(this, function(data2) {
 			delete this.users[user.userName];
@@ -93,16 +102,16 @@ $MM_GatewayServer_GatewayServer.prototype = {
 	$messageReceived: function(gatewayName, user, content) {
 		if (Object.keyExists(this.users, user.userName)) {
 			var u = this.users[user.userName];
-			if (content.channel === 'GameServer.AcceptPlayer') {
+			if (content.get_channel() === 'GameServer.Accept') {
 				//if the gamserver has accepted the player, tell him he has joined
-				var message = content;
-				u.gameServer = message.gameServer;
-				var socketClientMessageModel = new CommonLibraries.SocketClientMessageModel(user, 'GameServer.Joined', CommonAPI.ChannelListenTriggerMessage.$ctor());
+				var message = Type.cast(content, CommonAPI.GameServerAcceptMessage);
+				u.gameServer = message.get_gameServer();
+				var socketClientMessageModel = new CommonLibraries.SocketClientMessageModel(user, 'GameServer.Joined', null);
 				u.socket.emit('Client.Message', socketClientMessageModel);
 			}
 			else {
 				//otherwise this is a normal message, just forward it along. 
-				var socketClientMessageModel1 = new CommonLibraries.SocketClientMessageModel(user, content.channel, content);
+				var socketClientMessageModel1 = new CommonLibraries.SocketClientMessageModel(user, content.get_channel(), content);
 				u.socket.emit('Client.Message', socketClientMessageModel1);
 			}
 		}

@@ -2,10 +2,9 @@
 // GameServer.DataManager
 var $GameServer_DataManager = function() {
 	this.$connection = null;
-	this.gameData = null;
 	this.$server = null;
 	this.client = null;
-	this.gameData = new $GameServer_DataManagerGameData(this);
+	//  GameData = new DataManagerGameData(this);
 	var mongo = require('mongodb');
 	var Db = mongo.Db;
 	this.$connection = mongo.Connection;
@@ -14,22 +13,6 @@ var $GameServer_DataManager = function() {
 	this.client.open(function(arg1, arg2) {
 		//client.Collection("test_insert", "test");
 	});
-};
-////////////////////////////////////////////////////////////////////////////////
-// GameServer.DataManagerGameData
-var $GameServer_DataManagerGameData = function(manager) {
-	this.$manager = null;
-	this.$manager = manager;
-};
-$GameServer_DataManagerGameData.prototype = {
-	insert: function(gameName, answerIndex) {
-		this.$manager.client.collection('gameInfo', function(err, collection) {
-			var gmo = new $GameServer_GameInfoObject();
-			gmo.gameName = gameName;
-			gmo.answer = answerIndex;
-			collection.insert(gmo);
-		});
-	}
 };
 ////////////////////////////////////////////////////////////////////////////////
 // GameServer.GameInfoObject
@@ -52,7 +35,6 @@ $GameServer_GameServer.$main = function() {
 	new $GameServer_GameServer();
 };
 Type.registerClass(global, 'GameServer.DataManager', $GameServer_DataManager, Object);
-Type.registerClass(global, 'GameServer.DataManagerGameData', $GameServer_DataManagerGameData, Object);
 Type.registerClass(global, 'GameServer.GameInfoObject', $GameServer_GameInfoObject, Object);
 Type.registerClass(global, 'GameServer.GameServer', $GameServer_GameServer, Object);
 $GameServer_GameServer.$main();

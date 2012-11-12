@@ -78,9 +78,11 @@
     <Compile Include="ChannelListener.cs" />
     <Compile Include="Completed.cs" />
     <Compile Include="DataObject.cs" />
+    <Compile Include="LampActionProduct.cs" />
     <Compile Include="LampPlayer.cs" />
-    <Compile Include="LampPlayerMessage.cs" />
+    <Compile Include="GameServerAcceptMessage.cs" />
     <Compile Include="LampEvent.cs" />
+    <Compile Include="PlayerJoinMessage.cs" />
     <Compile Include="TaskHandler.cs" />
     <Compile Include="UserModel.cs" />
   </ItemGroup>

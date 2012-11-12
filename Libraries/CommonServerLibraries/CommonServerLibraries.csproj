@@ -91,13 +91,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Consumer.cs" />
+    <Compile Include="DataManager.cs" />
+    <Compile Include="GameServerInfo.cs" />
     <Compile Include="IPs.cs" />
     <Compile Include="Queue\PubSub.cs" />
     <Compile Include="Queue\QueueCallback.cs" />
     <Compile Include="Queue\QueueItem.cs" />
     <Compile Include="Queue\QueueItemCollection.cs" />
     <Compile Include="Queue\QueueManager.cs" />
-    <Compile Include="Queue\QueueManagerOptions.cs" />
     <Compile Include="Queue\QueueMessage.cs" />
     <Compile Include="Queue\QueuePusher.cs" />
     <Compile Include="Queue\QueueWatcher.cs" />
@@ -110,6 +111,10 @@
     <ProjectReference Include="..\CommonLibraries\CommonLibraries.csproj">
       <Project>{12C3B8E8-A775-48AC-95EE-137DCE2B805C}</Project>
       <Name>CommonLibraries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NodeLibraries\MongoDB\MongoDB.csproj">
+      <Project>{EAC709D8-477C-41F5-93E9-1C39C3C5E5A9}</Project>
+      <Name>MongoDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\NodeLibraries\NodeJS\NodeJS.csproj">
       <Project>{79800429-B885-4F5E-9A3B-48E50390214A}</Project>

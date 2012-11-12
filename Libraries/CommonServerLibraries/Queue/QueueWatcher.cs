@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Serialization;
-using CommonAPI;
+using CommonLibraries;
 using NodeJSLibrary;
 using Redis;
 namespace CommonServerLibraries.Queue
@@ -28,6 +28,7 @@ namespace CommonServerLibraries.Queue
             client1.BLPop(new object[] {channel, 0},
                           (caller, dtj) => {
                               var data = (string[]) dtj;
+                              Help.Debugger();
                               if (dtj != null) {
                                   var dt = Json.Parse<QueueMessage>(data[1]);
                                   Callback(dt.Name, dt.User, dt.Content);

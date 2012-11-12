@@ -1,4 +1,10 @@
-require('./mscorlib.debug.js');require('./CommonAPI.js');require('./ServerAPI.js');require('./CommonLibraries.js');require('./CommonServerLibraries.js');require('./Models.js');
+require('./mscorlib.debug.js');
+require('./CommonAPI.js');
+require('./ServerAPI.js');
+require('./CommonLibraries.js');
+require('./CommonServerLibraries.js');
+require('./Models.js');
+
 var fs = require('fs');
 var http = require('http');
 ////////////////////////////////////////////////////////////////////////////////
@@ -11,9 +17,7 @@ var $MM_HeadServer_HeadServer = function() {
 	this.$oldGateways = [];
 	this.$oldIndex = [];
 	this.$pubsub = null;
-	this.$qManager = null;
 	this.$siteIndex = 0;
-	this.$qManager = new CommonServerLibraries.Queue.QueueManager('Head1', new CommonServerLibraries.Queue.QueueManagerOptions([new CommonServerLibraries.Queue.QueueWatcher('HeadServer', null), new CommonServerLibraries.Queue.QueueWatcher('Head1', null)], ['GatewayServer']));
 	fs.readFile(this.$__dirname + '/index.html', Function.mkdel(this, this.ready));
 	this.$pubsub = new CommonServerLibraries.Queue.PubSub(Function.mkdel(this, function() {
 		this.$pubsub.subscribe('PUBSUB.GatewayServers', Function.mkdel(this, function(message) {

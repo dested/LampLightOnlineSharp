@@ -24,17 +24,17 @@ namespace MMServerAPI
             Players = new List<LampPlayer>();
         }
 
-        public void SendMessageToPlayer(LampPlayerMessage message, LampPlayer player)
+        public void SendMessageToPlayer(LampMessage message, LampPlayer player)
         {
             myManager.Emit(player, message);
         }
 
-        public void SendMessageToPlayers(LampPlayerMessage message, params LampPlayer[] players)
+        public void SendMessageToPlayers(LampMessage message, params LampPlayer[] players)
         {
             myManager.EmitAll(players.Cast<List<LampPlayer>>(), message);
         }
 
-        public void ReceiveMessage(LampPlayerMessage message)
+        public void ReceiveMessage(LampMessage message)
         {
             switch (message.Type) {
                 case LampMessageType.Action:
@@ -48,7 +48,7 @@ namespace MMServerAPI
             }
         }
 
-        public virtual void ExecuteAction(LampAction action) {}
+        public abstract void ExecuteAction(LampAction action);
 
         public void Tick()
         {
@@ -62,7 +62,8 @@ namespace MMServerAPI
             Actions.Remove(TickIndex - 1);
         }
 
-        public virtual void GameTick() {}
-        public void End() {}
+        public abstract void GameTick();
+        public abstract void End();
+        public abstract void MakePlayerActive(LampPlayer lampPlayer);
     }
 }

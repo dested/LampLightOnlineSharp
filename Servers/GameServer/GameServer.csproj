@@ -90,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataManager.cs" />
-    <Compile Include="DataManagerGameData.cs" />
     <Compile Include="GameInfoObject.cs" />
     <Compile Include="GameServer.cs" />
   </ItemGroup>

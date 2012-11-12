@@ -16,20 +16,10 @@ namespace MM.HeadServer
         private List<string> oldGateways = new List<string>();
         private List<string> oldIndex = new List<string>();
         private PubSub pubsub;
-        private QueueManager qManager;
         private int siteIndex;
 
         public HeadServer()
         {
-            qManager = new QueueManager("Head1",
-                                        new QueueManagerOptions(new[] {
-                                                                              new QueueWatcher("HeadServer", null),
-                                                                              new QueueWatcher("Head1", null),
-                                                                      },
-                                                                new[] {
-                                                                              "GatewayServer"
-                                                                      }));
-
             FS.ReadFile(__dirname + "/index.html", ready);
 
             pubsub = new PubSub(() => pubsub.Subscribe<string>("PUBSUB.GatewayServers",

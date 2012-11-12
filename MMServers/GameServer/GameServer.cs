@@ -1,31 +1,27 @@
-﻿using System.Collections.Generic;
-using CommonAPI;
-using CommonLibraries;
+﻿using CommonLibraries;
+using CommonServerLibraries;
 using CommonServerLibraries.Queue;
 using MMServer;
+using MMServerAPI;
 using NodeJSLibrary;
 using Console = NodeJS.Console;
 namespace MM.GameServer
 {
     public class GameServer
     {
-        private static void Main()
-        {
-            int region = 1;
-            new GameServer(region);
-        }
-
-        private DataManager dataManager;
-        private string gameServerIndex;
-        private QueueManager qManager;
+        private GameServerInfo myGameInfo;
         private IServerManager serverManager;
 
         public GameServer(int region)
         {
-            serverManager = new ServerManager(region, qManager);
-            dataManager = new DataManager();
+            string gameServerIndex = "GameServer" + Guid.NewGuid();
+            myGameInfo = new GameServerInfo() {
+                                                      DataManager = new DataManager(),
+                                                      GameServerName = gameServerIndex,
+                                                      QueueManager = new QueueManager(gameServerIndex),
+                                              };
 
-            gameServerIndex = "GameServer" + Guid.NewGuid();
+            serverManager = new ServerManager(region, myGameInfo);
 
             Global.Process.On("exit",
                               () => {
@@ -33,17 +29,14 @@ namespace MM.GameServer
                                   Console.Log("exiting game server " + gameServerIndex);
                               });
 
-            qManager = new QueueManager(gameServerIndex);
-            qManager.AddPusher(new QueuePusher("GameServerProducts"));
-            qManager.AddPusher(new QueuePusher("Gateway*"));
-
-            qManager.AddWatcher(new QueueWatcher("GameServer", null));
-            qManager.AddWatcher(new QueueWatcher(gameServerIndex, null));
-            qManager.AddWatcher(new QueueWatcher("GameServerProducts", null));
-            
             serverManager.Init();
         }
 
+        private static void Main()
+        {
+            int region = 1;
+            new GameServer(region);
+        }
     }
 }
 //ServerManager server needs to be able to take messages from their players connected
