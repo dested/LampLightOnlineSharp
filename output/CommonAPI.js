@@ -2,7 +2,12 @@
 // CommonAPI.ChannelMessage
 var $CommonAPI_ChannelMessage = function() {
 };
-$CommonAPI_ChannelMessage.prototype = { get_channel: null, get_gatewayChannel: null };
+$CommonAPI_ChannelMessage.$ctor = function() {
+	var $this = {};
+	$this.channel = null;
+	$this.gatewayChannel = null;
+	return $this;
+};
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.DataObject
 var $CommonAPI_DataObject$1 = function(T) {
@@ -21,63 +26,48 @@ Type.registerGenericClass(global, 'CommonAPI.DataObject$1', $CommonAPI_DataObjec
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.GameServerAcceptMessage
 var $CommonAPI_GameServerAcceptMessage = function() {
-	this.$2$GameServerField = null;
-	$CommonAPI_ChannelMessage.call(this);
 };
-$CommonAPI_GameServerAcceptMessage.prototype = {
-	get_gameServer: function() {
-		return this.$2$GameServerField;
-	},
-	set_gameServer: function(value) {
-		this.$2$GameServerField = value;
-	},
-	get_channel: function() {
-		return 'GameServer.Accept';
-	},
-	get_gatewayChannel: function() {
-		return 'Game';
-	}
+$CommonAPI_GameServerAcceptMessage.createInstance = function() {
+	return $CommonAPI_GameServerAcceptMessage.$ctor();
+};
+$CommonAPI_GameServerAcceptMessage.$ctor = function() {
+	var $this = $CommonAPI_ChannelMessage.$ctor();
+	$this.gameServer = null;
+	$this.channel = 'GameServer.Accept';
+	$this.gatewayChannel = 'Game';
+	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.LampAction
 var $CommonAPI_LampAction = function() {
-	this.$3$TickToInitiateField = 0;
-	$CommonAPI_LampMessage.call(this);
 };
-$CommonAPI_LampAction.prototype = {
-	get_tickToInitiate: function() {
-		return this.$3$TickToInitiateField;
-	},
-	set_tickToInitiate: function(value) {
-		this.$3$TickToInitiateField = value;
-	},
-	get_type: function() {
-		return 0;
-	},
-	get_gatewayChannel: function() {
-		return 'Game';
-	}
+$CommonAPI_LampAction.$ctor = function() {
+	var $this = $CommonAPI_LampMessage.$ctor();
+	$this.tickToInitiate = 0;
+	$this.gatewayChannel = 'Game';
+	$this.type = 0;
+	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.LampActionProduct
 var $CommonAPI_LampActionProduct = function() {
-	$CommonAPI_LampMessage.call(this);
 };
-$CommonAPI_LampActionProduct.prototype = {
-	get_type: function() {
-		return 1;
-	},
-	get_gatewayChannel: function() {
-		return 'Game';
-	}
+$CommonAPI_LampActionProduct.$ctor = function() {
+	var $this = $CommonAPI_LampMessage.$ctor();
+	$this.gatewayChannel = 'Game';
+	$this.type = 1;
+	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.LampMessage
 var $CommonAPI_LampMessage = function() {
-	this.user = null;
-	$CommonAPI_ChannelMessage.call(this);
 };
-$CommonAPI_LampMessage.prototype = { get_type: null };
+$CommonAPI_LampMessage.$ctor = function() {
+	var $this = $CommonAPI_ChannelMessage.$ctor();
+	$this.type = 0;
+	$this.user = null;
+	return $this;
+};
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.LampMessageType
 var $CommonAPI_LampMessageType = function() {
@@ -99,15 +89,15 @@ $CommonAPI_LampPlayer.$ctor = function(user) {
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.PlayerJoinMessage
 var $CommonAPI_PlayerJoinMessage = function() {
-	$CommonAPI_ChannelMessage.call(this);
 };
-$CommonAPI_PlayerJoinMessage.prototype = {
-	get_channel: function() {
-		return $CommonAPI_PlayerJoinMessage.messageChannel;
-	},
-	get_gatewayChannel: function() {
-		return 'Game';
-	}
+$CommonAPI_PlayerJoinMessage.createInstance = function() {
+	return $CommonAPI_PlayerJoinMessage.$ctor();
+};
+$CommonAPI_PlayerJoinMessage.$ctor = function() {
+	var $this = $CommonAPI_ChannelMessage.$ctor();
+	$this.channel = $CommonAPI_PlayerJoinMessage.messageChannel;
+	$this.gatewayChannel = 'Game';
+	return $this;
 };
 ////////////////////////////////////////////////////////////////////////////////
 // CommonAPI.TaskHandler
@@ -154,12 +144,12 @@ $CommonAPI_UserModel.$ctor = function() {
 	return $this;
 };
 Type.registerClass(global, 'CommonAPI.ChannelMessage', $CommonAPI_ChannelMessage, Object);
-Type.registerClass(global, 'CommonAPI.GameServerAcceptMessage', $CommonAPI_GameServerAcceptMessage, $CommonAPI_ChannelMessage);
-Type.registerClass(global, 'CommonAPI.LampMessage', $CommonAPI_LampMessage, $CommonAPI_ChannelMessage);
-Type.registerClass(global, 'CommonAPI.PlayerJoinMessage', $CommonAPI_PlayerJoinMessage, $CommonAPI_ChannelMessage);
+Type.registerClass(global, 'CommonAPI.GameServerAcceptMessage', $CommonAPI_GameServerAcceptMessage);
+Type.registerClass(global, 'CommonAPI.LampMessage', $CommonAPI_LampMessage);
+Type.registerClass(global, 'CommonAPI.PlayerJoinMessage', $CommonAPI_PlayerJoinMessage);
 Type.registerClass(global, 'CommonAPI.TaskHandler', $CommonAPI_TaskHandler, Object);
 Type.registerClass(global, 'CommonAPI.UserModel', $CommonAPI_UserModel, Object);
-Type.registerClass(global, 'CommonAPI.LampAction', $CommonAPI_LampAction, $CommonAPI_LampMessage);
-Type.registerClass(global, 'CommonAPI.LampActionProduct', $CommonAPI_LampActionProduct, $CommonAPI_LampMessage);
+Type.registerClass(global, 'CommonAPI.LampAction', $CommonAPI_LampAction);
+Type.registerClass(global, 'CommonAPI.LampActionProduct', $CommonAPI_LampActionProduct);
 Type.registerClass(global, 'CommonAPI.LampPlayer', $CommonAPI_LampPlayer);
 $CommonAPI_PlayerJoinMessage.messageChannel = 'Player.Join';

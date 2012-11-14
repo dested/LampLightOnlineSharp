@@ -1,16 +1,15 @@
+using System;
 namespace CommonAPI
 {
+    [Serializable]
     public class PlayerJoinMessage : ChannelMessage
-    { 
-        public override string Channel
-        {
-            get { return MessageChannel; }
-        }
-        public override string GatewayChannel
-        {
-            get { return "Game"; }
-        }
+    {
         public const string MessageChannel = "Player.Join";
 
+        public PlayerJoinMessage()
+        {
+            Channel = MessageChannel;
+            GatewayChannel = "Game";
+        }
     }
 }

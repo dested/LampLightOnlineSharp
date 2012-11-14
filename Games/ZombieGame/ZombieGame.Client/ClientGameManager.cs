@@ -10,7 +10,7 @@ namespace ZombieGame.Client
 {
     public class ClientGameManager : GameManager
     {
-        private readonly Game myGame;
+        protected internal readonly Game myGame;
         private Point screenOffset;
         public WindowManager WindowManager { get; set; }
         [IntrinsicProperty]
@@ -19,6 +19,8 @@ namespace ZombieGame.Client
         public ClickMode ClickMode { get; set; }
         [IntrinsicProperty]
         public Point Scale { get; set; }
+        [IntrinsicProperty]
+        public ActionManager ActionManager { get; set; }
 
         public ClientGameManager(Game game)
         {
@@ -28,11 +30,24 @@ namespace ZombieGame.Client
 
             myGame = game;
             WindowManager = new WindowManager(this, 0, 0, 400, 225);
+            ActionManager = new ActionManager(this);
             screenOffset = new Point(0, 0);
             Scale = new Point(2, 2);
             ClickMode = ClickMode.MoveCharacter;
 
             UnitManager.MainCharacterUpdate += (x, y) => { WindowManager.CenterAround(x, y); };
+        }
+
+        public override void Init()
+        {
+            ActionManager.Init();
+            base.Init();
+        }
+
+        public override void Tick()
+        {
+            ActionManager.Tick();
+            base.Tick();
         }
 
         public void LoadTiles(JsonTileMap jsonTileMap, Completed completed)
@@ -91,6 +106,11 @@ namespace ZombieGame.Client
         {
             pointer.X -= screenOffset.X;
             pointer.Y -= screenOffset.Y;
+        }
+
+        public void GameTick()
+        {
+            ActionManager.Tick();
         }
     }
 }

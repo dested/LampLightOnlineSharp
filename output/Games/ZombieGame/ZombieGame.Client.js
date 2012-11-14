@@ -313,9 +313,9 @@ $ZombieGame_Client_Game.prototype = {
 				if (this.$gameManager.get_windowManager().collides(gamePointer)) {
 					this.$gameManager.unitManager.mainCharacter.moveTowards(gamePointer.x, gamePointer.y);
 					var $t2 = this.sendChannelMessage;
-					var $t1 = new ZombieGame.Server.MovePlayerZombieLampAction();
-					$t1.set_x(gamePointer.x);
-					$t1.set_y(gamePointer.y);
+					var $t1 = ZombieGame.Common.MovePlayerZombieLampAction.$ctor();
+					$t1.x = gamePointer.x;
+					$t1.y = gamePointer.y;
 					$t2($t1);
 				}
 				break;

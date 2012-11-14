@@ -1,17 +1,15 @@
 using System;
 namespace CommonAPI
 {
+    [Serializable]
     public class GameServerAcceptMessage : ChannelMessage
-    { 
-        public string GameServer { get; set; } 
-        public override string Channel
+    {
+        public string GameServer { get; set; }
+
+        public GameServerAcceptMessage()
         {
-            get { return "GameServer.Accept"; }
+            Channel = "GameServer.Accept";
+            GatewayChannel = "Game";
         }
-        public override string GatewayChannel
-        {
-            get { return "Game"; }
-        }
-     
     }
 }

@@ -79,9 +79,7 @@ namespace MMServer
                     var c = (PlayerJoinMessage) content;
                     var lampPlayer = new LampPlayer(user);
                     myGame.MakePlayerActive(lampPlayer);
-
                     PushPlayerMessage(lampPlayer, new GameServerAcceptMessage() {GameServer = myGameServerInfo.GameServerName});
-
                     break;
             }
         }

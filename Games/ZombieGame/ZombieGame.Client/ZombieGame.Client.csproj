@@ -94,15 +94,12 @@
       <Project>{095442DE-167D-4051-BEB5-B20890BD471C}</Project>
       <Name>ZombieGame.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ZombieGame.Server\ZombieGame.Server.csproj">
-      <Project>{B71B41A4-B437-48C4-9004-0A892E608761}</Project>
-      <Name>ZombieGame.Server</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionManager.cs" />
     <Compile Include="ClickMode.cs" />
     <Compile Include="DrawGameMap.cs" />
     <Compile Include="DrawMapManager.cs" />

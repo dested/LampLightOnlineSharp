@@ -45,18 +45,18 @@ $MMServer_ServerManager.prototype = {
 		var player = user;
 	},
 	$gameServerIndexMessage: function(name, user, content) {
-		var message = Type.cast(content, CommonAPI.LampMessage);
+		var message = content;
 		message.user = user;
 		this.$myGame.receiveMessage(message);
 	},
 	$gameServerMessage: function(name, user, content) {
-		switch (content.get_channel()) {
+		switch (content.channel) {
 			case 'Player.Join': {
-				var c = Type.cast(content, CommonAPI.PlayerJoinMessage);
+				var c = content;
 				var lampPlayer = CommonAPI.LampPlayer.$ctor(user);
 				this.$myGame.makePlayerActive(lampPlayer);
-				var $t1 = new CommonAPI.GameServerAcceptMessage();
-				$t1.set_gameServer(this.$myGameServerInfo.gameServerName);
+				var $t1 = CommonAPI.GameServerAcceptMessage.$ctor();
+				$t1.gameServer = this.$myGameServerInfo.gameServerName;
 				this.$pushPlayerMessage(lampPlayer, $t1);
 				break;
 			}

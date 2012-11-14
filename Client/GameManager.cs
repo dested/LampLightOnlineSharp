@@ -67,5 +67,10 @@ namespace Client
             game.Init(new LampPlayer[0], context);
             game.BindKeys(KeyboardJS.Instance());
         }
+
+        public void GameTick()
+        {
+            game.GameTick();
+        }
     }
 }

@@ -67,8 +67,8 @@ namespace MM.GatewayServer
                                                               Global.Console.Log("no user found:   " + data.Stringify());
                                                               return;
                                                           }
-                                                          var channel = "Bad";
-                                                          switch (data.Channel.Split('.')[1]) {
+                                                          var channel = user.GameServer;
+                                                          switch (data.Channel) {
                                                               case "Game":
                                                                   channel = user.GameServer;
                                                                   break;
@@ -84,7 +84,7 @@ namespace MM.GatewayServer
                                                                user = new GatewayUserModel();
                                                                user.Socket = socket;
                                                                user.UserName = data.UserName;
-
+                                                               user.Gateway = myName;
                                                                users[data.UserName] = user;
                                                                queueManager.SendMessage(user, "GameServer", new PlayerJoinMessage());
                                                            }));

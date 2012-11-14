@@ -44,10 +44,10 @@ $MMServerAPI_LampServer.prototype = {
 		this.myManager.emitAll(players, message);
 	},
 	receiveMessage: function(message) {
-		switch (message.get_type()) {
+		switch (message.type) {
 			case 0: {
-				var lampAction = Type.cast(message, CommonAPI.LampAction);
-				var lampActions = this.get_actions()[lampAction.get_tickToInitiate()] = this.get_actions()[lampAction.get_tickToInitiate()] || [];
+				var lampAction = message;
+				var lampActions = this.get_actions()[lampAction.tickToInitiate] = this.get_actions()[lampAction.tickToInitiate] || [];
 				lampActions.add(lampAction);
 				break;
 			}

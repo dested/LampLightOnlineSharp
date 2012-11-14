@@ -312,7 +312,6 @@ Global
 		{EEF57C9C-E3D9-46C7-B350-A4110529C63E}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
 		{EEF57C9C-E3D9-46C7-B350-A4110529C63E}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
 		{EEF57C9C-E3D9-46C7-B350-A4110529C63E}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
-		{EEF57C9C-E3D9-46C7-B350-A4110529C63E}.DebugZombie|Any CPU.Build.0 = DebugZombie|Any CPU
 		{EEF57C9C-E3D9-46C7-B350-A4110529C63E}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
 		{EEF57C9C-E3D9-46C7-B350-A4110529C63E}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
 		{EEF57C9C-E3D9-46C7-B350-A4110529C63E}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU
@@ -339,6 +338,7 @@ Global
 		{529D26FE-DE85-4FC8-818A-ABF63952CAF0}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
 		{529D26FE-DE85-4FC8-818A-ABF63952CAF0}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
 		{529D26FE-DE85-4FC8-818A-ABF63952CAF0}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
+		{529D26FE-DE85-4FC8-818A-ABF63952CAF0}.DebugZombie|Any CPU.Build.0 = DebugZombie|Any CPU
 		{529D26FE-DE85-4FC8-818A-ABF63952CAF0}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
 		{529D26FE-DE85-4FC8-818A-ABF63952CAF0}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
 		{529D26FE-DE85-4FC8-818A-ABF63952CAF0}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU
@@ -391,6 +391,7 @@ Global
 		{12C3B8E8-A775-48AC-95EE-137DCE2B805C}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
 		{12C3B8E8-A775-48AC-95EE-137DCE2B805C}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
 		{12C3B8E8-A775-48AC-95EE-137DCE2B805C}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
+		{12C3B8E8-A775-48AC-95EE-137DCE2B805C}.DebugZombie|Any CPU.Build.0 = DebugZombie|Any CPU
 		{12C3B8E8-A775-48AC-95EE-137DCE2B805C}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
 		{12C3B8E8-A775-48AC-95EE-137DCE2B805C}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
 		{12C3B8E8-A775-48AC-95EE-137DCE2B805C}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU
@@ -417,6 +418,7 @@ Global
 		{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
 		{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
 		{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
+		{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}.DebugZombie|Any CPU.Build.0 = DebugZombie|Any CPU
 		{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
 		{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
 		{9327877B-85F9-4C08-B8DD-55D7ADA1A62E}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU
@@ -443,6 +445,7 @@ Global
 		{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
 		{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
 		{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
+		{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}.DebugZombie|Any CPU.Build.0 = DebugZombie|Any CPU
 		{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
 		{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
 		{D12A21CA-E79E-4A8A-B8BC-9F0969BF3860}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU
@@ -535,6 +538,7 @@ Global
 		{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
 		{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
 		{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
+		{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}.DebugZombie|Any CPU.Build.0 = DebugZombie|Any CPU
 		{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
 		{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
 		{C1E8B668-5707-45E5-9D77-0EDEC578EDF8}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU
@@ -669,6 +673,7 @@ Global
 		{6DA30112-FDBD-4E48-9F52-7268FCE19D25}.DebugZak|Mixed Platforms.Build.0 = DebugZak|Any CPU
 		{6DA30112-FDBD-4E48-9F52-7268FCE19D25}.DebugZak|x86.ActiveCfg = DebugZak|Any CPU
 		{6DA30112-FDBD-4E48-9F52-7268FCE19D25}.DebugZombie|Any CPU.ActiveCfg = DebugZombie|Any CPU
+		{6DA30112-FDBD-4E48-9F52-7268FCE19D25}.DebugZombie|Any CPU.Build.0 = DebugZombie|Any CPU
 		{6DA30112-FDBD-4E48-9F52-7268FCE19D25}.DebugZombie|Mixed Platforms.ActiveCfg = DebugZombie|Any CPU
 		{6DA30112-FDBD-4E48-9F52-7268FCE19D25}.DebugZombie|Mixed Platforms.Build.0 = DebugZombie|Any CPU
 		{6DA30112-FDBD-4E48-9F52-7268FCE19D25}.DebugZombie|x86.ActiveCfg = DebugZombie|Any CPU

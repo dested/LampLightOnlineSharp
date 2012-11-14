@@ -158,6 +158,21 @@ $ZombieGame_Common_MapManager.prototype = {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.MovePlayerZombieLampAction
+var $ZombieGame_Common_MovePlayerZombieLampAction = function() {
+};
+$ZombieGame_Common_MovePlayerZombieLampAction.createInstance = function() {
+	return $ZombieGame_Common_MovePlayerZombieLampAction.$ctor();
+};
+$ZombieGame_Common_MovePlayerZombieLampAction.$ctor = function() {
+	var $this = $ZombieGame_Common_ZombieLampAction.$ctor();
+	$this.x = 0;
+	$this.y = 0;
+	$this.messageChannel = null;
+	$this.channel = $this.messageChannel;
+	return $this;
+};
+////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.Person
 var $ZombieGame_Common_Person = function(gameManager) {
 	$ZombieGame_Common_Unit.call(this, gameManager);
@@ -399,8 +414,23 @@ $ZombieGame_Common_WaypointDeterminer.prototype = {
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.ZombieActionType
+var $ZombieGame_Common_ZombieActionType = function() {
+};
+$ZombieGame_Common_ZombieActionType.prototype = { movePlayer: 0 };
+Type.registerEnum(global, 'ZombieGame.Common.ZombieActionType', $ZombieGame_Common_ZombieActionType, false);
+////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.ZombieGameConfig
 var $ZombieGame_Common_ZombieGameConfig = function() {
+};
+////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Common.ZombieLampAction
+var $ZombieGame_Common_ZombieLampAction = function() {
+};
+$ZombieGame_Common_ZombieLampAction.$ctor = function() {
+	var $this = CommonAPI.LampAction.$ctor();
+	$this.zombieActionType = 0;
+	return $this;
 };
 Type.registerClass(global, 'ZombieGame.Common.AStarNode', $ZombieGame_Common_AStarNode, Object);
 Type.registerClass(global, 'ZombieGame.Common.GameManager', $ZombieGame_Common_GameManager, Object);
@@ -414,6 +444,8 @@ Type.registerClass(global, 'ZombieGame.Common.UnitManager', $ZombieGame_Common_U
 Type.registerClass(global, 'ZombieGame.Common.Waypoint', $ZombieGame_Common_Waypoint, Object);
 Type.registerClass(global, 'ZombieGame.Common.WaypointDeterminer', $ZombieGame_Common_WaypointDeterminer, Object);
 Type.registerClass(global, 'ZombieGame.Common.ZombieGameConfig', $ZombieGame_Common_ZombieGameConfig, Object);
+Type.registerClass(global, 'ZombieGame.Common.ZombieLampAction', $ZombieGame_Common_ZombieLampAction);
+Type.registerClass(global, 'ZombieGame.Common.MovePlayerZombieLampAction', $ZombieGame_Common_MovePlayerZombieLampAction);
 Type.registerClass(global, 'ZombieGame.Common.Person', $ZombieGame_Common_Person, $ZombieGame_Common_Unit);
 $ZombieGame_Common_AStarNode.lateralCost = 10;
 $ZombieGame_Common_AStarNode.diagonalCost = 14;

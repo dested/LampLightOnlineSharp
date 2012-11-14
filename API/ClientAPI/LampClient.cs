@@ -48,5 +48,6 @@ namespace ClientAPI
         public virtual void Resize() {}
         public virtual void Draw(CanvasContext2D context) {}
         public virtual void Tick() {}
+        public virtual void GameTick() {}
     }
 }

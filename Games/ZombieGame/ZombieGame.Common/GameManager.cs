@@ -17,12 +17,12 @@ namespace ZombieGame.Common
             UnitManager = new UnitManager(this);
         }
 
-        public void Init()
+        public virtual void Init()
         {
             UnitManager.Init();
         }
 
-        public void Tick()
+        public virtual void Tick()
         {
             UnitManager.Tick();
         }

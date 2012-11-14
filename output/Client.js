@@ -201,7 +201,7 @@ var $Client_Gateway = function(gatewayServer) {
 };
 $Client_Gateway.prototype = {
 	emit: function(content) {
-		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(content.get_gatewayChannel(), content));
+		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(content.gatewayChannel, content));
 	},
 	on: function(channel, callback) {
 		this.$channels[channel] = callback;

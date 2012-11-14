@@ -9,7 +9,6 @@ using CommonLibraries;
 using WebLibraries;
 using ZombieGame.Common;
 using ZombieGame.Common.JSONObjects;
-using ZombieGame.Server;
 namespace ZombieGame.Client
 {
     public class Game : LampClient
@@ -72,6 +71,11 @@ namespace ZombieGame.Client
         public override void Tick()
         {
             gameManager.Tick();
+        }
+
+        public override void GameTick()
+        {
+            gameManager.GameTick();
         }
 
         public override void BuildUI(UIManager manager)

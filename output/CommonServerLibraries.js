@@ -148,8 +148,8 @@ $CommonServerLibraries_Queue_QueueManager.prototype = {
 	},
 	$messageReceived: function(name, user, message) {
 		user.gateway = name;
-		if (ss.isValue(this.$channels[message.get_channel()])) {
-			this.$channels[message.get_channel()](user, message);
+		if (ss.isValue(this.$channels[message.channel])) {
+			this.$channels[message.channel](user, message);
 		}
 	},
 	sendMessage$1: function(user, channel, message) {

@@ -1,4 +1,4 @@
-﻿namespace ZombieGame.Server
+﻿namespace ZombieGame.Common
 {
     public enum ZombieActionType
     {

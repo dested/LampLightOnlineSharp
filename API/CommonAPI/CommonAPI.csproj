@@ -75,10 +75,14 @@
     <CodeAnalysisFailOnMissingRules>true</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ChannelListener.cs" />
+    <Compile Include="ChannelMessage.cs" />
+    <Compile Include="ChannelListenTrigger.cs" />
     <Compile Include="Completed.cs" />
     <Compile Include="DataObject.cs" />
+    <Compile Include="LampAction.cs" />
     <Compile Include="LampActionProduct.cs" />
+    <Compile Include="LampMessage.cs" />
+    <Compile Include="LampMessageType.cs" />
     <Compile Include="LampPlayer.cs" />
     <Compile Include="GameServerAcceptMessage.cs" />
     <Compile Include="LampEvent.cs" />

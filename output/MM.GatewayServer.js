@@ -75,8 +75,8 @@ $MM_GatewayServer_GatewayServer.prototype = {
 				console.log('no user found:   ' + CommonLibraries.Extensions.stringify(data));
 				return;
 			}
-			var channel = 'Bad';
-			switch (data.channel.split(String.fromCharCode(46))[1]) {
+			var channel = user.gameServer;
+			switch (data.channel) {
 				case 'Game': {
 					channel = user.gameServer;
 					break;
@@ -92,8 +92,9 @@ $MM_GatewayServer_GatewayServer.prototype = {
 			user = CommonLibraries.GatewayUserModel.$ctor();
 			user.socket = socket;
 			user.userName = data1.userName;
+			user.gateway = this.$myName;
 			this.users[data1.userName] = user;
-			this.$queueManager.sendMessage$1(user, 'GameServer', new CommonAPI.PlayerJoinMessage());
+			this.$queueManager.sendMessage$1(user, 'GameServer', CommonAPI.PlayerJoinMessage.$ctor());
 		}));
 		socket.on('disconnect', Function.mkdel(this, function(data2) {
 			delete this.users[user.userName];
@@ -102,16 +103,16 @@ $MM_GatewayServer_GatewayServer.prototype = {
 	$messageReceived: function(gatewayName, user, content) {
 		if (Object.keyExists(this.users, user.userName)) {
 			var u = this.users[user.userName];
-			if (content.get_channel() === 'GameServer.Accept') {
+			if (content.channel === 'GameServer.Accept') {
 				//if the gamserver has accepted the player, tell him he has joined
-				var message = Type.cast(content, CommonAPI.GameServerAcceptMessage);
-				u.gameServer = message.get_gameServer();
+				var message = content;
+				u.gameServer = message.gameServer;
 				var socketClientMessageModel = new CommonLibraries.SocketClientMessageModel(user, 'GameServer.Joined', null);
 				u.socket.emit('Client.Message', socketClientMessageModel);
 			}
 			else {
 				//otherwise this is a normal message, just forward it along. 
-				var socketClientMessageModel1 = new CommonLibraries.SocketClientMessageModel(user, content.get_channel(), content);
+				var socketClientMessageModel1 = new CommonLibraries.SocketClientMessageModel(user, content.channel, content);
 				u.socket.emit('Client.Message', socketClientMessageModel1);
 			}
 		}

@@ -48,6 +48,7 @@ namespace Client
             jQuery.Document.Resize(e => resizeCanvas());
             int a = 0;
             //Window.SetInterval(() => {},1000 / 60);
+            Window.SetInterval(GameTick, 1000 / 10);
             Window.SetInterval(Tick, 1000 / 60);
             Window.SetInterval(GameDraw, 1000 / 60);
             Window.SetInterval(UIDraw, 1000 / 10);
@@ -75,6 +76,11 @@ namespace Client
         private void Tick()
         {
             gameManager.Tick();
+        }
+
+        private void GameTick()
+        {
+            gameManager.GameTick();
         }
 
         private void bindInput()

@@ -27,10 +27,10 @@ $ZombieGame_Server_Game.prototype = {
 	makePlayerActive: function(lampPlayer) {
 	},
 	executeAction: function(action) {
-		var zAction = Type.cast(action, $ZombieGame_Server_ZombieLampAction);
-		switch (zAction.get_zombieActionType()) {
+		var zAction = action;
+		switch (zAction.zombieActionType) {
 			case 0: {
-				var zMoveAction = Type.cast(zAction, $ZombieGame_Server_MovePlayerZombieLampAction);
+				var zMoveAction = zAction;
 				break;
 			}
 		}
@@ -59,50 +59,6 @@ $ZombieGame_Server_Game.$fakeJsonMap = function() {
 	return { mapWidth: 12, mapHeight: 10, name: 'Pretties2', tileMap: $ZombieGame_Server_Game.$makeFakeMap('Pretty2', 12, 10) };
 };
 ////////////////////////////////////////////////////////////////////////////////
-// ZombieGame.Server.MovePlayerZombieLampAction
-var $ZombieGame_Server_MovePlayerZombieLampAction = function() {
-	this.$5$XField = 0;
-	this.$5$YField = 0;
-	$ZombieGame_Server_ZombieLampAction.call(this);
-};
-$ZombieGame_Server_MovePlayerZombieLampAction.prototype = {
-	get_x: function() {
-		return this.$5$XField;
-	},
-	set_x: function(value) {
-		this.$5$XField = value;
-	},
-	get_y: function() {
-		return this.$5$YField;
-	},
-	set_y: function(value) {
-		this.$5$YField = value;
-	},
-	get_channel: function() {
-		return 'Zombie.MovePlayer';
-	}
-};
-////////////////////////////////////////////////////////////////////////////////
-// ZombieGame.Server.ZombieActionType
-var $ZombieGame_Server_ZombieActionType = function() {
-};
-$ZombieGame_Server_ZombieActionType.prototype = { movePlayer: 0 };
-Type.registerEnum(global, 'ZombieGame.Server.ZombieActionType', $ZombieGame_Server_ZombieActionType, false);
-////////////////////////////////////////////////////////////////////////////////
-// ZombieGame.Server.ZombieLampAction
-var $ZombieGame_Server_ZombieLampAction = function() {
-	this.$4$ZombieActionTypeField = 0;
-	CommonAPI.LampAction.call(this);
-};
-$ZombieGame_Server_ZombieLampAction.prototype = {
-	get_zombieActionType: function() {
-		return this.$4$ZombieActionTypeField;
-	},
-	set_zombieActionType: function(value) {
-		this.$4$ZombieActionTypeField = value;
-	}
-};
-////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Server.ZombieServerGameManager
 var $ZombieGame_Server_ZombieServerGameManager = function(game) {
 	this.game = null;
@@ -115,6 +71,4 @@ $ZombieGame_Server_ZombieServerGameManager.prototype = {
 	}
 };
 Type.registerClass(global, 'ZombieGame.Server.Game', $ZombieGame_Server_Game, MMServerAPI.LampServer);
-Type.registerClass(global, 'ZombieGame.Server.ZombieLampAction', $ZombieGame_Server_ZombieLampAction, CommonAPI.LampAction);
 Type.registerClass(global, 'ZombieGame.Server.ZombieServerGameManager', $ZombieGame_Server_ZombieServerGameManager, ZombieGame.Common.GameManager);
-Type.registerClass(global, 'ZombieGame.Server.MovePlayerZombieLampAction', $ZombieGame_Server_MovePlayerZombieLampAction, $ZombieGame_Server_ZombieLampAction);

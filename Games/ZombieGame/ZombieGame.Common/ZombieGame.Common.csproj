@@ -108,6 +108,7 @@
     <Compile Include="JSONObjects\JsonMap.cs" />
     <Compile Include="JSONObjects\JsonTileMap.cs" />
     <Compile Include="MapManager.cs" />
+    <Compile Include="MovePlayerZombieLampAction.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Tile.cs" />
@@ -116,7 +117,9 @@
     <Compile Include="UnitManager.cs" />
     <Compile Include="Waypoint.cs" />
     <Compile Include="WaypointDeterminer.cs" />
+    <Compile Include="ZombieActionType.cs" />
     <Compile Include="ZombieGameConfig.cs" />
+    <Compile Include="ZombieLampAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\API\CommonAPI\CommonAPI.csproj">
