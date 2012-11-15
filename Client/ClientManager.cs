@@ -40,7 +40,9 @@ namespace Client
             gateway = new Gateway(gatewayServerAddress);
 
             gameManager = new GameManager(gateway.On, gateway.Emit);
-            gateway.On("Area.Main.Login.Response", (data) => { Window.Alert(Json.Stringify(data)); });
+            gateway.On("Area.Main.Login.Response", (user,data) => {                                        
+                Window.Alert(Json.Stringify(data));
+                                                   });
             gateway.Login(randomName());
 
             bindInput();

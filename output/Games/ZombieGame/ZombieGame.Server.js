@@ -31,6 +31,7 @@ $ZombieGame_Server_Game.prototype = {
 		switch (zAction.zombieActionType) {
 			case 0: {
 				var zMoveAction = zAction;
+				console.log(String.format('{0} wants to move to {1} {2}', zAction.user.playerName, zMoveAction.x, zMoveAction.y));
 				break;
 			}
 		}

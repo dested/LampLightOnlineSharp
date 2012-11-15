@@ -10,7 +10,7 @@ namespace ZombieGame.Client
 {
     public class ClientGameManager : GameManager
     {
-        protected internal readonly Game myGame;
+        public readonly Game Game;
         private Point screenOffset;
         public WindowManager WindowManager { get; set; }
         [IntrinsicProperty]
@@ -28,7 +28,7 @@ namespace ZombieGame.Client
             MapManager = new DrawMapManager(this, 400, 400);
             UnitManager = new DrawUnitManager(this);
 
-            myGame = game;
+            Game = game;
             WindowManager = new WindowManager(this, 0, 0, 400, 225);
             ActionManager = new ActionManager(this);
             screenOffset = new Point(0, 0);
@@ -64,8 +64,8 @@ namespace ZombieGame.Client
 
                     break;
                 case GameMode.Play:
-                    screenOffset.X = myGame.Screen.Width / 2 - WindowManager.Width * Scale.X / 2;
-                    screenOffset.Y = myGame.Screen.Height / 2 - WindowManager.Height * Scale.Y / 2;
+                    screenOffset.X = Game.Screen.Width / 2 - WindowManager.Width * Scale.X / 2;
+                    screenOffset.Y = Game.Screen.Height / 2 - WindowManager.Height * Scale.Y / 2;
                     context.Translate(screenOffset.X, screenOffset.Y);
 
                     playDraw(context);

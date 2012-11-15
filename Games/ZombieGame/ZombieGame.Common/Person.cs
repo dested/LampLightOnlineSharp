@@ -1,9 +1,15 @@
 using System.Html.Media.Graphics;
+using System.Runtime.CompilerServices;
+using CommonAPI;
 namespace ZombieGame.Common
 {
-    public class Person : Unit
+    public class Person : Unit 
     {
-        public Person(GameManager gameManager) : base(gameManager) {}
+        [IntrinsicProperty]
+        public LampPlayer LampPlayer { get; set; }
+        public Person(GameManager gameManager) : base(gameManager)
+        {
+        }
 
         public override void Init()
         {

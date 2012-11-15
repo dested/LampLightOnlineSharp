@@ -13,13 +13,13 @@ namespace Client
     {
         private LampClient game;
         [IntrinsicProperty]
-        public Action<string, Action<ChannelMessage>> ReceiveChannelMessage { get; set; }
+        public Action<string, Action<UserModel, ChannelMessage>> ReceiveChannelMessage { get; set; }
         [IntrinsicProperty]
         public Action<ChannelMessage> SendChannelMessage { get; set; }
         [IntrinsicProperty]
         public Rectangle Screen { get; set; }
 
-        public GameManager(Action<string, Action<ChannelMessage>> receiveChannelMessage, Action<ChannelMessage> sendChannelMessage)
+        public GameManager(Action<string, Action<UserModel, ChannelMessage>> receiveChannelMessage, Action<ChannelMessage> sendChannelMessage)
         {
             ReceiveChannelMessage = receiveChannelMessage;
             SendChannelMessage = sendChannelMessage;

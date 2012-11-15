@@ -37,6 +37,8 @@ $ClientAPI_LampClient.prototype = {
 	draw: function(context) {
 	},
 	tick: function() {
+	},
+	gameTick: function() {
 	}
 };
 Type.registerClass(global, 'ClientAPI.LampClient', $ClientAPI_LampClient, Object);

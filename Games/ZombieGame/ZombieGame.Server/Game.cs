@@ -1,5 +1,6 @@
 ﻿using CommonAPI;
 using MMServerAPI;
+using NodeJS;
 using ZombieGame.Common;
 using ZombieGame.Common.JSONObjects;
 namespace ZombieGame.Server
@@ -18,12 +19,16 @@ namespace ZombieGame.Server
             base.Init();
 
             TaskHandler.Start(
-                    (completed) => { gameManager.LoadTiles(fakeJsonTileMap2(), completed); }).AddTask((completed) => { gameManager.LoadTiles(fakeJsonTileMap(), completed); }).AddTask((completed) => {
-                                                                                                                                                                                           GameMap bigMap = gameManager.MapManager.LoadMap(fakeJsonMap2());
-                                                                                                                                                                                           gameManager.MapManager.AddMapToRegion(bigMap, 0, 0);
-                                                                                                                                                                                           gameManager.MapManager.AddMapToRegion(gameManager.MapManager.LoadMap(fakeJsonMap()), bigMap.MapWidth, 0);
-                                                                                                                                                                                           completed();
-                                                                                                                                                                                       }).Do();
+                    (completed) => {
+                        gameManager.LoadTiles(fakeJsonTileMap2(), completed);
+                    }).AddTask((completed) => {
+                                   gameManager.LoadTiles(fakeJsonTileMap(), completed);
+                               }).AddTask((completed) => {
+                                              GameMap bigMap = gameManager.MapManager.LoadMap(fakeJsonMap2());
+                                              gameManager.MapManager.AddMapToRegion(bigMap, 0, 0);
+                                              gameManager.MapManager.AddMapToRegion(gameManager.MapManager.LoadMap(fakeJsonMap()), bigMap.MapWidth, 0);
+                                              completed();
+                                          }).Do();
 
             gameManager.Init();
         }
@@ -39,8 +44,7 @@ namespace ZombieGame.Server
             switch (zAction.ZombieActionType) {
                 case ZombieActionType.MovePlayer:
                     var zMoveAction = (MovePlayerZombieLampAction) zAction;
-
-                    //zAction.Player
+                    Console.Log(string.Format("{0} wants to move to {1} {2}", zAction.User.PlayerName, zMoveAction.X, zMoveAction.Y));
                     break;
             }
         }

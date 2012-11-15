@@ -98,26 +98,31 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
-      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.5.2\tools\Assemblies\mscorlib.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Saltarelle.Runtime.1.6.2\tools\Assemblies\mscorlib.dll</HintPath>
     </Reference>
-    <Reference Include="Script.jQuery">
-      <HintPath>..\..\..\packages\Saltarelle.jQuery.1.5.2\lib\Script.jQuery.dll</HintPath>
+    <Reference Include="Script.jQuery, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.1.6.2\lib\Script.jQuery.dll</HintPath>
     </Reference>
-    <Reference Include="Script.jQuery.UI">
-      <HintPath>..\..\..\packages\Saltarelle.jQuery.UI.1.5.2\lib\Script.jQuery.UI.dll</HintPath>
+    <Reference Include="Script.jQuery.UI, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Saltarelle.jQuery.UI.1.6.2\lib\Script.jQuery.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Script.Linq">
-      <HintPath>..\..\..\packages\Saltarelle.Linq.1.5.2\lib\Script.Linq.dll</HintPath>
+    <Reference Include="Script.Linq, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Saltarelle.Linq.1.6.2\lib\Script.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="Script.NodeJS">
-      <HintPath>..\..\..\packages\Saltarelle.NodeJS.1.5.2\lib\Script.NodeJS.dll</HintPath>
+    <Reference Include="Script.NodeJS, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Saltarelle.NodeJS.1.6.2\lib\Script.NodeJS.dll</HintPath>
     </Reference>
-    <Reference Include="Script.Web">
-      <HintPath>..\..\..\packages\Saltarelle.Web.1.5.2\lib\Script.Web.dll</HintPath>
+    <Reference Include="Script.Web, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8fc0e3af5abcb6c4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Saltarelle.Web.1.6.2\lib\Script.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets')" />
-  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.5.2\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" Condition="!Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.6.2\tools\Saltarelle.Compiler.targets')" />
+  <Import Project="$(SolutionDir)packages\Saltarelle.Compiler.1.6.2\tools\Saltarelle.Compiler.targets" Condition="Exists('$(SolutionDir)packages\Saltarelle.Compiler.1.6.2\tools\Saltarelle.Compiler.targets')" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(TargetDir)*.js" "$(SolutionDir)Output\Games\ZombieGame"</PostBuildEvent>
   </PropertyGroup>

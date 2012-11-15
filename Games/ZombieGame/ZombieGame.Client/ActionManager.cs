@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using ZombieGame.Common;
 namespace ZombieGame.Client
 {
     public class ActionManager
@@ -20,6 +21,13 @@ namespace ZombieGame.Client
         public void Tick()
         {
             CurrentTick++;
+        }
+
+        public void ScheduleAction(MovePlayerZombieLampAction movePlayerZombieLampAction)
+        {
+            movePlayerZombieLampAction.TickToInitiate = CurrentTick + 2;
+            myClientGameManager.Game.SendChannelMessage(movePlayerZombieLampAction);
+
         }
     }
 }

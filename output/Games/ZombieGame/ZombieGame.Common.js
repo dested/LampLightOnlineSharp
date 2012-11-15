@@ -175,6 +175,7 @@ $ZombieGame_Common_MovePlayerZombieLampAction.$ctor = function() {
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Common.Person
 var $ZombieGame_Common_Person = function(gameManager) {
+	this.lampPlayer = null;
 	$ZombieGame_Common_Unit.call(this, gameManager);
 };
 $ZombieGame_Common_Person.prototype = {

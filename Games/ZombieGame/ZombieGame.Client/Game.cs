@@ -65,8 +65,12 @@ namespace ZombieGame.Client
             gameManager.Init();
 
             ReceiveChannelMessage("GameServer.Joined",
-                                  (message) => { Window.Alert("Wooo joined!"); });
+                                  (user,message) => { 
+                                      gameManager.UnitManager.MainCharacter.LampPlayer = new LampPlayer(MainUser = user);
+                                  }); 
         }
+
+        protected UserModel MainUser { get; set; }
 
         public override void Tick()
         {
@@ -111,7 +115,7 @@ namespace ZombieGame.Client
                 case ClickMode.MoveCharacter:
                     if (gameManager.WindowManager.Collides(gamePointer)) {
                         gameManager.UnitManager.MainCharacter.MoveTowards(gamePointer.X, gamePointer.Y);
-                        SendChannelMessage(new MovePlayerZombieLampAction() {X = gamePointer.X, Y = gamePointer.Y});
+                        this.gameManager.ActionManager.ScheduleAction(new MovePlayerZombieLampAction() { X = gamePointer.X, Y = gamePointer.Y, User = gameManager.UnitManager.MainCharacter.LampPlayer });
                     }
                     break;
                 case ClickMode.DragMap:

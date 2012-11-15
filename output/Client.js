@@ -22,7 +22,7 @@ var $Client_ClientManager = function(gatewayServerAddress) {
 	this.uiManager = new CommonClientLibraries.UIManager.UIManager();
 	this.gateway = new $Client_Gateway(gatewayServerAddress);
 	this.$gameManager = new $Client_GameManager(Function.mkdel(this.gateway, this.gateway.on), Function.mkdel(this.gateway, this.gateway.emit));
-	this.gateway.on('Area.Main.Login.Response', function(data) {
+	this.gateway.on('Area.Main.Login.Response', function(user, data) {
 		window.alert(JSON.stringify(data));
 	});
 	this.gateway.login($Client_ClientManager.$randomName());
@@ -35,6 +35,7 @@ var $Client_ClientManager = function(gatewayServerAddress) {
 	}));
 	var a = 0;
 	//Window.SetInterval(() => {},1000 / 60);
+	window.setInterval(Function.mkdel(this, this.$gameTick), 100);
 	window.setInterval(Function.mkdel(this, this.$tick), 16);
 	window.setInterval(Function.mkdel(this, this.gameDraw), 16);
 	window.setInterval(Function.mkdel(this, this.uiDraw), 100);
@@ -45,6 +46,9 @@ var $Client_ClientManager = function(gatewayServerAddress) {
 $Client_ClientManager.prototype = {
 	$tick: function() {
 		this.$gameManager.tick();
+	},
+	$gameTick: function() {
+		this.$gameManager.gameTick();
 	},
 	$bindInput: function() {
 		this.$uiCanvas.domCanvas.mousedown(Function.mkdel(this, this.$canvasOnClick));
@@ -186,6 +190,9 @@ $Client_GameManager.prototype = {
 		this.$game.screen = this.screen;
 		this.$game.init([], context);
 		this.$game.bindKeys(KeyboardJS);
+	},
+	gameTick: function() {
+		this.$game.gameTick();
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -195,11 +202,12 @@ var $Client_Gateway = function(gatewayServer) {
 	this.gatewaySocket = null;
 	this.$channels = {};
 	this.gatewaySocket = io.connect(gatewayServer);
-	this.gatewaySocket.on('Client.Message', Function.mkdel(this, function(data) {
-		this.$channels[data.channel](data.content);
-	}));
+	this.gatewaySocket.on('Client.Message', Function.mkdel(this, this.$receiveMessage));
 };
 $Client_Gateway.prototype = {
+	$receiveMessage: function(data) {
+		this.$channels[data.channel](data.user, data.content);
+	},
 	emit: function(content) {
 		this.gatewaySocket.emit('Gateway.Message', CommonLibraries.GatewayMessageModel.$ctor(content.gatewayChannel, content));
 	},

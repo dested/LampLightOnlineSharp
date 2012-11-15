@@ -1,4 +1,24 @@
 ////////////////////////////////////////////////////////////////////////////////
+// ZombieGame.Client.ActionManager
+var $ZombieGame_Client_ActionManager = function(clientGameManager) {
+	this.$myClientGameManager = null;
+	this.currentTick = 0;
+	this.$myClientGameManager = clientGameManager;
+};
+$ZombieGame_Client_ActionManager.prototype = {
+	init: function() {
+		this.currentTick = 0;
+		//pull from soiver
+	},
+	tick: function() {
+		this.currentTick++;
+	},
+	scheduleAction: function(movePlayerZombieLampAction) {
+		movePlayerZombieLampAction.tickToInitiate = this.currentTick + 2;
+		this.$myClientGameManager.game.sendChannelMessage(movePlayerZombieLampAction);
+	}
+};
+////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.ClickMode
 var $ZombieGame_Client_ClickMode = function() {
 };
@@ -7,18 +27,20 @@ Type.registerEnum(global, 'ZombieGame.Client.ClickMode', $ZombieGame_Client_Clic
 ////////////////////////////////////////////////////////////////////////////////
 // ZombieGame.Client.ClientGameManager
 var $ZombieGame_Client_ClientGameManager = function(game) {
-	this.$myGame = null;
+	this.game = null;
 	this.$screenOffset = null;
 	this.$2$WindowManagerField = null;
 	this.gameMode = 0;
 	this.clickMode = 0;
 	this.scale = null;
+	this.actionManager = null;
 	ZombieGame.Common.GameManager.call(this);
 	this.tileManager = new $ZombieGame_Client_DrawTileManager(this);
 	this.mapManager = new $ZombieGame_Client_DrawMapManager(this, 400, 400);
 	this.unitManager = new $ZombieGame_Client_DrawUnitManager(this);
-	this.$myGame = game;
+	this.game = game;
 	this.set_windowManager(new $ZombieGame_Client_WindowManager(this, 0, 0, 400, 225));
+	this.actionManager = new $ZombieGame_Client_ActionManager(this);
 	this.$screenOffset = CommonLibraries.Point.$ctor1(0, 0);
 	this.scale = CommonLibraries.Point.$ctor1(2, 2);
 	this.clickMode = 0;
@@ -33,6 +55,14 @@ $ZombieGame_Client_ClientGameManager.prototype = {
 	set_windowManager: function(value) {
 		this.$2$WindowManagerField = value;
 	},
+	init: function() {
+		this.actionManager.init();
+		ZombieGame.Common.GameManager.prototype.init.call(this);
+	},
+	tick: function() {
+		this.actionManager.tick();
+		ZombieGame.Common.GameManager.prototype.tick.call(this);
+	},
 	loadTiles: function(jsonTileMap, completed) {
 		CommonClientLibraries.UIManager.CHelp.loadImageFromUrl(jsonTileMap.tileMapURL, Function.mkdel(this, function(image) {
 			Type.cast(this.tileManager, $ZombieGame_Client_DrawTileManager).loadTiles$1(jsonTileMap, image, completed);
@@ -45,8 +75,8 @@ $ZombieGame_Client_ClientGameManager.prototype = {
 				break;
 			}
 			case 1: {
-				this.$screenOffset.x = ss.Int32.div(this.$myGame.screen.width, 2) - ss.Int32.div(this.get_windowManager().width * this.scale.x, 2);
-				this.$screenOffset.y = ss.Int32.div(this.$myGame.screen.height, 2) - ss.Int32.div(this.get_windowManager().height * this.scale.y, 2);
+				this.$screenOffset.x = ss.Int32.div(this.game.screen.width, 2) - ss.Int32.div(this.get_windowManager().width * this.scale.x, 2);
+				this.$screenOffset.y = ss.Int32.div(this.game.screen.height, 2) - ss.Int32.div(this.get_windowManager().height * this.scale.y, 2);
 				context.translate(this.$screenOffset.x, this.$screenOffset.y);
 				this.$playDraw(context);
 				break;
@@ -74,6 +104,9 @@ $ZombieGame_Client_ClientGameManager.prototype = {
 	offsetPointer: function(pointer) {
 		pointer.x -= this.$screenOffset.x;
 		pointer.y -= this.$screenOffset.y;
+	},
+	gameTick: function() {
+		this.actionManager.tick();
 	}
 };
 ////////////////////////////////////////////////////////////////////////////////
@@ -230,6 +263,7 @@ var $ZombieGame_Client_Game = function() {
 	this.$clicking = false;
 	this.$gameManager = null;
 	this.$myClickState = null;
+	this.$2$MainUserField = null;
 	ClientAPI.LampClient.call(this);
 	this.$gameManager = new $ZombieGame_Client_ClientGameManager(this);
 	$ZombieGame_Client_Game.debugText = [];
@@ -265,12 +299,23 @@ $ZombieGame_Client_Game.prototype = {
 			completed2();
 		})).do();
 		this.$gameManager.init();
-		this.receiveChannelMessage('GameServer.Joined', function(message) {
-			window.alert('Wooo joined!');
-		});
+		this.receiveChannelMessage('GameServer.Joined', Function.mkdel(this, function(user, message) {
+			var $t1 = this.$gameManager.unitManager.mainCharacter;
+			this.set_mainUser(user);
+			$t1.lampPlayer = CommonAPI.LampPlayer.$ctor(user);
+		}));
+	},
+	get_mainUser: function() {
+		return this.$2$MainUserField;
+	},
+	set_mainUser: function(value) {
+		this.$2$MainUserField = value;
 	},
 	tick: function() {
 		this.$gameManager.tick();
+	},
+	gameTick: function() {
+		this.$gameManager.gameTick();
 	},
 	buildUI: function(manager) {
 		var manageData;
@@ -312,11 +357,12 @@ $ZombieGame_Client_Game.prototype = {
 			case 0: {
 				if (this.$gameManager.get_windowManager().collides(gamePointer)) {
 					this.$gameManager.unitManager.mainCharacter.moveTowards(gamePointer.x, gamePointer.y);
-					var $t2 = this.sendChannelMessage;
+					var $t2 = this.$gameManager.actionManager;
 					var $t1 = ZombieGame.Common.MovePlayerZombieLampAction.$ctor();
 					$t1.x = gamePointer.x;
 					$t1.y = gamePointer.y;
-					$t2($t1);
+					$t1.user = this.$gameManager.unitManager.mainCharacter.lampPlayer;
+					$t2.scheduleAction($t1);
 				}
 				break;
 			}
@@ -431,6 +477,7 @@ $ZombieGame_Client_WindowManager.prototype = {
 		return point.x > this.x && point.x < this.x + this.width && point.y > this.y && point.y < this.y + this.height;
 	}
 };
+Type.registerClass(global, 'ZombieGame.Client.ActionManager', $ZombieGame_Client_ActionManager, Object);
 Type.registerClass(global, 'ZombieGame.Client.ClientGameManager', $ZombieGame_Client_ClientGameManager, ZombieGame.Common.GameManager);
 Type.registerClass(global, 'ZombieGame.Client.DrawGameMap', $ZombieGame_Client_DrawGameMap, ZombieGame.Common.GameMap);
 Type.registerClass(global, 'ZombieGame.Client.DrawMapManager', $ZombieGame_Client_DrawMapManager, ZombieGame.Common.MapManager);
